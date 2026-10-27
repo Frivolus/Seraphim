@@ -42200,6 +42200,26 @@ env.inline_asset_b96 = env.inline_asset_b96 or function(asset_path)
 end;
 
 env.Feature = env.Feature or require("@src/features/generic_feature");
+-- DEBUG_SPAWN_TRACEBACK
+-- Donne un traceback quand une erreur part dans un thread detache.
+local _real_spawn = task.spawn;
+local _real_defer = task.defer;
+local function _fmt_err(e)
+    return tostring(e) .. "\n" .. tostring(debug.traceback("", 2));
+end;
+task.spawn = function(f, ...)
+    return _real_spawn(function(...)
+        local ok, err = xpcall(f, _fmt_err, ...);
+        if not ok then warn("[spawn] " .. err) end;
+    end, ...);
+end;
+task.defer = function(f, ...)
+    return _real_defer(function(...)
+        local ok, err = xpcall(f, _fmt_err, ...);
+        if not ok then warn("[defer] " .. err) end;
+    end, ...);
+end;
+
 return true;
 end
 -- END MODULE: src/luarmor_init_script
