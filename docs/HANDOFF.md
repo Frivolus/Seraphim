@@ -164,3 +164,30 @@ KeyHandler ne se resout jamais, et init.lua kick le joueur. Le bypass ne se fais
 
 ### Repli
 git revert --no-edit HEAD && git push restaure l'etat precedent.
+
+---
+
+## Journal ¡ª Batch 7 : rebrand final + credits
+
+### Fait
+- Libelle fenetre, titre fenetre et watermark -> "Seraphim" (plus de "pr nextgen").
+- Onglet "Config" repare : son nom "Config" manquait dans creation_order de src/ui/ui.lua,
+  donc le module src/ui/tabs/ui.lua ne se construisait JAMAIS (boutons fast-flags et
+  filtre allies inaccessibles). Ajoute a creation_order.
+- Credits ajoutes (condition de licence Oni) :
+  - en jeu : groupbox "Credits" dans l'onglet Config (src/ui/tabs/ui.lua:create_credits)
+  - README.md : section Credits
+  - texte : "base: Project Rain (open-sourced by autumn / unionizing)" +
+    "TempedOut, Soggy, Hon, Mint, Juan, Joseph, Q/2qrys & Oni"
+- Commit 1db8fc1. 269 modules / 11 assets, check.mjs (aucun).
+
+### Condition de licence
+Oni : credits obligatoires si fork payant / rebrand / reutilisation significative.
+-> satisfait. A conserver dans toute distribution.
+
+### A FAIRE
+1. Tester Noclip / Speed / Fly / auto-parry (validation du port bypass).
+2. Texte Privacy du TOS : mentions binwoken.sh / HWID a aligner sur la realite
+   (vrai seulement quand Panda Auth sera branche).
+3. Optionnel : "nextgen" -> rien, et tags "pr_" -> "srf_" dans bypass.mint_tag.
+4. Panda Auth sur user_service.validate() (apres, pas urgent).
