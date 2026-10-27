@@ -28156,14 +28156,13 @@ aztup.maid:give_task(scheduler:add_task(0.5):Connect(function()
 
     local show_mem_data = aztup_toggles.WatermarkShowsMem and aztup_toggles.WatermarkShowsMem.Value;
 
-    local watermark, raw_watermark = ('Seraphim <font color=\"#%s\">nextgen</font> %i<font color="#%s">fps</font> %i<font color="#%s">ms</font>'):format(
-        color_in_hex,
+    local watermark, raw_watermark = ('Seraphim %i<font color="#%s">fps</font> %i<font color="#%s">ms</font>'):format(
         math.floor(fps),
         color_in_hex,
         math.floor(Latency:get_ping() * 1000),
         color_in_hex
     ), ('%s %ifps %ims'):format(
-        "Seraphim nextgen",
+        "Seraphim",
         math.floor(fps),
         math.floor(Latency:get_ping() * 1000)
     );
@@ -42917,7 +42916,7 @@ end;
 -- exact spelling or the game stops honouring them — those are handled at the
 -- call site, not here.
 function bypass.mint_tag(kind)
-    return string.format("pr_%s_%s_%x", bypass.salt, kind, math.random(0, 0xFFFFFF));
+    return string.format("srf_%s_%s_%x", bypass.salt, kind, math.random(0, 0xFFFFFF));
 end;
 
 function bypass.retire_tag(tag)
@@ -46029,7 +46028,7 @@ end;
 		    if custom_name then
 		    	return string.format(LPH_ENCSTR("%s"), custom_name:gsub("|ACCENT", "<font color=\"#" .. Library.AccentColor:ToHex() .. "\">"))		    
 end
-		    return string.format(LPH_ENCSTR("Seraphim <font color=\"#%s\">nextgen</font>"), Library.AccentColor:ToHex())
+		    return string.format(LPH_ENCSTR("Seraphim"), Library.AccentColor:ToHex())
 	    end)())
 
         aztup.auto_loaded = true;
@@ -56285,7 +56284,7 @@ Library:AddToRegistry(Library.WindowLabel, {
 		if custom_name then
 			return string.format(LPH_ENCSTR("%s"), custom_name:gsub("|ACCENT", "<font color=\"#" .. Library.AccentColor:ToHex() .. "\">"))		
 end
-		return string.format(LPH_ENCSTR("Seraphim <font color=\"#%s\">nextgen</font>"), Library.AccentColor:ToHex())
+		return string.format(LPH_ENCSTR("Seraphim"), Library.AccentColor:ToHex())
 	end
 })
 

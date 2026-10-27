@@ -610,7 +610,7 @@ end;
 -- exact spelling or the game stops honouring them — those are handled at the
 -- call site, not here.
 function bypass.mint_tag(kind)
-    return string.format("pr_%s_%s_%x", bypass.salt, kind, math.random(0, 0xFFFFFF));
+    return string.format("srf_%s_%s_%x", bypass.salt, kind, math.random(0, 0xFFFFFF));
 end;
 
 function bypass.retire_tag(tag)
