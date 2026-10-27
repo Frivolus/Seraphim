@@ -131,3 +131,36 @@ Wowzers, Citam, yv5, testeurs & staff.
 ### Regle anti-compression
 Le repo GitHub est la source de verite. TOUJOURS relire les fichiers depuis le repo
 avant de les modifier, ne jamais les reecrire de memoire.
+
+---
+
+## Journal ¡ª Batch 6 : anti-detection portee
+
+### Porte depuis beyondthetowers/project-rain (fork frutiger)
+- src/security/bypass.lua (27704 o) : detection du KeyHandler PAR FORME, plus de
+  constante heaven_key. Un seul chokepoint __namecall, drop silencieux (retour nil,
+  pas de coroutine.yield), newcclosure sur les slots C, tags namespaces, clamps de
+  plausibilite. Autonome (aucun require de nos modules).
+- src/utility/trace.lua (2035 o) : log fichier, actif seulement si
+  Seraphim/logs/TRACE_ON.txt existe. Chemins rebrandes Frutiger -> Seraphim.
+- src/features/hooking.lua remplace par la version 22430 o : plus de scan
+  #tbl == 13 and tbl[9] == heaven_key, plus de kick si KeyHandler absent.
+
+### Pourquoi c'etait le point critique
+La constante heaven_key est re-tiree a chaque update du jeu -> le scan ne matche plus,
+KeyHandler ne se resout jamais, et init.lua kick le joueur. Le bypass ne se faisait pas
+"detecter", il se faisait invalider par son propre chemin fail-loud.
+
+### Etat
+- 269 modules / 11 assets, check.mjs (aucun) manquant. Boot OK en jeu, pas de kick.
+- Commit f3dc8df.
+
+### A FAIRE
+1. Verifier en jeu que bypass resout le KeyHandler (log: [kh] grabbed remotes & enc_f).
+2. Tester Noclip / Speed / Fly / Auto-parry.
+3. Panda Auth sur user_service.validate().
+4. src/features/loader.lua : notre stub 870 o vs 15675 o en reference (a evaluer).
+5. Rebrand restant : watermark, titre fenetre, texte Privacy du TOS.
+
+### Repli
+git revert --no-edit HEAD && git push restaure l'etat precedent.

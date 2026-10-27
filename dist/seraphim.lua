@@ -45663,7 +45663,7 @@ By accessing or using our service ("<font color="#%s">Seraphim</font>"), you agr
 <font color="rgb(116, 118, 125)"><b>The Service is provided "as is" without warranties of any kind. We are not responsible for any damages arising from use or inability to use the Service.</b></font>
 <font color="rgb(116, 118, 125)"><b>The product can be discontinued at any time.</b></font>
 
-The privacy policy & TOS of the third party provider luarmor apply, which you can read at https://luarmor.net/tos
+The privacy policy & TOS of the third party provider Panda Auth apply.
 Last updated on January 25 2026 7:52 PM UTC-0
 
 <b>Privacy</b>
@@ -45934,7 +45934,7 @@ Converted._Deny.MouseButton1Click:Connect(function()
     game:GetService("TweenService"):Create(Music, TweenInfo.new(2), { Volume = 0 }):Play();
     game:GetService("Debris"):AddItem(Music, 2);
     game:GetService("Debris"):AddItem(Converted["_ScreenGui"], 2);
-    game.Players.LocalPlayer:Kick("You must accept the Terms of Service to use PR.");
+    game.Players.LocalPlayer:Kick("You must accept the Terms of Service to use Seraphim.");
     task.wait()
            
     local roblox_prompt_gui = services.CoreGui:FindFirstChild("RobloxPromptGui")
@@ -45944,7 +45944,7 @@ Converted._Deny.MouseButton1Click:Connect(function()
 
     roblox_prompt_gui.promptOverlay.ErrorPrompt.TitleFrame.ErrorTitle.TextColor3 = Color3.fromRGB(125, 196, 228)
     roblox_prompt_gui.promptOverlay.ErrorPrompt.TitleFrame.ErrorTitle.Text = "Seraphim"
-    roblox_prompt_gui.promptOverlay.ErrorPrompt.MessageArea.ErrorFrame.ErrorMessage.Text = "You must accept the Terms of Service to use PR"
+    roblox_prompt_gui.promptOverlay.ErrorPrompt.MessageArea.ErrorFrame.ErrorMessage.Text = "You must accept the Terms of Service to use Seraphim"
 end)
 
 repeat task.wait() until accepted;
