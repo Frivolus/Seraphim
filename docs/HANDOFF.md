@@ -81,3 +81,18 @@ Ensuite batch 4 = rebrand, batch 5 = cle payante.
 TempedOut, Soggy, Hon, Mint, Juan, Joseph, Q/2qrys & autumn/uni.
 + Blastbrean, Basil, V15/VermillionIts15, Ken/Winter, ILikeBananas69, 2qrys,
 Wowzers, Citam, yv5, testeurs & staff.
+## 10. Journal detaille
+- batch 4b : BUG globals perdues. src/globals.lua declare is_chime / is_depths /
+  is_eastern / is_etrean / is_dungeon / place_name en `local`. Le bundler encapsule
+  chaque module dans une fonction -> ces locals sont perdus. Republies en global
+  dans src/luarmor_init_script.lua sous le marqueur SHARED_GLOBALS_PATCH.
+  Consequence avant fix : chime_safety inactif, boutons Fake Void / TP To Roof /
+  TP To Void absents.
+- batch 4c : BUG regex bundler. La regex de dependances cherchait `require(`, donc
+  `pcall(require, "...")` n'etait pas suivi -> 5 modules absents du bundle en
+  SILENCE (luarmor_init_script, globals, luraph_sdk, setup_auto_load, tos).
+  Sans globals.lua : pas de `services`, pas de macros. Regex corrigee, supporte
+  desormais les deux formes.
+- Methodo : apres chaque modif, verifier avec Select-String sur le fichier ET sur
+  dist, ne pas se fier au message de succes d'un script.
+- Etat : 267 modules, 11 assets, check.mjs (aucun), marqueur present dans dist.

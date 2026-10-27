@@ -86,13 +86,13 @@ end
 local function builder_require(name)
   if type(name) ~= "string" then return native_require(name) end
   local module_name = "src/" .. normalize_name(name)
-  if module_cache[module_name] ~= nil then return module_cache[module_name] end
+  if module_cache[module_name] ~= nil then local c = module_cache[module_name]; return table.unpack(c, 1, c.n) end
   local fn = module_map[module_name]
   if type(fn) ~= "function" then error("Missing bundled module: " .. tostring(name)) end
-  local ok, result = xpcall(function() return fn(builder_require) end, function(e) return e end)
-  if not ok then error("Failed to execute module: " .. module_name .. " | " .. tostring(result)) end
-  module_cache[module_name] = result
-  return result
+  local ok, packed = xpcall(function() return table.pack(fn(builder_require)) end, function(e) return e end)
+  if not ok then error("Failed to execute module: " .. module_name .. " | " .. tostring(packed)) end
+  module_cache[module_name] = packed
+  return table.unpack(packed, 1, packed.n)
 end
 
 if type(getgenv) == "function" then
