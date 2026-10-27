@@ -5,7 +5,7 @@ self.font = DrawFont.Register(readfile("Seraphim/Fonts/Lexend.ttf"), {
     PixelSize = 16
 });
 
-local live: Folder = workspace:WaitForChild("Live");
+local live = workspace:WaitForChild("Live");
 self.draw = LPH_NO_VIRTUALIZE(function()
     local camera_cframe = workspace.CurrentCamera and workspace.CurrentCamera.CFrame or CFrame.new();
     local left_healthbar = camera_cframe:VectorToWorldSpace(Vector3.new(-4, 3, 0)) 

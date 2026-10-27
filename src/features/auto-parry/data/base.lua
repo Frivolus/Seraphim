@@ -2370,7 +2370,7 @@ return {
             windup = (0.155 / track.Speed) + 0.120
         elseif weapon.type == "Bow" then
             local thrown_object = workspace.Thrown:FindFirstChild("Attach_" .. defender.entity.Name)
-            local tip_attachment: Attachment? = thrown_object and thrown_object:FindFirstChild("HandWeapon") and thrown_object:FindFirstChild("HandWeapon"):FindFirstChild("TipAttachment");
+            local tip_attachment = thrown_object and thrown_object:FindFirstChild("HandWeapon") and thrown_object:FindFirstChild("HandWeapon"):FindFirstChild("TipAttachment");
             if tip_attachment then 
                 local ready = false;
                 while task.wait() and self:is_playing() do
@@ -3344,7 +3344,7 @@ return {
 		repeat
 			for _, v in next, workspace.Thrown:GetChildren() do
 				if (v.Name == 'STREAMPART' and v:IsA('BasePart')) then
-					local rocket: RocketPropulsion = v:FindFirstChild('RocketPropulsion');
+					local rocket = v:FindFirstChild('RocketPropulsion');
 					local rocketTarget = rocket and rocket.Target;
 					if (rocketTarget ~= local_player.root_part) then continue end;
 					if(not checkRangeFromPing(v, 22.5 + math.min(rocket.MaxSpeed / 3, 10), rocket.MaxSpeed)) then continue end;

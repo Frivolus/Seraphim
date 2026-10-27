@@ -4,7 +4,7 @@ local feature = Feature:new("leaderboard_spectate");
 local camera = workspace.CurrentCamera
 local maid = require(("@src/utility/maid"));
 
-local currentSpectatedLabel: TextLabel? = nil
+local currentSpectatedLabel = nil
 local defaultTextColor = Color3.new(1, 1, 1)
 feature.conns = {};
 feature.unique_id = services.HttpService:GenerateGUID(); 
@@ -106,12 +106,12 @@ function feature:handle(frame: Frame)
             return
         end
 
-        local player_frame = frame:FindFirstChild("PlayerFrame") :: Frame?
+        local player_frame = frame:FindFirstChild("PlayerFrame")
         if not player_frame then
             return
         end
 
-        local player_label = player_frame:FindFirstChild("Player") :: TextLabel?
+        local player_label = player_frame:FindFirstChild("Player")
         if not player_label or player_label.Transparency == 0 then
             return
         end
@@ -207,7 +207,7 @@ function feature:stop_spectate()
 end;
 
 function feature:force_spectate(query: string | Player)
-    local target_player: Player?
+    local target_player
 
     if typeof(query) == "Instance" and query:IsA("Player") then
         target_player = query
@@ -225,8 +225,8 @@ end;
     local target_frame = get_frame_from_player(target_player)
     if not target_frame then return end
 
-    local target_player_frame = target_frame:FindFirstChild("PlayerFrame") :: Frame?
-    local target_label = target_player_frame and target_player_frame:FindFirstChild("Player") :: TextLabel?
+    local target_player_frame = target_frame:FindFirstChild("PlayerFrame")
+    local target_label = target_player_frame and target_player_frame:FindFirstChild("Player")
     if not target_label then return end
 
     local humanoid = target_player.Character:FindFirstChildOfClass("Humanoid")

@@ -294,7 +294,7 @@ end;
 				return "Dropped Item"
 			end
 		end
-		return "None [esp::get_static_tag]"
+		return "None [esp]"
 	end
 
 	local function get_name(self)
@@ -307,7 +307,7 @@ end;
 			self.static and self.static_tag
 				or self.character.Name
 					.. string.format(
-						" [esp::get_name() %s %s %s]",
+						" [esp() %s %s %s]",
 						self.static or "nil",
 						self.static_tag or "nil",
 						self.tag or "nil"
@@ -986,7 +986,7 @@ end;
 	
 	
 	
-	aztup.maid:give_task(services.RunService.PreRender:Connect(profiler.wrap("base_esp::update", function()
+	aztup.maid:give_task(services.RunService.PreRender:Connect(profiler.wrap("base_esp", function()
 		if local_player.root_part then
 			root_part_pos = local_player.root_part.Position
 		end

@@ -120,7 +120,7 @@ local function parse_id_at(str: string, offset: number): (string?, string?)
 
     
     local window = string.sub(str, offset + 1, offset + 19)
-    local digits = string.match(window, "^[0-9]+") :: string
+    local digits = string.match(window, "^[0-9]+")
 
     return digits, nil
 end
@@ -168,7 +168,7 @@ end
 
 function AssetId.normalize(str: string): string
     local id, err = AssetId.get_id(str)
-    return id and ("rbxassetid://" .. id) or (err :: string)
+    return id and ("rbxassetid://" .. id) or (err)
 end
 
 return AssetId

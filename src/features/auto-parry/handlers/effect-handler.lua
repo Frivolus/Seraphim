@@ -117,7 +117,7 @@ aztup.maid:give_task(client_effect.OnClientEvent:Connect(function(effectName, ef
 
 		local chance_entry = chance_store:get_entry(data.name or effectName)
 		local variation_weights = chance_entry and (chance_entry.outcome_weights or chance_entry.fail_weights or chance_entry.fail_actions)
-		local variation_result = variation_weights and (DefendActionManager :: any):execute_failed_parry_variation(user, variation_weights) or "Parry"
+		local variation_result = variation_weights and (DefendActionManager):execute_failed_parry_variation(user, variation_weights) or "Parry"
 		if variation_result ~= "Parry" and variation_result ~= "Dodge" then
 			return debug_print("[%s] Action %i chance roll -> %s", name, id, variation_result)
 		end

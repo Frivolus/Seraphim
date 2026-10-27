@@ -6,7 +6,7 @@ return function(Library, context)
 	local Component = {}
 
 	function Component.CreatePanel(Title, Size, Position, Anchor)
-		local Outer: Frame = Library:Create('Frame', {
+		local Outer = Library:Create('Frame', {
 			AnchorPoint = Anchor or Vector2.zero;
 			Position = Position;
 			Size = Size;

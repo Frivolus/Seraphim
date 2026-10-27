@@ -71,7 +71,7 @@ local autosaramed = {
                     }
                 }
                 local requests = services.ReplicatedStorage:WaitForChild("Requests")
-                local craftRemote = requests:WaitForChild("Craft") :: RemoteFunction
+                local craftRemote = requests:WaitForChild("Craft")
                 
                 local gatheredWheat = local_player.instance.Backpack:FindFirstChild('Gathered Wheat')
                 local gatheredWheatQuantity = gatheredWheat and gatheredWheat:FindFirstChild('Quantity') and gatheredWheat:FindFirstChild('Quantity').Value

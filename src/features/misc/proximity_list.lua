@@ -208,7 +208,7 @@ local function format_distance(distance)
 end;
 
 function add_object(name, distance, voidwalker, char)
-    local new_label: TextLabel = sample_label:Clone();
+    local new_label = sample_label:Clone();
     new_label.Text = name .. " (" .. format_distance(distance) .. ")";
     new_label.TextTransparency = 0;
     new_label.TextColor3 = voidwalker and Library.AccentColor or Library.FontColor;

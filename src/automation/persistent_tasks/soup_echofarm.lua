@@ -363,7 +363,7 @@ local state_machine = StateMachine.create({
                 
                     local replicatedStorage = game:GetService("ReplicatedStorage")
                     local requests = replicatedStorage:WaitForChild("Requests")
-                    local craftRemote = requests:WaitForChild("Craft") :: RemoteFunction
+                    local craftRemote = requests:WaitForChild("Craft")
 
                     local start = tick();
                     repeat 
@@ -477,7 +477,7 @@ local state_machine = StateMachine.create({
 
                 pcall(function()
                     for _, anim in game:GetService("ReplicatedStorage").Assets.Anims.Mobs.Monky:GetChildren() do
-                        local a: AnimationTrack = local_player.humanoid:LoadAnimation(anim);
+                        local a = local_player.humanoid:LoadAnimation(anim);
                         a:Play(0,1,0)
                     end;
                 end);

@@ -35,7 +35,7 @@ end
     equip_weapon:FireServer(true);
     feat.mapped = true;
     
-    local bv: BodyVelocity = ship:FindFirstChild("BodyVelocity", true);
+    local bv = ship:FindFirstChild("BodyVelocity", true);
     if bv then
         bv.Velocity = move_direction.Magnitude > 0 and move_direction.Unit * aztup.flags.boat_speed or Vector3.zero;
         bv.P = move_direction.Magnitude > 0 and 9e9 or 0;

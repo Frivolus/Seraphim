@@ -8081,7 +8081,7 @@ local autosaramed = {
                     }
                 }
                 local requests = services.ReplicatedStorage:WaitForChild("Requests")
-                local craftRemote = requests:WaitForChild("Craft") :: RemoteFunction
+                local craftRemote = requests:WaitForChild("Craft")
                 
                 local gatheredWheat = local_player.instance.Backpack:FindFirstChild('Gathered Wheat')
                 local gatheredWheatQuantity = gatheredWheat and gatheredWheat:FindFirstChild('Quantity') and gatheredWheat:FindFirstChild('Quantity').Value
@@ -10265,7 +10265,7 @@ local state_machine = StateMachine.create({
                 
                     local replicatedStorage = game:GetService("ReplicatedStorage")
                     local requests = replicatedStorage:WaitForChild("Requests")
-                    local craftRemote = requests:WaitForChild("Craft") :: RemoteFunction
+                    local craftRemote = requests:WaitForChild("Craft")
 
                     local start = tick();
                     repeat 
@@ -10379,7 +10379,7 @@ local state_machine = StateMachine.create({
 
                 pcall(function()
                     for _, anim in game:GetService("ReplicatedStorage").Assets.Anims.Mobs.Monky:GetChildren() do
-                        local a: AnimationTrack = local_player.humanoid:LoadAnimation(anim);
+                        local a = local_player.humanoid:LoadAnimation(anim);
                         a:Play(0,1,0)
                     end;
                 end);
@@ -17145,7 +17145,7 @@ return {
             windup = (0.155 / track.Speed) + 0.120
         elseif weapon.type == "Bow" then
             local thrown_object = workspace.Thrown:FindFirstChild("Attach_" .. defender.entity.Name)
-            local tip_attachment: Attachment? = thrown_object and thrown_object:FindFirstChild("HandWeapon") and thrown_object:FindFirstChild("HandWeapon"):FindFirstChild("TipAttachment");
+            local tip_attachment = thrown_object and thrown_object:FindFirstChild("HandWeapon") and thrown_object:FindFirstChild("HandWeapon"):FindFirstChild("TipAttachment");
             if tip_attachment then 
                 local ready = false;
                 while task.wait() and self:is_playing() do
@@ -18119,7 +18119,7 @@ return {
 		repeat
 			for _, v in next, workspace.Thrown:GetChildren() do
 				if (v.Name == 'STREAMPART' and v:IsA('BasePart')) then
-					local rocket: RocketPropulsion = v:FindFirstChild('RocketPropulsion');
+					local rocket = v:FindFirstChild('RocketPropulsion');
 					local rocketTarget = rocket and rocket.Target;
 					if (rocketTarget ~= local_player.root_part) then continue end;
 					if(not checkRangeFromPing(v, 22.5 + math.min(rocket.MaxSpeed / 3, 10), rocket.MaxSpeed)) then continue end;
@@ -22226,7 +22226,7 @@ end;
             self:cancel_feinted_tracks(self.animator:GetPlayingAnimationTracks());
         end);
 
-        self.played = self.animator.AnimationPlayed:Connect(profiler.wrap("animator_handler::run", function(track)
+        self.played = self.animator.AnimationPlayed:Connect(profiler.wrap("animator_handler", function(track)
             self:run(track);
         end));
     
@@ -23679,7 +23679,7 @@ aztup.maid:give_task(client_effect.OnClientEvent:Connect(function(effectName, ef
 
 		local chance_entry = chance_store:get_entry(data.name or effectName)
 		local variation_weights = chance_entry and (chance_entry.outcome_weights or chance_entry.fail_weights or chance_entry.fail_actions)
-		local variation_result = variation_weights and (DefendActionManager :: any):execute_failed_parry_variation(user, variation_weights) or "Parry"
+		local variation_result = variation_weights and (DefendActionManager):execute_failed_parry_variation(user, variation_weights) or "Parry"
 		if variation_result ~= "Parry" and variation_result ~= "Dodge" then
 			return debug_print("[%s] Action %i chance roll -> %s", name, id, variation_result)
 		end
@@ -23958,7 +23958,7 @@ aztup.maid:give_task(thrown.DescendantAdded:Connect(function(part)
 
 		local chance_entry = chance_store:get_entry(data.name or data.id)
 		local variation_weights = chance_entry and (chance_entry.outcome_weights or chance_entry.fail_weights or chance_entry.fail_actions)
-		local variation_result = variation_weights and (DefendActionManager :: any):execute_failed_parry_variation(user, variation_weights) or "Parry"
+		local variation_result = variation_weights and (DefendActionManager):execute_failed_parry_variation(user, variation_weights) or "Parry"
 		if variation_result ~= "Parry" and variation_result ~= "Dodge" then
 			return debug_print("[%s] Action %i chance roll -> %s", name, id, variation_result)
 		end
@@ -26065,7 +26065,7 @@ end;
 function feature.update()
     local self = feature;
     for index, item in self.stepping do
-        local track: AnimationTrack = item.track;
+        local track = item.track;
         local speed = item.speed;
 
         if not track.IsPlaying then
@@ -26652,7 +26652,7 @@ function feature:enable()
 	self.added_hook = EffectReplicatorHandler:hook("added", function(effect)
 		if not services.UserInputService:IsMouseButtonPressed(Enum.UserInputType.MouseButton2) then return end
 
-		local feint_timing: string = aztup_options.easy_feint_timing.Value;
+		local feint_timing = aztup_options.easy_feint_timing.Value;
 
 		if effect.Class == "Telegraph_Generic" and feint_timing == "Late" or effect.Class == "LightAttack" and feint_timing == "Early" then 
 			if not EffectReplicator:FindEffect("LightAttack") then return end
@@ -27465,7 +27465,7 @@ end
     equip_weapon:FireServer(true);
     feat.mapped = true;
     
-    local bv: BodyVelocity = ship:FindFirstChild("BodyVelocity", true);
+    local bv = ship:FindFirstChild("BodyVelocity", true);
     if bv then
         bv.Velocity = move_direction.Magnitude > 0 and move_direction.Unit * aztup.flags.boat_speed or Vector3.zero;
         bv.P = move_direction.Magnitude > 0 and 9e9 or 0;
@@ -29828,7 +29828,7 @@ local function format_distance(distance)
 end;
 
 function add_object(name, distance, voidwalker, char)
-    local new_label: TextLabel = sample_label:Clone();
+    local new_label = sample_label:Clone();
     new_label.Text = name .. " (" .. format_distance(distance) .. ")";
     new_label.TextTransparency = 0;
     new_label.TextColor3 = voidwalker and Library.AccentColor or Library.FontColor;
@@ -36025,7 +36025,7 @@ end;
 				return "Dropped Item"
 			end
 		end
-		return "None [esp::get_static_tag]"
+		return "None [esp]"
 	end
 
 	local function get_name(self)
@@ -36038,7 +36038,7 @@ end;
 			self.static and self.static_tag
 				or self.character.Name
 					.. string.format(
-						" [esp::get_name() %s %s %s]",
+						" [esp() %s %s %s]",
 						self.static or "nil",
 						self.static_tag or "nil",
 						self.tag or "nil"
@@ -36717,7 +36717,7 @@ end;
 	
 	
 	
-	aztup.maid:give_task(services.RunService.PreRender:Connect(profiler.wrap("base_esp::update", function()
+	aztup.maid:give_task(services.RunService.PreRender:Connect(profiler.wrap("base_esp", function()
 		if local_player.root_part then
 			root_part_pos = local_player.root_part.Position
 		end
@@ -37287,7 +37287,7 @@ local feature = Feature:new("leaderboard_spectate");
 local camera = workspace.CurrentCamera
 local maid = require(("@src/utility/maid"));
 
-local currentSpectatedLabel: TextLabel? = nil
+local currentSpectatedLabel = nil
 local defaultTextColor = Color3.new(1, 1, 1)
 feature.conns = {};
 feature.unique_id = services.HttpService:GenerateGUID(); 
@@ -37389,12 +37389,12 @@ function feature:handle(frame: Frame)
             return
         end
 
-        local player_frame = frame:FindFirstChild("PlayerFrame") :: Frame?
+        local player_frame = frame:FindFirstChild("PlayerFrame")
         if not player_frame then
             return
         end
 
-        local player_label = player_frame:FindFirstChild("Player") :: TextLabel?
+        local player_label = player_frame:FindFirstChild("Player")
         if not player_label or player_label.Transparency == 0 then
             return
         end
@@ -37490,7 +37490,7 @@ function feature:stop_spectate()
 end;
 
 function feature:force_spectate(query: string | Player)
-    local target_player: Player?
+    local target_player
 
     if typeof(query) == "Instance" and query:IsA("Player") then
         target_player = query
@@ -37508,8 +37508,8 @@ end;
     local target_frame = get_frame_from_player(target_player)
     if not target_frame then return end
 
-    local target_player_frame = target_frame:FindFirstChild("PlayerFrame") :: Frame?
-    local target_label = target_player_frame and target_player_frame:FindFirstChild("Player") :: TextLabel?
+    local target_player_frame = target_frame:FindFirstChild("PlayerFrame")
+    local target_label = target_player_frame and target_player_frame:FindFirstChild("Player")
     if not target_label then return end
 
     local humanoid = target_player.Character:FindFirstChildOfClass("Humanoid")
@@ -37844,7 +37844,7 @@ end;
 
             self.destroyed = true;
             stored_damage_registry[self.entity] = nil;
-            profile_begin("PlayerESP::destroy");
+            profile_begin("PlayerESP");
             if self.maid then
                 self.maid:do_cleaning();
             end;
@@ -38390,7 +38390,7 @@ end;
 
 	local profiler = require("@src/utility/profiler");
     local last_update = 0;
-    aztup.maid:give_task(services.RunService.PreRender:Connect(profiler.wrap("player_esp::update", function(...)
+    aztup.maid:give_task(services.RunService.PreRender:Connect(profiler.wrap("player_esp", function(...)
         if not aztup.flags.player_esp then 
             for player, esp_object in PlayerESPRegistry do
                 esp_object.nametag_billboard.Enabled = false;
@@ -42911,7 +42911,7 @@ end
         return    
 end
 
-    local shrine_points: ImageLabel = currency_frame:FindFirstChild("ShrinePoints");
+    local shrine_points = currency_frame:FindFirstChild("ShrinePoints");
     if not shrine_points then
         return    
 end
@@ -43033,7 +43033,7 @@ self.font = DrawFont.Register(readfile("Seraphim/Fonts/Lexend.ttf"), {
     PixelSize = 16
 });
 
-local live: Folder = workspace:WaitForChild("Live");
+local live = workspace:WaitForChild("Live");
 self.draw = LPH_NO_VIRTUALIZE(function()
     local camera_cframe = workspace.CurrentCamera and workspace.CurrentCamera.CFrame or CFrame.new();
     local left_healthbar = camera_cframe:VectorToWorldSpace(Vector3.new(-4, 3, 0)) 
@@ -47507,7 +47507,7 @@ local function parse_id_at(str: string, offset: number): (string?, string?)
 
     
     local window = string.sub(str, offset + 1, offset + 19)
-    local digits = string.match(window, "^[0-9]+") :: string
+    local digits = string.match(window, "^[0-9]+")
 
     return digits, nil
 end
@@ -47555,7 +47555,7 @@ end
 
 function AssetId.normalize(str: string): string
     local id, err = AssetId.get_id(str)
-    return id and ("rbxassetid://" .. id) or (err :: string)
+    return id and ("rbxassetid://" .. id) or (err)
 end
 
 return AssetId
@@ -47803,7 +47803,7 @@ function autofarm_utilities:HealthCheck(percent): boolean
 end
 
 function autofarm_utilities:GetClosestMob(name, max_magnitude): Model
-    local closest: Model = nil
+    local closest = nil
     
     for _, mob: Model in workspace.Live:GetChildren() do
         if not mob:IsA('Model') then continue end
@@ -47832,7 +47832,7 @@ end
 
 function autofarm_utilities:GetClosestNPC(name: string, wait: boolean): Model
     local function closest_npc()
-        local closest: Model = nil
+        local closest = nil
         
         for _, npc: Model in workspace.NPCs:GetChildren() do
             if not npc.Name:match(name) then continue end
@@ -47866,7 +47866,7 @@ end
 
 function autofarm_utilities:GetClosestCampfire(backup_location: CFrame, wait: boolean): Model
     local function closest_campfire(): Model
-        local closest: Model = nil
+        local closest = nil
         
         for _, campfire: Model in workspace.Thrown:GetChildren() do
             if not campfire.Name:match('Campfire') then continue end
@@ -47905,7 +47905,7 @@ end
 
 function autofarm_utilities:GetClosestWell(backup_location: CFrame, wait: boolean): Model
     local function closest_well(): Model
-        local closest: Model = nil
+        local closest = nil
         
         for _, well: Model in workspace.Map:GetChildren() do
             if not well.Name:match('Well') then continue end
@@ -47926,7 +47926,7 @@ function autofarm_utilities:GetClosestWell(backup_location: CFrame, wait: boolea
         return closest
     end
     
-    local closest: Model = closest_well()
+    local closest = closest_well()
     
     if not closest and backup_location then
         Tween.new(backup_location, true, 250).wait()
@@ -47942,7 +47942,7 @@ end
 
 function autofarm_utilities:GetClosestChest(wait: boolean, max_distance: number): Model    
     local function search()
-        local closest: Model = nil
+        local closest = nil
         
         for _, chest: Model in workspace.Thrown:GetChildren() do
             if chest:HasTag('looted') then continue end
@@ -47968,7 +47968,7 @@ function autofarm_utilities:GetClosestChest(wait: boolean, max_distance: number)
         return closest
     end
     
-    local closest: Model = search()
+    local closest = search()
     
     if wait and not closest then
         repeat search(); task.wait(); until closest
@@ -47979,7 +47979,7 @@ end
 
 
 function autofarm_utilities:GrabChest(struct, using_mob_breaker: boolean, wait_time: number, max_distance: number)
-    local closest: Model = self:GetClosestChest(true, max_distance or nil)
+    local closest = self:GetClosestChest(true, max_distance or nil)
     if not closest then return end
     
     closest:AddTag('looted')
@@ -48219,7 +48219,7 @@ local function trim_boxes()
     end
 end
 local function draw_hitbox(hitbox: Vector3, root_pos: CFrame, enemy_pos: CFrame, offset: CFrame, is_ball: boolean?, ok: boolean, too_far: boolean, hidden: boolean?, hit_color: Color3?, miss_color: Color3?)
-    local camera: Camera = workspace.CurrentCamera or {Position = Vector3.zero};
+    local camera = workspace.CurrentCamera or {Position = Vector3.zero};
     if (enemy_pos.Position - camera.CFrame.Position).Magnitude > 300 then
         return
     end
@@ -48375,12 +48375,12 @@ function general:in_hitbox(
     
     
 
-    local hitbox: Vector3
-    local offset: CFrame
-    local root_pos: CFrame
-    local enemy_pos: CFrame
-    local hidden: boolean?
-    local is_ball: boolean? 
+    local hitbox
+    local offset
+    local root_pos
+    local enemy_pos
+    local hidden
+    local is_ball 
 
     if typeof(a) == "Vector3" and typeof(b) == "CFrame" then
         
@@ -51170,7 +51170,7 @@ return function(Library, context)
 	local Component = {}
 
 	function Component.CreatePanel(Title, Size, Position, Anchor)
-		local Outer: Frame = Library:Create('Frame', {
+		local Outer = Library:Create('Frame', {
 			AnchorPoint = Anchor or Vector2.zero;
 			Position = Position;
 			Size = Size;

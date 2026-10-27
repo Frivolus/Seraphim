@@ -39,7 +39,7 @@ end
         return    
 end
 
-    local shrine_points: ImageLabel = currency_frame:FindFirstChild("ShrinePoints");
+    local shrine_points = currency_frame:FindFirstChild("ShrinePoints");
     if not shrine_points then
         return    
 end

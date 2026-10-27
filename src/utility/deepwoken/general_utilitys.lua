@@ -67,7 +67,7 @@ local function trim_boxes()
     end
 end
 local function draw_hitbox(hitbox: Vector3, root_pos: CFrame, enemy_pos: CFrame, offset: CFrame, is_ball: boolean?, ok: boolean, too_far: boolean, hidden: boolean?, hit_color: Color3?, miss_color: Color3?)
-    local camera: Camera = workspace.CurrentCamera or {Position = Vector3.zero};
+    local camera = workspace.CurrentCamera or {Position = Vector3.zero};
     if (enemy_pos.Position - camera.CFrame.Position).Magnitude > 300 then
         return
     end
@@ -223,12 +223,12 @@ function general:in_hitbox(
     
     
 
-    local hitbox: Vector3
-    local offset: CFrame
-    local root_pos: CFrame
-    local enemy_pos: CFrame
-    local hidden: boolean?
-    local is_ball: boolean? 
+    local hitbox
+    local offset
+    local root_pos
+    local enemy_pos
+    local hidden
+    local is_ball 
 
     if typeof(a) == "Vector3" and typeof(b) == "CFrame" then
         

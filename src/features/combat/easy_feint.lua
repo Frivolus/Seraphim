@@ -5,7 +5,7 @@ function feature:enable()
 	self.added_hook = EffectReplicatorHandler:hook("added", function(effect)
 		if not services.UserInputService:IsMouseButtonPressed(Enum.UserInputType.MouseButton2) then return end
 
-		local feint_timing: string = aztup_options.easy_feint_timing.Value;
+		local feint_timing = aztup_options.easy_feint_timing.Value;
 
 		if effect.Class == "Telegraph_Generic" and feint_timing == "Late" or effect.Class == "LightAttack" and feint_timing == "Early" then 
 			if not EffectReplicator:FindEffect("LightAttack") then return end

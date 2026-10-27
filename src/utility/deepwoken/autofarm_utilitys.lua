@@ -59,7 +59,7 @@ function autofarm_utilities:HealthCheck(percent): boolean
 end
 
 function autofarm_utilities:GetClosestMob(name, max_magnitude): Model
-    local closest: Model = nil
+    local closest = nil
     
     for _, mob: Model in workspace.Live:GetChildren() do
         if not mob:IsA('Model') then continue end
@@ -88,7 +88,7 @@ end
 
 function autofarm_utilities:GetClosestNPC(name: string, wait: boolean): Model
     local function closest_npc()
-        local closest: Model = nil
+        local closest = nil
         
         for _, npc: Model in workspace.NPCs:GetChildren() do
             if not npc.Name:match(name) then continue end
@@ -122,7 +122,7 @@ end
 
 function autofarm_utilities:GetClosestCampfire(backup_location: CFrame, wait: boolean): Model
     local function closest_campfire(): Model
-        local closest: Model = nil
+        local closest = nil
         
         for _, campfire: Model in workspace.Thrown:GetChildren() do
             if not campfire.Name:match('Campfire') then continue end
@@ -161,7 +161,7 @@ end
 
 function autofarm_utilities:GetClosestWell(backup_location: CFrame, wait: boolean): Model
     local function closest_well(): Model
-        local closest: Model = nil
+        local closest = nil
         
         for _, well: Model in workspace.Map:GetChildren() do
             if not well.Name:match('Well') then continue end
@@ -182,7 +182,7 @@ function autofarm_utilities:GetClosestWell(backup_location: CFrame, wait: boolea
         return closest
     end
     
-    local closest: Model = closest_well()
+    local closest = closest_well()
     
     if not closest and backup_location then
         Tween.new(backup_location, true, 250).wait()
@@ -198,7 +198,7 @@ end
 
 function autofarm_utilities:GetClosestChest(wait: boolean, max_distance: number): Model    
     local function search()
-        local closest: Model = nil
+        local closest = nil
         
         for _, chest: Model in workspace.Thrown:GetChildren() do
             if chest:HasTag('looted') then continue end
@@ -224,7 +224,7 @@ function autofarm_utilities:GetClosestChest(wait: boolean, max_distance: number)
         return closest
     end
     
-    local closest: Model = search()
+    local closest = search()
     
     if wait and not closest then
         repeat search(); task.wait(); until closest
@@ -235,7 +235,7 @@ end
 
 
 function autofarm_utilities:GrabChest(struct, using_mob_breaker: boolean, wait_time: number, max_distance: number)
-    local closest: Model = self:GetClosestChest(true, max_distance or nil)
+    local closest = self:GetClosestChest(true, max_distance or nil)
     if not closest then return end
     
     closest:AddTag('looted')

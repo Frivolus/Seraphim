@@ -364,7 +364,7 @@ end;
             self:cancel_feinted_tracks(self.animator:GetPlayingAnimationTracks());
         end);
 
-        self.played = self.animator.AnimationPlayed:Connect(profiler.wrap("animator_handler::run", function(track)
+        self.played = self.animator.AnimationPlayed:Connect(profiler.wrap("animator_handler", function(track)
             self:run(track);
         end));
     

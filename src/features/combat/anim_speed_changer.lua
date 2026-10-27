@@ -52,7 +52,7 @@ end;
 function feature.update()
     local self = feature;
     for index, item in self.stepping do
-        local track: AnimationTrack = item.track;
+        local track = item.track;
         local speed = item.speed;
 
         if not track.IsPlaying then

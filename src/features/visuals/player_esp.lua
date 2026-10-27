@@ -226,7 +226,7 @@ end;
 
             self.destroyed = true;
             stored_damage_registry[self.entity] = nil;
-            profile_begin("PlayerESP::destroy");
+            profile_begin("PlayerESP");
             if self.maid then
                 self.maid:do_cleaning();
             end;
@@ -772,7 +772,7 @@ end;
 
 	local profiler = require("@src/utility/profiler");
     local last_update = 0;
-    aztup.maid:give_task(services.RunService.PreRender:Connect(profiler.wrap("player_esp::update", function(...)
+    aztup.maid:give_task(services.RunService.PreRender:Connect(profiler.wrap("player_esp", function(...)
         if not aztup.flags.player_esp then 
             for player, esp_object in PlayerESPRegistry do
                 esp_object.nametag_billboard.Enabled = false;
