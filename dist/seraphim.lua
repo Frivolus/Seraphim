@@ -42214,7 +42214,7 @@ env.STR_TBL_SF_INVOKE       = env.STR_TBL_SF_INVOKE       or identity;
 env.LRM_INIT_SCRIPT         = env.LRM_INIT_SCRIPT         or function(f) return f() end;
 env.LPH_CRASH               = env.LPH_CRASH               or function() end;
 
-env.LPH_OBFUSCATED = false;
+env.LPH_OBFUSCATED = env.LPH_OBFUSCATED or false;
 env.LRM_ScriptName = "Seraphim";
 
 -- helpers attendus par d'autres modules
