@@ -79,7 +79,7 @@ for (const a of [...usedAssets].sort()) {
     parts.push('asset_map[' + JSON.stringify(a) + '] = _s;');
     parts.push('_s = "";');
 }
-parts.push(`};
+parts.push(`
 
 local function inline_asset_b96(p) return asset_map[p] end
 if type(getgenv) == "function" then getgenv().inline_asset_b96 = inline_asset_b96 end

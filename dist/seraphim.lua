@@ -1307,7 +1307,7 @@ _s = _s .. "\"6UN4yrqfLnGwaNi74xbhXJRDQ4gfsNUoPM2BEhu7jhyGtrCjdE+vM+QW4RHy/A8Ndq
 _s = _s .. "\"7fecLFjPn6U2MSNOnuUiXD+xN0fcE8Gu09u2WqBdf33knvawo5SHLh6TCeX1lEDnVYwy518kjHc8pUQ/W31w/93BhsQqUMM0mTua6gDMOQqUfm/g7QmF/6X/msB5fk/y9MLkQa1dvSNoYtrvD1ZYgSIQ9NzsSwZiTlZDiGyVYg35DgGxw9Xv/mFwpE0j5KHqGoUhpXs6HgYMefGNSBTGNh0htxw5SSNeNUF4y0oxxBAi3ZAYq+L5tqYd5FRRbS62MDZRMoT+9799jQFhqIGIwBBCiIAICCEChAwRIATVamNQAiEiZGbcEiA7qQIRkfwpKKckZQ9SYmcAaZokLzHAiUUYq/FKy0C9A9FNUwSoNo3T+dUJDnLn3vbIIoLjsvoKnmAaUoFjHIOjq8BLoqXqjRce9icdgwG2/ItSVEpm5AKbzBKzxpvaprZL6Qj6ECuiECiXv2x7GB2kJNdUoaS9IprTisvwk2XohHb4QzfUb8LpwMtecMSr/x62lLa+ngHaVP9eKOY9+Tn68s0CJdhFFZrqw9oCJJ525dzAfaEsnegqDxZ55IiC8fi1/6QDqkKBewUqcvXE1t6BQPRQN7w34d9zhFOvVgkJEYZEW0pGb8WFg2t4lzBAkAU=\"";
 asset_map["@assets/proximity.mp3"] = _s;
 _s = "";
-};
+
 
 local function inline_asset_b96(p) return asset_map[p] end
 if type(getgenv) == "function" then getgenv().inline_asset_b96 = inline_asset_b96 end
