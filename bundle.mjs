@@ -69,12 +69,15 @@ local module_map = {};
 local module_cache = {};
 local native_require = require;
 
-local asset_map = {`);
+local asset_map = {};
+local _s = "";`);
 const chunkStr = (str, n) => { const out = []; for (let i = 0; i < str.length; i += n) out.push(JSON.stringify(str.slice(i, i + n))); return out; };
 for (const a of [...usedAssets].sort()) {
   const b64 = assets.get(a) || "";
   const pieces = chunkStr(b64, 1024);
-  parts.push(`  [${JSON.stringify(a)}] = ` + (pieces.length ? pieces.join(" ..\n    ") : JSON.stringify("")) + ",");
+  for (const piece of pieces) parts.push('_s = _s .. ' + JSON.stringify(piece) + ';');
+    parts.push('asset_map[' + JSON.stringify(a) + '] = _s;');
+    parts.push('_s = "";');
 }
 parts.push(`};
 
