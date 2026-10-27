@@ -45289,9 +45289,9 @@ function tabs:create_ally_system(tab)
 end
 
 function tabs:create_credits(tab)
-	local groupbox = tab:newGroupBox("Credits", true);
-	groupbox:newLabel("Seraphim | base: Project Rain (open-sourced by autumn / unionizing)");
-	groupbox:newLabel("Credits: TempedOut, Soggy, Hon, Mint, Juan, Joseph, Q/2qrys & Oni");
+	local groupbox = tab:newGroupBox("Credits", false);
+	groupbox:newLabel("Seraphim | base: Project Rain (open-sourced by autumn / unionizing)", true);
+	groupbox:newLabel("Credits: TempedOut, Soggy, Hon, Mint, Juan, Joseph, Q/2qrys & Oni", true);
 end
 
 local setup = function(tab)
