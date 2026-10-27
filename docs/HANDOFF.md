@@ -191,3 +191,37 @@ Oni : credits obligatoires si fork payant / rebrand / reutilisation significativ
    (vrai seulement quand Panda Auth sera branche).
 3. Optionnel : "nextgen" -> rien, et tags "pr_" -> "srf_" dans bypass.mint_tag.
 4. Panda Auth sur user_service.validate() (apres, pas urgent).
+
+---
+
+## Journal ¡ª Batch 8 : VALIDATION COMPLETE EN JEU
+
+### Valide
+- Boot complet, TOS, UI, onglets, credits affiches (Config + TOS).
+- Hooks installes : 1x __namecall, 1x __newindex, camera popper. Aucun kick.
+- bypass.resolve_keyhandler() -> "[kh] grabbed remotes & enc_f" (detection PAR FORME, plus
+  de constante heaven_key). C'est la resilience aux updates du jeu.
+- Features testees et fonctionnelles : Noclip, Speed, Fly, auto-parry.
+  => preuve que KeyHandler se resout ET que le filtre ne mange pas de trafic legitime.
+
+### Garde-fou ajoute
+- src/luarmor_init_script.lua : env.LPH_OBFUSCATED = env.LPH_OBFUSCATED or false
+  (avant : ecrasement inconditionnel a false -> si obfuscation Luraph/IronBrew, le TOS
+  restait a 5s au lieu de 45s et luraph_sdk se chargeait a tort).
+
+### Etat du projet : FONCTIONNEL
+Rebrand complet (dossiers, watermark, titre, TOS, tags), credits en place (condition de
+licence Oni satisfaite : Config + TOS + init.lua + README + CREDITS.md), anti-detection
+portee et validee, 269 modules / 11 assets.
+
+### Backlog restant (non bloquant)
+1. Panda Auth sur user_service.validate() + fenetre de cle (reporte par le user).
+2. src/features/loader.lua : notre stub 870 o vs 15675 o en reference (a evaluer).
+3. Cosmetique : PR_BREAKER_IGNORE / PR_PLAYER_CONTAINER / pr_bindable -> SRF_*.
+4. TOS : texte Privacy volontairement conserve (deviendra vrai avec Panda Auth).
+5. Preparer l'obfuscation (Luraph/IronBrew) quand la vente approchera : relire le shim
+   luarmor_init_script (Luraph genere sa propre init).
+
+### Prochaine etape logique
+Le script marche. La suite c'est l'empaquetage : hebergement (Panda VSS ou GitHub raw) +
+cle payante. Le reste est du confort.
