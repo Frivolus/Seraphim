@@ -42,6 +42,7 @@ xpcall(function()
         "Seraphim/Assets/Hit Sounds",
         "Seraphim/Assets/Parry Sounds",
         "Seraphim/Fonts",
+        "Seraphim/logs",
         "Seraphim/Deepwoken-Config",
         "Seraphim/Deepwoken-Config/CustomGlobalOrnaments",
         "Seraphim/Deepwoken-Config/CustomRaces",

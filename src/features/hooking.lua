@@ -1,5 +1,8 @@
+local trace_mod = require("@src/utility/trace");
 
 
+
+local bypass = require("@src/security/bypass");
 
 if game.PlaceId == 4111023553 then return true end
 
@@ -10,75 +13,130 @@ task.spawn(pcall, function()
 
     local client_manager = game:GetService("Players").LocalPlayer:WaitForChild("PlayerScripts"):WaitForChild("ClientActor"):WaitForChild("ClientManager")
 
-    client_manager.Enabled = false;
-    Logger.log_for_devs("disabled client manager/error check (1)");
+    -- Deliberately NOT set to false. Disabling the module is a one-line
+    -- signature, and the "error check (1)" numbering implies sibling checks
+    -- were stripped before release. The module stays alive; its outbound
+    -- reports are intercepted in __namecall instead.
+    bypass.preserve_client_manager();
+    if not client_manager.Enabled then
+        Logger.log_for_devs("[hooking] client manager was disabled elsewhere; re-enabled");
+    end;
+    Logger.log_for_devs("client manager preserved (report filter owns the drop)");
 end);
 local pi = (function() 
     return 0.125 + tonumber(STR_TBL_SF_INVOKE("3"))
 end)();
-local heaven_key = 2754 * (72 % (0.6769230769205024 * 7 * 7 % 5 % 64 % 41 / 66 + 12) / 54 / (4 / 36 + 5.3655660377358485) + 1 * 4 % 52 * 21 / 4 % 35 / 3) / 35 * 38 + (66 + (8 + 4 + 5 + 2 + 19035.52631578947) / 34 + 40 % 41 / 56 % 65 * 57 + 3381) + 420 + 35 * (0.3150684931506849 + 69 + 14 / 56 + 28 + 36) + (pi);
+-- heaven_key used to be a compile-time constant folded out of the game's
+-- builder and matched against tbl[9] during a getgc() scan. Every game update
+-- re-rolled it, so the scan silently stopped matching, KeyHandler never
+-- resolved, and init.lua then kicked the player. Resolution now lives in
+-- bypass.resolve_keyhandler() and works off the table's shape.
 local KeyHandlerClass = {} do
     KeyHandlerClass.__index = KeyHandlerClass;
     
+    -- ── the inert key ──────────────────────────────────────────────────────
+    -- Restituita al posto di nil quando un remote non e' disponibile.
+    --
+    -- Questa classe e' il `KeyHandler` che lo script stesso usa, ed e' diversa
+    -- dalla funzione che viene installata nel gioco: e' QUESTA che il codice
+    -- chiama con KeyHandler:get_key(...). Correggerne solo una lascia l'altra a
+    -- restituire nil, ed e' esattamente quello che e' successo.
+    --
+    -- __index risponde a QUALSIASI nome con una funzione che restituisce lo
+    -- stesso oggetto, quindi FireServer e ogni altra chiamata si risolvono e non
+    -- fanno niente, invece di andare in errore.
+    local inert_key = setmetatable({}, {
+        __index = function()
+            return function() return inert_key end;
+        end;
+    });
+
+    
     KeyHandlerClass[STR_TBL_SF_INVOKE("get_key_internal")] = function(self, remote)
-        if self.cache[remote] then
-            return self[STR_TBL_SF_INVOKE("remotes")][self.cache[remote] ]        
-end
+        local remotes = self[STR_TBL_SF_INVOKE("remotes")];
+        local enc_f = self[STR_TBL_SF_INVOKE("enc_f")];
 
-        if not self[STR_TBL_SF_INVOKE("remotes")] or not self[STR_TBL_SF_INVOKE("enc_f")] then
-            repeat task.wait() until self[STR_TBL_SF_INVOKE("remotes")] and self[STR_TBL_SF_INVOKE("enc_f")];
-        end
+        if self.cache[remote] and remotes then
+            return remotes[self.cache[remote]] or inert_key;
+        end;
 
-        local encoded_remote = self.cache[remote] or self[STR_TBL_SF_INVOKE("enc_f")](remote); 
+        -- NO all'attesa infinita.
+        --
+        -- Era `repeat task.wait() until self.remotes and self.enc_f`. Se il
+        -- KeyHandler non si risolveva mai, questa funzione aspettava PER SEMPRE
+        -- -- e viene chiamata durante il combattimento, quindi i thread si
+        -- accumulavano senza mai finire. Osservato come lag del client.
+        --
+        -- Se non e' pronto si restituisce la chiave inerte: chi chiama non va in
+        -- errore e la richiesta semplicemente non parte.
+        if not remotes or not enc_f then
+            return inert_key;
+        end;
+
+        local ok, encoded_remote = pcall(enc_f, remote);
+        if not ok or not encoded_remote then
+            return inert_key;
+        end;
+
         self.cache[remote] = encoded_remote;
 
-        return encoded_remote and self[STR_TBL_SF_INVOKE("remotes")][encoded_remote] or nil        
-        
-        
-        
-    
-end;
+        return remotes[encoded_remote] or inert_key
+    end;
 
     KeyHandlerClass[STR_TBL_SF_INVOKE("get_key")] = function(self, remote)
         local success, res = pcall(KeyHandlerClass[STR_TBL_SF_INVOKE("get_key_internal")], self, remote);
-        if success then
-            return res        
-else
-            
-            return        
-end
+        if success and res ~= nil then
+            return res;
+        end;
+
+        -- Mai nil: i chiamanti fanno `KeyHandler:get_key("Dodge"):FireServer(...)`
+        -- senza controlli, in quindici punti.
+        trace_mod.write("GETKEY", "%s non trovato; registro pronto=%s", tostring(remote),
+            tostring(self[STR_TBL_SF_INVOKE("remotes")] ~= nil and self[STR_TBL_SF_INVOKE("enc_f")] ~= nil));
+        return inert_key;
     end
 
     KeyHandlerClass[STR_TBL_SF_INVOKE("get_cache")] = function(self, remote)
-        local encoded_remote = self.cache[remote];
+        local cache = self.cache;
+        local encoded_remote = cache and cache[remote];
         if not encoded_remote then
-            return nil        
-end
+            return inert_key
+        end;
 
-        return self[STR_TBL_SF_INVOKE("remotes")][encoded_remote]    
-end;
+        local remotes = self[STR_TBL_SF_INVOKE("remotes")];
+        if not remotes then
+            return inert_key
+        end;
+
+        return remotes[encoded_remote] or inert_key
+    end;
 
     KeyHandlerClass[STR_TBL_SF_INVOKE("handle_gk")] = function(self)
+        -- Shape-based, retrying: ReplicatedStorage.Modules may not have
+        -- replicated yet on a fresh join.
+        local resolved;
         local attempts = 0;
         repeat
-            for _, tbl in next, getgc(true) do
-                if typeof(tbl) ~= "table" then continue end
-                if getrawmetatable(tbl) then continue end
-                if #tbl ~= 13 or tbl[9] ~= heaven_key then continue end
-
-                self[STR_TBL_SF_INVOKE("remotes")] = tbl[12];
-                self[STR_TBL_SF_INVOKE("enc_f")] = tbl[13];
-                break            
-end
-
-            if self[STR_TBL_SF_INVOKE("remotes")] and self[STR_TBL_SF_INVOKE("enc_f")] then
-                break            
-end
-
+            resolved = bypass.resolve_keyhandler();
+            if resolved then break end
             attempts += 1;
             task.wait(attempts / 20);
-        until self[STR_TBL_SF_INVOKE("remotes")] and self[STR_TBL_SF_INVOKE("enc_f")];
-        if shared.b then return Logger.log_for_devs("[kh] already bypassed this session")end
+        until resolved or attempts > 40;
+
+        if not resolved then
+            -- No kick. KeyHandler-dependent features stay inert.
+            Logger.log_for_devs("[kh] could not resolve KeyHandler; continuing without it");
+            return;
+        end;
+
+        self[STR_TBL_SF_INVOKE("remotes")] = resolved.remotes;
+        self[STR_TBL_SF_INVOKE("enc_f")]   = resolved.encoder;
+
+        -- Was: `if shared.b then return ... end`. That guard meant a re-inject
+        -- never re-installed the hook, so the game kept calling the first
+        -- injection's closure — which still held whatever remotes table that
+        -- run resolved. Re-installing is idempotent: hookfunction replaces the
+        -- current value rather than stacking.
         Logger.log_for_devs("[kh] grabbed remotes & enc_f");
 
         
@@ -116,17 +174,28 @@ end;
 
         local function get_key(remote)
             if typeof(remote) ~= "string" then
-                return            
-end
+                return inert_key
+            end;
 
-            return self[STR_TBL_SF_INVOKE("remotes")][self[STR_TBL_SF_INVOKE("enc_f")](remote)]        
-end
+            local remotes = self[STR_TBL_SF_INVOKE("remotes")];
+            local enc_f = self[STR_TBL_SF_INVOKE("enc_f")];
+            if not remotes or not enc_f then
+                return inert_key
+            end;
+
+            -- pcall: enc_f is game code, and a bad name must not throw here.
+            local ok, key = pcall(function()
+                return remotes[enc_f(remote)];
+            end);
+
+            return (ok and key) or inert_key
+        end
 
         hookfunction(key_handler_module, function() 
             return {
                 [1] = get_key,
                 [2] = create_key,
-                [3] = "made with <3 from uni, hon, temped, soggy!!!",
+                [3] = "STATUS: DECOMPOSING // 0x1F",
             }
         end)
 
@@ -173,6 +242,18 @@ local old_hmm = hookmetamethod;
 local parallel_hooks_allowed = parallel_hooks_allowed;
 local hookmetamethod = not parallel_hooks_allowed and function(t, method, hook)
     local old;
+
+    -- The vanilla __namecall / __newindex slots hold C functions. Writing a
+    -- bare Lua closure over them is a one-line detection:
+    --     iscclosure(getrawmetatable(game).__namecall) --> false
+    -- Route every handler through newcclosure so the slot keeps the calling
+    -- convention the game expects.
+    if type(newcclosure) == "function" then
+        local wrapped = newcclosure(hook);
+        if wrapped then
+            hook = wrapped;
+        end;
+    end;
 
     local mt = getrawmetatable(t)
     setreadonly(mt, false);
@@ -227,22 +308,20 @@ end
 
 
 
-if not requests:FindFirstChild("ReportGoogleAnalyticsEvent") then
-    return local_player.instance:Kick("Failed to get BanRemote[3]")
+-- Was: Kick("Failed to get BanRemote[3]") when this remote was absent. An
+-- upstream rename turned that into a guaranteed kick on inject. Absence now
+-- just means one signal is unavailable; the shape scan still runs.
+local analytics_remote = requests:FindFirstChild("ReportGoogleAnalyticsEvent");
+if analytics_remote then
+    bans[analytics_remote] = true;
+else
+    Logger.log_for_devs("[hooking] ReportGoogleAnalyticsEvent absent; relying on shape scan");
 end;
 
-bans[requests.ReportGoogleAnalyticsEvent] = true;
-
-Logger.log_for_devs("[hooking] hooking remote_event.fire_server");
-local old_fireserver;
-old_fireserver = hookfunction(Instance.new("RemoteEvent").FireServer, (function(self, ...)
-    if bans[self] then
-        
-        return coroutine.yield()    
-end
-
-    return old_fireserver(self, ...)
-end));
+-- Was hookfunction(Instance.new("RemoteEvent").FireServer, ...). That is
+-- visible to isfunctionhooked / getfunctionhash. The __namecall hook below
+-- already intercepts FireServer, so the separate C-method hook is gone.
+Logger.log_for_devs("[hooking] FireServer filtering folded into __namecall");
 
 local animations = {} do
     for _, v in next, services.ReplicatedStorage:WaitForChild(STR_TBL_SF_INVOKE("Assets")):WaitForChild(STR_TBL_SF_INVOKE("Anims")):WaitForChild(STR_TBL_SF_INVOKE("Gestures")):GetChildren() do
@@ -325,7 +404,24 @@ end
 
         return old_namecall(self, unpack(new_args))    
 elseif method == "FireServer" then
+        -- folded in from the removed UnreliableRemoteEvent hookfunction
+        if aztup and aztup.flags and aztup.flags.no_one_bit
+            and aztup.features.no_one_bit and aztup.features.no_one_bit.removed
+            and self == aztup.features.no_one_bit.server_swim
+        then
+            return
+        end;
+
         if flags.block_input and self then
+
+            if BlockInputManager:should_block_input() then
+                if self == KeyHandler:get_cache(STR_TBL_SF_INVOKE("OffhandAttack")) and aztup_options.blocked_safe_input_user_moves.Value.M2s then
+                    return
+                end
+                if self == KeyHandler:get_cache(STR_TBL_SF_INVOKE("LeftClick")) and aztup_options.blocked_safe_input_user_moves.Value.M1s then
+                    return
+                end
+            end
 
             local critical_click = KeyHandler:get_cache("CriticalClick");
             if critical_click and self == critical_click and BlockInputManager:should_block_input() and aztup_options.blocked_safe_input_user_moves.Value.Criticals then
@@ -407,10 +503,12 @@ end
     end;
 
     if bans[self] then
-        
-        return coroutine.yield()    
-end
-    
+        -- Return nil rather than yielding. A yield never returns to the
+        -- anti-cheat's caller, which is itself observable; nil is exactly what
+        -- a successful FireServer returns.
+        return
+    end
+
     return old_namecall(self, ...)
 end)
 
@@ -468,43 +566,16 @@ end
     return old_newindex(self, key, value, ...)
 end))
 
-Logger.log_for_devs("[hooking] hooking unreliable_remote.fire_server");
+-- Was hookfunction(Instance.new("UnreliableRemoteEvent").FireServer, ...).
+-- Its two checks (blocked input, no_one_bit) now live in the __namecall
+-- FireServer branch.
+Logger.log_for_devs("[hooking] unreliable remote filtering folded into __namecall");
 
-local old_fireserver;
-old_fireserver = hookfunction(Instance.new(STR_TBL_SF_INVOKE("UnreliableRemoteEvent"))[STR_TBL_SF_INVOKE("FireServer")], (function(self, ...)
-    if bans[self] then
-        
-        return coroutine.yield()    
-end
-    
-    if aztup and aztup.flags.no_one_bit and aztup.features.no_one_bit.removed and self == aztup.features.no_one_bit.server_swim then
-        return    
-end;
-
-    if aztup and aztup.flags and aztup.flags.block_input and self then
-        if (
-            self == KeyHandler:get_cache(STR_TBL_SF_INVOKE("OffhandAttack")) and aztup_options.blocked_safe_input_user_moves.Value.M2s or
-            self == KeyHandler:get_cache(STR_TBL_SF_INVOKE("LeftClick")) and aztup_options.blocked_safe_input_user_moves.Value.M1s
-        ) and BlockInputManager:should_block_input() then
-            return        
-end;
-    end
-
-    return old_fireserver(self, ...)
-end));
-
-Logger.log_for_devs("[hooking] hooking tostring");
-
-local old_to_string; 
-old_to_string = hookfunction(tostring, function(str)
-	if str == STR_TBL_SF_INVOKE("EEKEWAEJIWAJDOIWAJDIOJAWDIOJAWODJOAIW") then
-		game:GetService("Players").LocalPlayer:Kick(STR_TBL_SF_INVOKE("[ac bypass] saturn (trapped-ts)"));
-        warn(STR_TBL_SF_INVOKE("[saturn trapped-ts info]"), debug.traceback());
-		return coroutine.yield()	
-end;
-
-	return old_to_string(str)
-end);
+-- Was hookfunction(tostring, ...) keyed on the sentinel
+-- "EEKEWAEJIWAJDOIWAJDIOJAWDIOJAWODJOAIW", which kicked the player with
+-- "saturn (trapped-ts)" on match. Both the sentinel and the reason string are
+-- public now, and isfunctionhooked(tostring) is a one-liner for the other
+-- side. The hook is removed; nothing in the tree depends on it.
 
 env.unhooked_newindex = old_newindex;
 env.unhooked_namecall = old_namecall;
@@ -519,5 +590,13 @@ end);
 end);
 
 Logger.log_for_devs("[hooking] finished...");
+
+-- Constant-free report filter + KeyHandler resolution.
+task.spawn(function()
+    local ok, report = pcall(bypass.install);
+    if not ok then
+        Logger.log_for_devs("[hooking] bypass.install failed", report);
+    end;
+end);
 
 return true
