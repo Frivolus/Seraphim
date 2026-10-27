@@ -134,7 +134,7 @@ Converted["_TextLabel1"].TextStrokeColor3 = Color3.fromHex("343d46")
 Converted["_TextLabel1"].TextStrokeTransparency = 0;
 
 Converted["_Accept"].Font = Enum.Font.Code
-Converted["_Accept"].Text = "Scroll to read (8)"
+Converted["_Accept"].Text = "Scroll to read (5)"
 Converted["_Accept"].TextColor3 = Color3.fromHex("57606f")
 Converted["_Accept"].TextSize = 14
 Converted["_Accept"].BackgroundColor3 = Color3.fromHex("1b2b34")
@@ -249,7 +249,7 @@ end)
 
 local accepted = false;
 local hasScrolledToBottom = false;
-local minReadSeconds = LPH_OBFUSCATED and 45 or 5;
+local minReadSeconds = 5;
 local secondsLeft = minReadSeconds;
 
 local function acceptIsReady()
