@@ -42215,7 +42215,7 @@ env.LRM_INIT_SCRIPT         = env.LRM_INIT_SCRIPT         or function(f) return 
 env.LPH_CRASH               = env.LPH_CRASH               or function() end;
 
 env.LPH_OBFUSCATED = env.LPH_OBFUSCATED or false;
-env.LRM_ScriptName = "Seraphim";
+env.LRM_ScriptName = env.LRM_ScriptName or "Seraphim";
 
 -- helpers attendus par d'autres modules
 env.base_require = env.base_require or function(module) return require(module) end;
