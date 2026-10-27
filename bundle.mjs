@@ -75,7 +75,7 @@ const chunkStr = (str, n) => { const out = []; for (let i = 0; i < str.length; i
 for (const a of [...usedAssets].sort()) {
   const b64 = assets.get(a) || "";
   const pieces = chunkStr(b64, 1024);
-  for (const piece of pieces) parts.push('_s = _s .. ' + JSON.stringify(piece) + ';');
+  for (const piece of pieces) parts.push('_s = _s .. ' + piece + ';');
     parts.push('asset_map[' + JSON.stringify(a) + '] = _s;');
     parts.push('_s = "";');
 }
