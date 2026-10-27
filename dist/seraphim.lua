@@ -45658,6 +45658,9 @@ Converted["_TextLabel"].RichText = true
 Converted["_TextLabel"].Text = ([[
 By accessing or using our service ("<font color="#%s">Seraphim</font>"), you agree to be bound by these Terms of Service.
 
+<b>Credits</b>
+<font color="rgb(116, 118, 125)"><b>Base: Project Rain (open-sourced by autumn / unionizing). Credits: TempedOut, Soggy, Hon, Mint, Juan, Joseph, Q/2qrys & Oni.</b></font>
+
 <b>Updates to this Agreement</b>
 <font color="rgb(116, 118, 125)"><b>We may revise this Agreement and its content at any time with a notice and all such revisions are effective immediately upon acceptance by when you click "Agree".</b></font>
 
