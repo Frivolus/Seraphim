@@ -42,7 +42,7 @@ while (queue.length) {
   included.add(key);
   const src = modules.get(key);
   let m;
-  const depRe = /\brequire\s*\(\s*\(*\s*(?:LPH_ENCSTR\s*\(\s*)?["']([^"']+)["']/g;
+  const depRe = /\brequire\s*(?:\(\s*\(*\s*|,\s*)(?:LPH_ENCSTR\s*\(\s*)?["']([^"']+)["']/g;
   const listRe = /\blist_modules\s*\(\s*["']([^"']+)["']\s*\)/g;
   while ((m = depRe.exec(src))) {
     const d = normalize(m[1]);

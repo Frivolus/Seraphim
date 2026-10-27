@@ -41790,6 +41790,106 @@ end
 return self
 end
 -- END MODULE: src/features/visuals/zoom
+-- BEGIN MODULE: src/globals
+module_map["src/globals"] = function(require)
+local env = getgenv();
+local lph = "LPH";
+
+env[lph .. "_" .. "JIT_MAX"] = function(f)
+    return f
+end
+  
+env["LRM" .. "_" .. "INIT_SCRIPT"] = function(f)
+    return f()
+end 
+env[lph .. "_" .. "JIT"] = function(f)
+    return f
+end 
+
+env[lph .. "_" .. "NO_VIRTUALIZE"] = function(f)
+    return f
+end
+
+env[lph .. "_ENCSTR"] = function(f)
+    return f
+end;
+
+env["AUTH_GET_CONSTANT"] = function(...)
+    return ...
+end 
+
+local services;
+LPH_NO_VIRTUALIZE(function()
+    local service_cache = {}
+    local gs = game.GetService;
+
+    local function cache_service(index)
+        service_cache[index] = gs(game,index)
+        return service_cache[index]
+    end
+
+    services = setmetatable({}, {
+        __index = function(_, index)
+            return service_cache[index] or cache_service(index)        
+end
+    });
+    
+    getgenv().services = services;
+end)(); 
+ 
+
+env["PROT_OBF" .. "_" .. "STR_SAFE_MACRO"] = function(...)
+    return ...
+end 
+
+
+local is_eastern = game.PlaceId == 6473861193;
+local is_depths = game.PlaceId == 5735553160;
+local is_etrean = game.PlaceId == 6032399813;
+local is_chime = game.PlaceId == 6832944305;
+local is_dungeon =  game.PlaceId == 8668476218;
+
+local parallel_hooks_allowed = identifyexecutor() == "Volt" or identifyexecutor() == "Synapse Z";
+
+local safe_fireserver_func, safe_json_decode;
+
+if not LPH_OBFUSCATED then
+    getgenv().script_require = builder_require;
+end
+
+local lexend;
+local sf_isnetworkowner;
+local ap_breaker_tbl;
+local chance_store;
+local loaded_signal;
+
+local is_regular = LRM_ScriptName == "Project Rain"
+local old_fpp = fireproximityprompt;
+local fireproximityprompt = function(...)
+    local prompt = ...;
+    local called = false;
+    local triggered_conn = game:GetService("ProximityPromptService").PromptTriggered:Once(function()
+        called = true;
+    end);
+    local res = old_fpp(...)
+    triggered_conn:Disconnect();
+    
+    if not called then 
+        firesignal(game:GetService("ProximityPromptService").PromptTriggered, prompt, game:GetService("Players").LocalPlayer);
+    end;
+    return res
+end
+
+local user_service;
+local place_name = ({
+    [5735553160] = "The Depths",
+    [6032399813] = "Etrean Luminant",
+    [6473861193] = "Eastern Luminant",
+    [6832944305] = "Arena",
+    [8668476218] = "Dungeon",
+})[game.PlaceId];
+end
+-- END MODULE: src/globals
 -- BEGIN MODULE: src/init
 module_map["src/init"] = function(require)
 -- Seraphim -- point d'entree (base Project Rain OSS)
@@ -42016,6 +42116,93 @@ loaded_signal:fire();
 aztup.automation:start();
 end
 -- END MODULE: src/init
+-- BEGIN MODULE: src/luarmor_init_script
+module_map["src/luarmor_init_script"] = function(require)
+-- Seraphim -- remplace l'init Luraph/Luarmor (strippe de l'OSS)
+local env = getgenv() or _G;
+local REPO_RAW = "https://raw.githubusercontent.com/Frivolus/Seraphim/main/";
+local identity = function(value) return value end;
+
+-- macros d'optimisation Luraph -> identity
+env.LPH_JIT                 = env.LPH_JIT                 or identity;
+env.LPH_JIT_MAX             = env.LPH_JIT_MAX             or identity;
+env.LPH_NO_VIRTUALIZE       = env.LPH_NO_VIRTUALIZE       or identity;
+env.LPH_NO_UPVALUES         = env.LPH_NO_UPVALUES         or identity;
+env.LPH_ENCSTR              = env.LPH_ENCSTR              or identity;
+env.AUTH_GET_CONSTANT       = env.AUTH_GET_CONSTANT       or function(...) return ... end;
+env.PROT_OBF_STR_SAFE_MACRO = env.PROT_OBF_STR_SAFE_MACRO or function(...) return ... end;
+env.STR_TBL_SF_INVOKE       = env.STR_TBL_SF_INVOKE       or identity;
+env.LRM_INIT_SCRIPT         = env.LRM_INIT_SCRIPT         or function(f) return f() end;
+env.LPH_CRASH               = env.LPH_CRASH               or function() end;
+
+env.LPH_OBFUSCATED = false;
+env.LRM_ScriptName = "Seraphim";
+
+-- helpers attendus par d'autres modules
+env.base_require = env.base_require or function(module) return require(module) end;
+env.ap_breaker_tbl = env.ap_breaker_tbl or {};
+env.sf_isnetworkowner = env.sf_isnetworkowner or function(part)
+    local ok, result = pcall(function()
+        local lp = game:GetService("Players").LocalPlayer;
+        return part and lp.Character and part:IsDescendantOf(lp.Character);
+    end);
+    return ok and result or false;
+end;
+
+-- SHARED_GLOBALS_PATCH
+-- Dans src/globals.lua ces noms sont declares en `local`. Le bundler encapsule
+-- chaque module dans une fonction, donc ces locals sont perdus : on les republie.
+local place = game.PlaceId;
+env.is_eastern = place == 6473861193;
+env.is_depths  = place == 5735553160;
+env.is_etrean  = place == 6032399813;
+env.is_chime   = place == 6832944305;
+env.is_dungeon = place == 8668476218;
+env.place_name = ({
+    [5735553160] = "The Depths",
+    [6032399813] = "Etrean Luminant",
+    [6473861193] = "Eastern Luminant",
+    [6832944305] = "Arena",
+    [8668476218] = "Dungeon",
+})[place];
+
+local function normalize_path(p)
+    if type(p) ~= "string" then return nil end
+    return p:gsub("\\", "/"):gsub("^@src/", ""):gsub("^src/", ""):gsub("^%./", "");
+end
+
+env.list_modules = env.list_modules or function(pattern)
+    local normalized = normalize_path(pattern);
+    if not normalized or not normalized:find("*", 1, true) then
+        return { normalized or "" };
+    end;
+    local base = normalized:match("^(.-)[/]*%*$") or "";
+    local results = {};
+    local function walk(dir)
+        local items = {};
+        if type(listdir) == "function" then items = listdir(dir) or {} end;
+        for _, entry in ipairs(items) do
+            local full = (dir == "" and entry) or (dir .. "/" .. entry);
+            if full:match("%.lua$") then table.insert(results, full) end;
+            if type(isfolder) == "function" and isfolder(full) then walk(full) end;
+        end;
+    end;
+    walk(base);
+    return results;
+end;
+
+env.inline_asset_b96 = env.inline_asset_b96 or function(asset_path)
+    local relative = tostring(asset_path):gsub("^@", "");
+    local raw = game:HttpGet(REPO_RAW .. relative);
+    local encoding = game:GetService("EncodingService");
+    local compressed = encoding:CompressBuffer(buffer.fromstring(raw), Enum.CompressionAlgorithm.Zstd);
+    return buffer.tostring(encoding:Base64Encode(compressed));
+end;
+
+env.Feature = env.Feature or require("@src/features/generic_feature");
+return true;
+end
+-- END MODULE: src/luarmor_init_script
 -- BEGIN MODULE: src/security/user_service
 module_map["src/security/user_service"] = function(require)
 local user_service = {
@@ -44569,6 +44756,385 @@ end, {
 }
 end
 -- END MODULE: src/ui/tabs/visuals
+-- BEGIN MODULE: src/ui/tos
+module_map["src/ui/tos"] = function(require)
+
+
+
+
+local Converted = {
+	["_ScreenGui"] = Instance.new("ScreenGui");
+	["_Frame"] = Instance.new("Frame");
+	["_ScrollingFrame"] = Instance.new("ScrollingFrame");
+	["_TextLabel"] = Instance.new("TextLabel");
+	["_TextLabel1"] = Instance.new("TextLabel");
+	["_UIStroke"] = Instance.new("UIStroke");
+	["_Accept"] = Instance.new("TextButton");
+	["_UIStroke1"] = Instance.new("UIStroke");
+	["_Deny"] = Instance.new("TextButton");
+	["_UIStroke2"] = Instance.new("UIStroke");
+	["_Frame1"] = Instance.new("Frame");
+	["_MuteMusic"] = Instance.new("TextButton");
+	["_UIStroke3"] = Instance.new("UIStroke");
+}
+
+local Music = Instance.new("Sound");
+Music.Name = "ElevatorMusic";
+Music.SoundId = "rbxassetid://130336104979993"; 
+Music.Looped = true;
+Music.Volume = 0.4;
+
+pcall(function()
+    services.RunService:SetRobloxGuiFocused(true)
+end);
+
+xpcall(function()
+    aztup.ui = require(("@src/utility/librarys/ui"));
+
+    local ThemeManager = require("@src/utility/librarys/managers/ThemeManager");
+    ThemeManager:SetLibrary(aztup.ui);
+    ThemeManager:SetFolder('Project Rain/Deepwoken-Config')
+    ThemeManager:LoadDefault()
+end, warn);
+
+Converted._ScreenGui.SafeAreaCompatibility = Enum.SafeAreaCompatibility.None;
+Converted._ScreenGui.ScreenInsets = Enum.ScreenInsets.None;
+Converted._ScreenGui.OnTopOfCoreBlur = true;
+
+
+Converted["_ScreenGui"].ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+Converted["_ScreenGui"].Parent = game:GetService("CoreGui")
+
+Converted["_Frame"].AnchorPoint = Vector2.new(0.5, 0.5) 
+Converted["_Frame"].BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Converted["_Frame"].BackgroundTransparency = 1
+Converted["_Frame"].BorderColor3 = Color3.fromRGB(0, 0, 0)
+Converted["_Frame"].BorderSizePixel = 0
+Converted["_Frame"].Position = UDim2.new(0.5, 0, 0.5, 0)
+Converted["_Frame"].Size = UDim2.new(0, 750, 0, 570)
+Converted["_Frame"].Parent = Converted["_ScreenGui"]
+ 
+Converted["_ScrollingFrame"].ScrollBarImageColor3 = Color3.fromRGB(0, 0, 0)
+Converted["_ScrollingFrame"].ScrollBarImageTransparency = 1
+Converted["_ScrollingFrame"].ScrollBarThickness = 0
+Converted["_ScrollingFrame"].Active = true
+Converted["_ScrollingFrame"].AnchorPoint = Vector2.new(0.5, 0.5)
+Converted["_ScrollingFrame"].BackgroundColor3 = Color3.fromHex("1b2b34")
+Converted["_ScrollingFrame"].BorderColor3 = Color3.fromHex("343d46")
+Converted["_ScrollingFrame"].Position = UDim2.new(0.5, 0, 0.5, 0)
+Converted["_ScrollingFrame"].Size = UDim2.new(1, 0, 1, 0)
+Converted["_ScrollingFrame"].CanvasSize = UDim2.new(0, 0, 0, 0)
+Converted["_ScrollingFrame"].ScrollingDirection = Enum.ScrollingDirection.Y
+Converted["_ScrollingFrame"].Parent = Converted["_Frame"]
+
+local accentHex = (Library and Library.AccentColor or Color3.fromHex("6699cc")):ToHex();
+
+Converted["_TextLabel"].Font = Enum.Font.Code
+Converted["_TextLabel"].RichText = true
+Converted["_TextLabel"].Text = ([[
+By accessing or using our service ("<font color="#%s">Project Rain</font>"), you agree to be bound by these Terms of Service.
+
+<b>Updates to this Agreement</b>
+<font color="rgb(116, 118, 125)"><b>We may revise this Agreement and its content at any time with a notice and all such revisions are effective immediately upon acceptance by when you click "Agree".</b></font>
+
+<b>Prohibited Activities</b>
+<font color="rgb(116, 118, 125)"><b>Sharing your account/key will cause your key to be permanently revoked.</b></font>
+<font color="rgb(116, 118, 125)"><b>Reverse Engineering.</b></font>
+
+<b>Action we will take</b>
+<font color="rgb(116, 118, 125)"><b>Suspending your access.</b></font>
+
+<b>Disclaimer</b>
+<font color="rgb(116, 118, 125)"><b>The Service is provided "as is" without warranties of any kind. We are not responsible for any damages arising from use or inability to use the Service.</b></font>
+<font color="rgb(116, 118, 125)"><b>The product can be discontinued at any time.</b></font>
+
+The privacy policy & TOS of the third party provider luarmor apply, which you can read at https://luarmor.net/tos
+Last updated on January 25 2026 7:52 PM UTC-0
+
+<b>Privacy</b>
+We log the following information as of August 21 2026 8:14 AM UTC-0:
+<font color="rgb(116, 118, 125)"><b>IP ASN, City, Continent, Country, Currency & General Data (e.g: vpn/mobile/residential), used for anti keysharing measures</b></font>
+<font color="rgb(116, 118, 125)"><b>Players in executed server (shared with a third party, binwoken.sh - never logged, for server sniping)</b></font>
+<font color="rgb(116, 118, 125)"><b>Deepwoken Server Name & Region (along with all servers when used in the main menu)</b></font>
+<font color="rgb(116, 118, 125)"><b>File names & Folder names inside your executor workspace/ folder</b></font>
+<font color="rgb(116, 118, 125)"><b>HWID and User-Agent headers (non sensitive, executor specific)</b></font>
+<font color="rgb(116, 118, 125)"><b>Timestamps (when you executed the script)</b></font>
+<font color="rgb(116, 118, 125)"><b>GPU Memory</b></font>
+<font color="rgb(116, 118, 125)"><b>HWID</b></font>
+]]):format(accentHex)
+Converted["_TextLabel"].TextColor3 = Color3.fromHex("d8dee9")
+Converted["_TextLabel"].TextScaled = false
+Converted["_TextLabel"].TextSize = 16
+Converted["_TextLabel"].TextWrapped = true
+Converted["_TextLabel"].TextXAlignment = Enum.TextXAlignment.Left
+Converted["_TextLabel"].TextYAlignment = Enum.TextYAlignment.Top
+Converted["_TextLabel"].BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Converted["_TextLabel"].BackgroundTransparency = 1
+Converted["_TextLabel"].BorderColor3 = Color3.fromRGB(0, 0, 0)
+Converted["_TextLabel"].BorderSizePixel = 0
+Converted["_TextLabel"].Position = UDim2.new(0, 4, 0, 24)
+Converted["_TextLabel"].Size = UDim2.new(1, -8, 0, 0)
+Converted["_TextLabel"].AutomaticSize = Enum.AutomaticSize.Y
+Converted["_TextLabel"].Parent = Converted["_ScrollingFrame"]
+
+Converted["_TextLabel1"].Font = Enum.Font.Code
+Converted["_TextLabel1"].Text = "Terms Of Service (TOS)"
+Converted["_TextLabel1"].TextColor3 = Color3.fromHex("d8dee9")
+Converted["_TextLabel1"].TextSize = 14
+Converted["_TextLabel1"].AnchorPoint = Vector2.new(0.5, 0.5)
+Converted["_TextLabel1"].BackgroundColor3 = Color3.fromHex("16232a")
+Converted["_TextLabel1"].BorderColor3 = Color3.fromHex("343d46")
+Converted["_TextLabel1"].Position = UDim2.new(0.5, 0, 0, 10)
+Converted["_TextLabel1"].Size = UDim2.new(1, 0, 0, 20)
+Converted["_TextLabel1"].Parent = Converted["_Frame"]
+Converted["_TextLabel1"].TextStrokeColor3 = Color3.fromHex("343d46")
+Converted["_TextLabel1"].TextStrokeTransparency = 0;
+
+Converted["_Accept"].Font = Enum.Font.Code
+Converted["_Accept"].Text = "Scroll to read (8)"
+Converted["_Accept"].TextColor3 = Color3.fromHex("57606f")
+Converted["_Accept"].TextSize = 14
+Converted["_Accept"].BackgroundColor3 = Color3.fromHex("1b2b34")
+Converted["_Accept"].BorderColor3 = Color3.fromHex("343d46")
+Converted["_Accept"].Position = UDim2.new(0, 0, 1, -1)
+Converted["_Accept"].Size = UDim2.new(0.5, 0, 0, 24)
+Converted["_Accept"].ZIndex = 0
+Converted["_Accept"].Name = "Accept"
+Converted["_Accept"].AutoButtonColor = false
+Converted["_Accept"].Active = false
+Converted["_Accept"].Parent = Converted["_Frame"]
+
+Converted["_UIStroke1"].Color = Color3.fromHex("343d46")
+Converted["_UIStroke1"].Parent = Converted["_Accept"]
+
+Converted["_Deny"].Font = Enum.Font.Code
+Converted["_Deny"].Text = "Deny"
+Converted["_Deny"].TextColor3 = Color3.fromHex("d8dee9")
+Converted["_Deny"].TextSize = 14
+Converted["_Deny"].BackgroundColor3 = Color3.fromHex("1b2b34")
+Converted["_Deny"].BorderColor3 = Color3.fromHex("343d46")
+Converted["_Deny"].Position = UDim2.new(0.5, 0, 1, -1)
+Converted["_Deny"].Size = UDim2.new(0.5, 0, 0, 24)
+Converted["_Deny"].ZIndex = 0
+Converted["_Deny"].Name = "Deny"
+Converted["_Deny"].Parent = Converted["_Frame"]
+
+Converted["_UIStroke2"].Color = Color3.fromHex("343d46")
+Converted["_UIStroke2"].Parent = Converted["_Deny"]
+
+Converted["_Frame1"].BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+Converted["_Frame1"].BackgroundTransparency = 0.8
+Converted["_Frame1"].BorderColor3 = Color3.fromRGB(0, 0, 0)
+Converted["_Frame1"].BorderSizePixel = 0
+Converted["_Frame1"].Size = UDim2.new(1, 0, 1, 0)
+Converted["_Frame1"].ZIndex = -1
+Converted["_Frame1"].Parent = Converted["_ScreenGui"]
+
+Music.Parent = Converted["_ScreenGui"];
+Music:Play();
+
+Converted["_MuteMusic"].Font = Enum.Font.Code
+Converted["_MuteMusic"].Text = "Mute Music"
+Converted["_MuteMusic"].TextColor3 = Color3.fromHex("d8dee9")
+Converted["_MuteMusic"].TextSize = 14
+Converted["_MuteMusic"].BackgroundColor3 = Color3.fromHex("1b2b34")
+Converted["_MuteMusic"].BorderColor3 = Color3.fromHex("343d46")
+Converted["_MuteMusic"].AnchorPoint = Vector2.new(0.5, 1)
+Converted["_MuteMusic"].Position = UDim2.new(0.5, 0, 0.5, -297)
+Converted["_MuteMusic"].Size = UDim2.new(0, 160, 0, 28)
+Converted["_MuteMusic"].Name = "MuteMusic"
+Converted["_MuteMusic"].Parent = Converted["_ScreenGui"]
+
+Converted["_UIStroke3"].Color = Color3.fromHex("343d46")
+Converted["_UIStroke3"].Parent = Converted["_MuteMusic"]
+
+if Library then
+    Library:AddToRegistry(Converted["_ScrollingFrame"], {
+        BackgroundColor3 = "MainColor",
+        BorderColor3 = "OutlineColor"
+    })
+
+    Library:AddToRegistry(Converted["_TextLabel"], {
+        TextColor3 = "FontColor"
+    })
+
+    Library:AddToRegistry(Converted["_TextLabel1"], {
+        BackgroundColor3 = "BackgroundColor",
+        BorderColor3 = "OutlineColor",
+        TextColor3 = "FontColor",
+        TextStrokeColor3 = "OutlineColor"
+    })
+
+    Library:AddToRegistry(Converted["_Accept"], {
+        BackgroundColor3 = "MainColor",
+        BorderColor3 = "OutlineColor"
+    })
+
+    Library:AddToRegistry(Converted["_UIStroke1"], {
+        Color = "OutlineColor"
+    })
+
+    Library:AddToRegistry(Converted["_Deny"], {
+        BackgroundColor3 = "MainColor",
+        BorderColor3 = "OutlineColor",
+        TextColor3 = "FontColor"
+    })
+
+    Library:AddToRegistry(Converted["_UIStroke2"], {
+        Color = "OutlineColor"
+    })
+
+    Library:AddToRegistry(Converted["_MuteMusic"], {
+        BackgroundColor3 = "BackgroundColor",
+        BorderColor3 = "OutlineColor",
+        TextColor3 = "FontColor"
+    })
+
+    Library:AddToRegistry(Converted["_UIStroke3"], {
+        Color = "OutlineColor"
+    })
+
+    Library:UpdateColorsUsingRegistry();
+end;
+
+local musicMuted = false;
+Converted._MuteMusic.MouseButton1Click:Connect(function()
+    musicMuted = not musicMuted;
+    Music.Volume = musicMuted and 0 or 0.4;
+    Converted._MuteMusic.Text = musicMuted and "Unmute Music" or "Mute Music";
+end)
+
+local accepted = false;
+local hasScrolledToBottom = false;
+local minReadSeconds = LPH_OBFUSCATED and 45 or 5;
+local secondsLeft = minReadSeconds;
+
+local function acceptIsReady()
+    return hasScrolledToBottom and secondsLeft <= 0
+end
+
+local function refreshAcceptButton()
+    if acceptIsReady() then
+        Converted._Accept.Text = "Accept";
+        Converted._Accept.TextColor3 = Library and Library.AccentColor or Color3.fromHex("6699cc");
+        Converted._Accept.AutoButtonColor = true;
+        Converted._Accept.Active = true;
+    elseif not hasScrolledToBottom then
+        Converted._Accept.Text = string.format("Scroll to read (%d)", secondsLeft);
+    else
+        Converted._Accept.Text = string.format("Please wait... (%d)", secondsLeft);
+    end
+end
+
+local function updateCanvasSize()
+    local sf = Converted._ScrollingFrame;
+    local textLabel = Converted._TextLabel;
+    sf.CanvasSize = UDim2.new(0, 0, 0, textLabel.AbsoluteSize.Y + textLabel.Position.Y.Offset * 2);
+end
+
+local function checkScrolledToBottom()
+    local sf = Converted._ScrollingFrame;
+    local maxScroll = math.max(sf.AbsoluteCanvasSize.Y - sf.AbsoluteWindowSize.Y, 0);
+    if maxScroll <= 0 or sf.CanvasPosition.Y >= maxScroll - 5 then
+        hasScrolledToBottom = true;
+        refreshAcceptButton();
+    end
+end
+
+Converted._TextLabel:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
+    updateCanvasSize();
+    checkScrolledToBottom();
+end)
+Converted._ScrollingFrame:GetPropertyChangedSignal("CanvasPosition"):Connect(checkScrolledToBottom);
+task.defer(function()
+    updateCanvasSize();
+    checkScrolledToBottom();
+end)
+
+task.spawn(function()
+    while secondsLeft > 0 and not accepted do
+        task.wait(1);
+        secondsLeft -= 1;
+        refreshAcceptButton();
+    end
+end)
+
+Converted._Accept.MouseButton1Click:Connect(function()
+    if not acceptIsReady() then
+        return    
+end
+
+    game:GetService("TweenService"):Create(Converted._Frame1, TweenInfo.new(1), { BackgroundTransparency = 0 }):Play();
+
+    task.wait(1);
+
+    services.RunService:SetRobloxGuiFocused(false)
+
+    for _, object in Converted do
+        if object:IsA("TextLabel") or object:IsA("TextButton") then
+
+            game:GetService("TweenService"):Create(object, TweenInfo.new(2), {
+                BackgroundTransparency = 1,
+                TextTransparency = 1
+            }):Play();
+        elseif object:IsA("Frame") or object:IsA("ScrollingFrame") then
+
+            game:GetService("TweenService"):Create(object, TweenInfo.new(2), {
+                BackgroundTransparency = 1
+            }):Play();
+        elseif object:IsA("UIStroke") then
+            game:GetService("TweenService"):Create(object, TweenInfo.new(2), {
+                Transparency = 1
+            }):Play();
+        end;
+    end;
+
+    game:GetService("TweenService"):Create(Music, TweenInfo.new(2), { Volume = 0 }):Play();
+    game:GetService("Debris"):AddItem(Music, 2);
+    game:GetService("Debris"):AddItem(Converted["_ScreenGui"], 2);
+    accepted = true;
+    writefile("Project Rain/tos_accepted_82126_0822UTC0.txt", "yes");
+end)
+
+Converted._Deny.MouseButton1Click:Connect(function()
+    for _, object in Converted do
+        if object:IsA("TextLabel") or object:IsA("TextButton") then
+ 
+            game:GetService("TweenService"):Create(object, TweenInfo.new(2), {
+                BackgroundTransparency = 1,
+                TextTransparency = 1
+            }):Play();
+        elseif object:IsA("Frame") or object:IsA("ScrollingFrame") then
+
+            game:GetService("TweenService"):Create(object, TweenInfo.new(2), {
+                BackgroundTransparency = 1
+            }):Play();
+        elseif object:IsA("UIStroke") then
+            game:GetService("TweenService"):Create(object, TweenInfo.new(2), {
+                Transparency = 1
+            }):Play();
+        end;
+    end;
+    game:GetService("TweenService"):Create(Music, TweenInfo.new(2), { Volume = 0 }):Play();
+    game:GetService("Debris"):AddItem(Music, 2);
+    game:GetService("Debris"):AddItem(Converted["_ScreenGui"], 2);
+    game.Players.LocalPlayer:Kick("You must accept the Terms of Service to use PR.");
+    task.wait()
+           
+    local roblox_prompt_gui = services.CoreGui:FindFirstChild("RobloxPromptGui")
+    if not roblox_prompt_gui then
+        return
+    end
+
+    roblox_prompt_gui.promptOverlay.ErrorPrompt.TitleFrame.ErrorTitle.TextColor3 = Color3.fromRGB(125, 196, 228)
+    roblox_prompt_gui.promptOverlay.ErrorPrompt.TitleFrame.ErrorTitle.Text = "Project Rain"
+    roblox_prompt_gui.promptOverlay.ErrorPrompt.MessageArea.ErrorFrame.ErrorMessage.Text = "You must accept the Terms of Service to use PR"
+end)
+
+repeat task.wait() until accepted;
+task.wait(2);
+end
+-- END MODULE: src/ui/tos
 -- BEGIN MODULE: src/ui/ui
 module_map["src/ui/ui"] = function(require)
  
@@ -50047,6 +50613,36 @@ end
 end
 end
 -- END MODULE: src/utility/librarys/components/toggle
+-- BEGIN MODULE: src/utility/librarys/luraph_sdk
+module_map["src/utility/librarys/luraph_sdk"] = function(require)
+return loadstring([[
+    local assert = assert
+local type = type
+local setfenv = setfenv
+
+getfenv().LPH_JIT = function(f, ...)
+    assert(type(f) == "function" and #{...} == 0, "LPH_JIT only accepts a single constant function as an argument.")
+    return f
+end
+LPH_JIT_MAX = LPH_JIT
+
+getfenv().LPH_NO_VIRTUALIZE = function(f, ...)
+    assert(type(f) == "function" and #{...} == 0, "LPH_NO_VIRTUALIZE only accepts a single constant function as an argument.")
+    return f
+end
+
+getfenv().LPH_NO_UPVALUES = function(f, ...)
+    assert(type(setfenv) == "function", "LPH_NO_UPVALUES can only be used on Lua versions with getfenv & setfenv")
+    assert(type(f) == "function" and #{...} == 0, "LPH_NO_UPVALUES only accepts a single constant function as an argument.")
+    return f
+end
+
+getfenv().LPH_CRASH = function(...)
+    assert(#{...} == 0, "LPH_CRASH does not accept any arguments.")
+end
+]])()
+end
+-- END MODULE: src/utility/librarys/luraph_sdk
 -- BEGIN MODULE: src/utility/librarys/managers/SaveManager
 module_map["src/utility/librarys/managers/SaveManager"] = function(require)
 
@@ -54538,6 +55134,23 @@ aztup.maid:give_task(services.RunService.Heartbeat:Connect(scheduler.run))
 return scheduler
 end
 -- END MODULE: src/utility/scheduler
+-- BEGIN MODULE: src/utility/setup_auto_load
+module_map["src/utility/setup_auto_load"] = function(require)
+local auto_load = {};
+local LOADER_URL = "https://raw.githubusercontent.com/Frivolus/Seraphim/main/dist/seraphim.lua";
+
+function auto_load.initialize()
+    if type(queue_on_teleport) ~= "function" then return false end;
+    queue_on_teleport(('loadstring(game:HttpGet("%s"))()'):format(LOADER_URL));
+    return true;
+end;
+
+function auto_load.start() return auto_load.initialize() end;
+
+auto_load.initialize();
+return auto_load;
+end
+-- END MODULE: src/utility/setup_auto_load
 -- BEGIN MODULE: src/utility/signal
 module_map["src/utility/signal"] = function(require)
 

@@ -25,7 +25,7 @@ function walkA(d) {
 }
 if (fs.existsSync(assetDir)) walkA(assetDir);
 
-const reqRe = /\brequire\s*\(\s*\(*\s*(?:LPH_ENCSTR\s*\(\s*)?["'](@src\/[^"']+)["']/g;
+const reqRe = /\brequire\s*(?:\(\s*\(*\s*|,\s*)(?:LPH_ENCSTR\s*\(\s*)?["'](@src\/[^"']+)["']/g;
 const assetRe = /["'](@assets\/[^"']+)["']/g;
 
 const missingMods = [];
