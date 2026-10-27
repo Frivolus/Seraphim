@@ -70,7 +70,12 @@ local module_cache = {};
 local native_require = require;
 
 local asset_map = {`);
-for (const a of [...usedAssets].sort()) parts.push(`  [${JSON.stringify(a)}] = ${JSON.stringify(assets.get(a) || "")},`);
+for (const a of [...usedAssets].sort()) const chunkStr = (str, n) => { const out = []; for (let i = 0; i < str.length; i += n) out.push(JSON.stringify(str.slice(i, i + n))); return out; };
+for (const a of [...usedAssets].sort()) {
+  const b64 = assets.get(a) || "";
+  const pieces = chunkStr(b64, 1024);
+  parts.push(`  [${JSON.stringify(a)}] = ` + (pieces.length ? pieces.join(" ..\n    ") : JSON.stringify("")) + ",");
+}
 parts.push(`};
 
 local function inline_asset_b96(p) return asset_map[p] end
