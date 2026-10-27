@@ -1597,7 +1597,7 @@ function auto_echo_layer2:pass_fragments()
                     if not game:IsLoaded() then game.Loaded:Wait(); end;
                     if game.PlaceId ~= 4111023553 then return; end
                     local slot = "%s";
-                    queueonteleport('if game.PlaceId == 4111023553 then return; end; xpcall(function() local sound = Instance.new("Sound", game:GetService("CoreGui")); game:GetService("Debris"):AddItem(sound, 6); sound.Volume = 1.3; sound.SoundId = getcustomasset("Project Rain/assets/notification.mp3"); sound:Play(); end, warn);')
+                    queueonteleport('if game.PlaceId == 4111023553 then return; end; xpcall(function() local sound = Instance.new("Sound", game:GetService("CoreGui")); game:GetService("Debris"):AddItem(sound, 6); sound.Volume = 1.3; sound.SoundId = getcustomasset("Seraphim/assets/notification.mp3"); sound:Play(); end, warn);')
                     game:GetService("ReplicatedStorage"):WaitForChild("Requests"):WaitForChild("WipeSlot"):InvokeServer(slot)
                     task.wait(0.5)
                 ]]
@@ -8551,7 +8551,7 @@ struct = automation_struct:construct({
                         if not game:IsLoaded() then game.Loaded:Wait(); end;
                         if game.PlaceId ~= 4111023553 then return; end
                         local slot = "%s";
-                        queueonteleport('if game.PlaceId == 4111023553 then return; end; xpcall(function() local sound = Instance.new("Sound", game:GetService("CoreGui")); game:GetService("Debris"):AddItem(sound, 6); sound.Volume = 1.3; sound.SoundId = getcustomasset("Project Rain/assets/notification.mp3"); sound:Play(); end, warn);')
+                        queueonteleport('if game.PlaceId == 4111023553 then return; end; xpcall(function() local sound = Instance.new("Sound", game:GetService("CoreGui")); game:GetService("Debris"):AddItem(sound, 6); sound.Volume = 1.3; sound.SoundId = getcustomasset("Seraphim/assets/notification.mp3"); sound:Play(); end, warn);')
                         game:GetService("ReplicatedStorage"):WaitForChild("Requests"):WaitForChild("WipeSlot"):InvokeServer(slot)
                         task.wait(0.5)
                     ]]
@@ -9049,7 +9049,7 @@ local state_machine = StateMachine.create({
                     local server = '%s';
                     local slot = "%s";
 
-                    queueonteleport('if game.PlaceId == 4111023553 then return; end; xpcall(function() local sound = Instance.new("Sound", game:GetService("CoreGui")); game:GetService("Debris"):AddItem(sound, 6); sound.Volume = 1.3; sound.SoundId = getcustomasset("Project Rain/assets/notification.mp3"); sound:Play(); end, warn);')
+                    queueonteleport('if game.PlaceId == 4111023553 then return; end; xpcall(function() local sound = Instance.new("Sound", game:GetService("CoreGui")); game:GetService("Debris"):AddItem(sound, 6); sound.Volume = 1.3; sound.SoundId = getcustomasset("Seraphim/assets/notification.mp3"); sound:Play(); end, warn);')
 
                     local args = {
                         slot
@@ -9094,7 +9094,7 @@ local state_machine = StateMachine.create({
                                                     }
                                                 }
                                             },
-                                            username = "Project Rain",
+                                            username = "Seraphim",
                                             avatar_url = "https://cdn.discordapp.com/attachments/1211502078200127529/1464075011550613588/PRLOGO.png",
                                             attachments = {},
                                             flags = 4096
@@ -9820,7 +9820,7 @@ local state_machine = StateMachine.create({
                     if not game:IsLoaded() then game.Loaded:Wait(); end;
                     if game.PlaceId ~= 4111023553 then return; end
                     local slot = "%s";
-                    queueonteleport('if game.PlaceId == 4111023553 then return; end; xpcall(function() local sound = Instance.new("Sound", game:GetService("CoreGui")); game:GetService("Debris"):AddItem(sound, 6); sound.Volume = 1.3; sound.SoundId = getcustomasset("Project Rain/assets/notification.mp3"); sound:Play(); end, warn);')
+                    queueonteleport('if game.PlaceId == 4111023553 then return; end; xpcall(function() local sound = Instance.new("Sound", game:GetService("CoreGui")); game:GetService("Debris"):AddItem(sound, 6); sound.Volume = 1.3; sound.SoundId = getcustomasset("Seraphim/assets/notification.mp3"); sound:Play(); end, warn);')
                     game:GetService("ReplicatedStorage"):WaitForChild("Requests"):WaitForChild("WipeSlot"):InvokeServer(slot)
                     task.wait(0.5)
                 ]]
@@ -10645,7 +10645,7 @@ struct = automation_struct:construct({
                         local server = '%s';
                         local slot = "%s";
                     
-                        queueonteleport('if game.PlaceId == 4111023553 then return; end; xpcall(function() local sound = Instance.new("Sound", game:GetService("CoreGui")); game:GetService("Debris"):AddItem(sound, 6); sound.Volume = 1.3; sound.SoundId = getcustomasset("Project Rain/assets/notification.mp3"); sound:Play(); end, warn);')
+                        queueonteleport('if game.PlaceId == 4111023553 then return; end; xpcall(function() local sound = Instance.new("Sound", game:GetService("CoreGui")); game:GetService("Debris"):AddItem(sound, 6); sound.Volume = 1.3; sound.SoundId = getcustomasset("Seraphim/assets/notification.mp3"); sound:Play(); end, warn);')
                     
                         local args = {
                             slot
@@ -10690,7 +10690,7 @@ struct = automation_struct:construct({
                                                         }
                                                     }
                                                 },
-                                                username = "Project Rain",
+                                                username = "Seraphim",
                                                 avatar_url = "https://cdn.discordapp.com/attachments/1211502078200127529/1464075011550613588/PRLOGO.png",
                                                 attachments = {},
                                                 flags = 4096
@@ -18613,8 +18613,8 @@ return LPH_NO_VIRTUALIZE(function()
             local instance = setmetatable({}, chance_store)
             instance.chances = {}
 
-            if isfile("Project Rain/post-rc-260421-parry-chances.json") then
-                local data = game:GetService("HttpService"):JSONDecode(readfile("Project Rain/post-rc-260421-parry-chances.json"))
+            if isfile("Seraphim/post-rc-260421-parry-chances.json") then
+                local data = game:GetService("HttpService"):JSONDecode(readfile("Seraphim/post-rc-260421-parry-chances.json"))
                 instance:load_chances(data)
             end
 
@@ -18867,7 +18867,7 @@ return LPH_NO_VIRTUALIZE(function()
 
         function chance_store:save_chances()
             local data = game:GetService("HttpService"):JSONEncode(self.chances)
-            writefile("Project Rain/post-rc-260421-parry-chances.json", data)
+            writefile("Seraphim/post-rc-260421-parry-chances.json", data)
         end
 
         function chance_store:on_load(f)
@@ -27936,10 +27936,10 @@ end
     local path = string.format("%s %s Stolen Build", os.date("%B %d %Y"), player.Name);
     Logger:notify_sound(string.format("Successfully stole %s's build, %s & saved to file.", player.Name, buildUrl))
 
-    if not isfolder("Project Rain/Stolen Builds") then
-        makefolder("Project Rain/Stolen Builds")
+    if not isfolder("Seraphim/Stolen Builds") then
+        makefolder("Seraphim/Stolen Builds")
     end
-    writefile("Project Rain/Stolen Builds/" .. path .. ".txt", string.format([[https://project-rain.net
+    writefile("Seraphim/Stolen Builds/" .. path .. ".txt", string.format([[https://project-rain.net
 stolen on %s
 build url: %s
 %s]], os.date("%B %d %Y"), buildUrl, data.content.notes));
@@ -28077,14 +28077,14 @@ aztup.maid:give_task(scheduler:add_task(0.5):Connect(function()
 
     local show_mem_data = aztup_toggles.WatermarkShowsMem and aztup_toggles.WatermarkShowsMem.Value;
 
-    local watermark, raw_watermark = ('project rain <font color=\"#%s\">nextgen</font> %i<font color="#%s">fps</font> %i<font color="#%s">ms</font>'):format(
+    local watermark, raw_watermark = ('Seraphim <font color=\"#%s\">nextgen</font> %i<font color="#%s">fps</font> %i<font color="#%s">ms</font>'):format(
         color_in_hex,
         math.floor(fps),
         color_in_hex,
         math.floor(Latency:get_ping() * 1000),
         color_in_hex
     ), ('%s %ifps %ims'):format(
-        "project rain nextgen",
+        "Seraphim nextgen",
         math.floor(fps),
         math.floor(Latency:get_ping() * 1000)
     );
@@ -28311,13 +28311,13 @@ end;
 function exit_sound()
     if not aztup.flags.notify_with_sound then return end
     
-    sound.new("Project Rain/Assets/proximity.mp3", 0.9, aztup.flags.player_proximity_vol, true):play();
+    sound.new("Seraphim/Assets/proximity.mp3", 0.9, aztup.flags.player_proximity_vol, true):play();
 end;
 
 function enter_sound()
     if not aztup.flags.notify_with_sound then return end
 
-    sound.new("Project Rain/Assets/proximity.mp3", 1.1, aztup.flags.player_proximity_vol, true):play();
+    sound.new("Seraphim/Assets/proximity.mp3", 1.1, aztup.flags.player_proximity_vol, true):play();
 end;
 
 
@@ -29948,8 +29948,8 @@ local STATS_HEIGHT = 58;
 local ROW_HEIGHT = 24;
 local HEIGHT = TITLE_HEIGHT + STAGE_HEIGHT + STATS_HEIGHT + ROW_HEIGHT * 2 + 12;
 
-local SAVE_PATH = "Project Rain/brayden.json";
-local PORTRAIT_PATH = "Project Rain/Assets/brayden.png";
+local SAVE_PATH = "Seraphim/brayden.json";
+local PORTRAIT_PATH = "Seraphim/Assets/brayden.png";
 
 local FOODS = { "Burger", "Sushi", "Pizza", "Salad", "Tacos", "Curry", "Donut", "Natto", "Ramen", "Cake", "Steak", "Eel" };
 local GIFTS = { "Cap", "Hoodie", "Guitar", "Game", "Sunglasses", "Plushie", "Skateboard", "Houseplant" };
@@ -31990,7 +31990,7 @@ end;
         
         sound = enabledSounds[math.random(1, #enabledSounds)]
         child.PlaybackSpeed = 1;
-        child.AssetId = getcustomasset("Project Rain/Assets/Parry Sounds/" .. sound .. ".mp3")
+        child.AssetId = getcustomasset("Seraphim/Assets/Parry Sounds/" .. sound .. ".mp3")
         child.Volume = aztup.flags.parry_sound_volume;
     
         if child:WaitForChild("AudioPitchShifter", 0.2) then
@@ -37187,15 +37187,15 @@ local MainGui
 if RunService:IsStudio() then
 	MainGui = script:WaitForChild("MorphGui")
 else 	
-	if not isfolder("Project Rain/Deepwoken-Config") then
+	if not isfolder("Seraphim/Deepwoken-Config") then
 		LocalPlayer:Kick("Race Morph Checksum : \nThe Script couldn't find the whole folder, please make sure to set up the files correctly.")
 	end
 
-	if not isfile("Project Rain/Deepwoken-Config/GuiItself.rbxm") then
+	if not isfile("Seraphim/Deepwoken-Config/GuiItself.rbxm") then
 		LocalPlayer:Kick("Race Morph Checksum : \nThe Script couldn't find the GUI, please make sure to set up the files correctly.")
 	end
 
-	MainGui = game:GetObjects(getcustomasset("Project Rain/Deepwoken-Config/GuiItself.rbxm"))[1]
+	MainGui = game:GetObjects(getcustomasset("Seraphim/Deepwoken-Config/GuiItself.rbxm"))[1]
 end
 
 local GlobalAssets = MainGui:WaitForChild("GlobalOrnaments")
@@ -37205,8 +37205,8 @@ local EnchantEffects = MainGui:WaitForChild("EnchantmentEffects")
 EnchantEffects.Parent = script
 
 if not RunService:IsStudio() then
-	if isfolder("Project Rain/Deepwoken-Config/CustomEnchantments") then
-		local Files = listfiles("Project Rain/Deepwoken-Config/CustomEnchantments")
+	if isfolder("Seraphim/Deepwoken-Config/CustomEnchantments") then
+		local Files = listfiles("Seraphim/Deepwoken-Config/CustomEnchantments")
 		for i,File in pairs(Files) do
 			local LoadedEnchantment = game:GetObjects(getcustomasset(File))[1]
 			if EnchantEffects:FindFirstChild(LoadedEnchantment.Name) then
@@ -37216,8 +37216,8 @@ if not RunService:IsStudio() then
 		end
 	end
 
-	if isfolder("Project Rain/Deepwoken-Config/CustomGlobalOrnaments") then
-		local Files = listfiles("Project Rain/Deepwoken-Config/CustomGlobalOrnaments")
+	if isfolder("Seraphim/Deepwoken-Config/CustomGlobalOrnaments") then
+		local Files = listfiles("Seraphim/Deepwoken-Config/CustomGlobalOrnaments")
 		for i,File in pairs(Files) do
 			local NewOrnament = game:GetObjects(getcustomasset(File))[1]
 			NewOrnament.Parent = GlobalAssets
@@ -40274,7 +40274,7 @@ local function OutputSettings()
 		SAVE_FAKE.Name = LocalPlayer.UserId.."_"..Slot
 		SAVE_FAKE.Value = JSON
 	else 
-		writefile("Project Rain/Deepwoken-Config/Preferences/"..LocalPlayer.UserId.."_"..Slot..".txt",JSON)
+		writefile("Seraphim/Deepwoken-Config/Preferences/"..LocalPlayer.UserId.."_"..Slot..".txt",JSON)
 	end
 end
 
@@ -40289,8 +40289,8 @@ local function InputSettings()
 			return nil
 		end
 	else 
-		if isfile("Project Rain/Deepwoken-Config/Preferences/"..LocalPlayer.UserId.."_"..Slot..".txt") then
-			JSON = readfile("Project Rain/Deepwoken-Config/Preferences/"..LocalPlayer.UserId.."_"..Slot..".txt")
+		if isfile("Seraphim/Deepwoken-Config/Preferences/"..LocalPlayer.UserId.."_"..Slot..".txt") then
+			JSON = readfile("Seraphim/Deepwoken-Config/Preferences/"..LocalPlayer.UserId.."_"..Slot..".txt")
 		else 
 
 			return nil
@@ -40392,7 +40392,7 @@ if RunService:IsStudio() then
 		LoadRace("Custom",Race)
 	end
 else
-	local Files = listfiles("Project Rain/Deepwoken-Config/CustomRaces")
+	local Files = listfiles("Seraphim/Deepwoken-Config/CustomRaces")
 	for i,File in pairs(Files) do
 		local LoadedRace = game:GetObjects(getcustomasset(File))[1]
 
@@ -41682,7 +41682,7 @@ module_map["src/features/visuals/stream_proof_esp"] = function(require)
 
 if identifyexecutor() ~= "Volt" then return end
 local self = Feature:new("stream_proof_esp");
-self.font = DrawFont.Register(readfile("Project Rain/fonts/lexend.ttf"), {
+self.font = DrawFont.Register(readfile("Seraphim/Fonts/lexend.ttf"), {
     PixelSize = 16
 });
 
@@ -41863,7 +41863,7 @@ local ap_breaker_tbl;
 local chance_store;
 local loaded_signal;
 
-local is_regular = LRM_ScriptName == "Project Rain"
+local is_regular = LRM_ScriptName == "Seraphim"
 local old_fpp = fireproximityprompt;
 local fireproximityprompt = function(...)
     local prompt = ...;
@@ -41892,7 +41892,7 @@ end
 -- END MODULE: src/globals
 -- BEGIN MODULE: src/init
 module_map["src/init"] = function(require)
--- Seraphim -- point d'entree (base Project Rain OSS)
+-- Seraphim -- point d'entree (base Seraphim OSS)
 local luarmor_finish_tick = tick();
 
 pcall(require, "@src/luarmor_init_script");
@@ -42255,10 +42255,10 @@ end
 -- BEGIN MODULE: src/ui/config_converter
 module_map["src/ui/config_converter"] = function(require)
 return function()
-    if isfile("Project Rain/converted.txt") then
+    if isfile("Seraphim/converted.txt") then
         return    
 else
-        writefile("Project Rain/converted.txt", "true");
+        writefile("Seraphim/converted.txt", "true");
     end;
 
     if isfolder("ProjectRainRewrite") and isfolder("ProjectRainRewrite/settings") then
@@ -42325,9 +42325,9 @@ end;
             end;
 
             local name = file:gsub("/", "\\"):split("ProjectRainRewrite\\settings\\")[2]:gsub(".json", "");
-            if isfile("Project Rain\\Deepwoken-Config\\settings\\PRLegacyConvert-" .. name .. ".json") then continue end
+            if isfile("Seraphim\\Deepwoken-Config\\settings\\PRLegacyConvert-" .. name .. ".json") then continue end
             Logger:long_notify("Converted config: " .. name);
-            writefile("Project Rain\\Deepwoken-Config\\settings\\PRLegacyConvert-" .. name .. ".json", game:GetService("HttpService"):JSONEncode(converted_config));
+            writefile("Seraphim\\Deepwoken-Config\\settings\\PRLegacyConvert-" .. name .. ".json", game:GetService("HttpService"):JSONEncode(converted_config));
         end;
     end;
 end
@@ -42991,8 +42991,8 @@ function automation:make_config()
             persistent_data:set(key, value);
         end
 
-        if not isfolder("Project Rain/automation_configs") then
-            makefolder("Project Rain/automation_configs")
+        if not isfolder("Seraphim/automation_configs") then
+            makefolder("Seraphim/automation_configs")
         end
 
         if aztup_options.automation_config_mode.Value == "File" then
@@ -43003,7 +43003,7 @@ function automation:make_config()
 
             local config_name = aztup_options.automation_config_name.Value;
             local success, err = pcall(function()
-                writefile("Project Rain/automation_configs/" .. config_name .. ".json", game:GetService("HttpService"):JSONEncode(persistent_data_items));
+                writefile("Seraphim/automation_configs/" .. config_name .. ".json", game:GetService("HttpService"):JSONEncode(persistent_data_items));
             end)
 
             if success then
@@ -43022,7 +43022,7 @@ function automation:make_config()
 
     local function load_config(config_name)
         local success, data = pcall(function()
-            return readfile("Project Rain/automation_configs/" .. config_name .. ".json")        
+            return readfile("Seraphim/automation_configs/" .. config_name .. ".json")        
 end) 
         
         if success then
@@ -43073,7 +43073,7 @@ end
     config_groupbox:newButton("Load", function()
         local config_name = aztup_options.automation_config_name.Value;
         local success, data = pcall(function()
-            return readfile("Project Rain/automation_configs/" .. config_name .. ".json")        
+            return readfile("Seraphim/automation_configs/" .. config_name .. ".json")        
 end)
 
         if success then
@@ -43095,7 +43095,7 @@ end)
     config_groupbox:newSlider("force_tween_speed_value", "Tween Speed", 250, 16, 250, 1, true, "studs/second");
 
     local item_loot_box = config_groupbox:newDependencyBox("automation_config_mode", "File");
-    item_loot_box:newTextbox('automation_config_name', 'Name', false, '', nil, "What the automation config will set to, Stored @ 'workspace/Project Rain/automation_configs")
+    item_loot_box:newTextbox('automation_config_name', 'Name', false, '', nil, "What the automation config will set to, Stored @ 'workspace/Seraphim/automation_configs")
     
     label = config_groupbox:newLabel(string.format("Currently set to: %s", persistent_data:get("automation_config", "persistent"))); 
     xpcall(set_bools, function(...)
@@ -43345,7 +43345,7 @@ return function(tab)
         if not val then return end
         if not aztup.silent_mode then return end
 
-        messagebox("You have 'Silent Mode' enabled, You cannot use Debug Notifications with 'Silent Mode'.", "Project Rain", 0) 
+        messagebox("You have 'Silent Mode' enabled, You cannot use Debug Notifications with 'Silent Mode'.", "Seraphim", 0) 
         aztup_toggles.auto_parry_debug:SetValue(false);
     end, false);    
     auto_parry_dependency_box:newToggleWithKeybind("log_speed_changes",     "Debug Speed Changes", false, "Gives AP debug notifs on speed changes.", nil, false);    
@@ -44258,7 +44258,7 @@ return function(tab)
     local parry_sound_box = qol_groupbox:newDependencyBox("parry_sounds");
     parry_sound_box:newDropdown("parry_sound_type", "Sound", { 
         "Ultrakill Parry",
-    }, "Ultrakill Parry", true, "Sound to use, mp3 only stored in workspace @ Project Rain/Assets/Parry Sounds.");
+    }, "Ultrakill Parry", true, "Sound to use, mp3 only stored in workspace @ Seraphim/Assets/Parry Sounds.");
     local game_qol_toggles = {
         {"minesweeper", "Minesweeper", false, "Play a game of minesweeper in a draggable widget. Left click to reveal, right click to flag.", nil, true},
         {"bring_mobs",  "Bring Mobs", false, "Brings nearby mobs to your location abusing network ownership.", nil, true},
@@ -44322,8 +44322,8 @@ return function(tab)
     local function refresh_sounds() 
         local sound_list = {}
 
-        for _, file in listfiles("Project Rain/Assets/Parry Sounds") do
-            table.insert(sound_list, tostring(file:gsub("/", "\\"):gsub(".mp3", ""):gsub("Project Rain\\Assets\\Parry Sounds\\", "")));
+        for _, file in listfiles("Seraphim/Assets/Parry Sounds") do
+            table.insert(sound_list, tostring(file:gsub("/", "\\"):gsub(".mp3", ""):gsub("Seraphim\\Assets\\Parry Sounds\\", "")));
         end;
 
 		aztup_options.parry_sound_type:SetValues(sound_list)
@@ -44813,7 +44813,7 @@ xpcall(function()
 
     local ThemeManager = require("@src/utility/librarys/managers/ThemeManager");
     ThemeManager:SetLibrary(aztup.ui);
-    ThemeManager:SetFolder('Project Rain/Deepwoken-Config')
+    ThemeManager:SetFolder('Seraphim/Deepwoken-Config')
     ThemeManager:LoadDefault()
 end, warn);
 
@@ -44852,7 +44852,7 @@ local accentHex = (Library and Library.AccentColor or Color3.fromHex("6699cc")):
 Converted["_TextLabel"].Font = Enum.Font.Code
 Converted["_TextLabel"].RichText = true
 Converted["_TextLabel"].Text = ([[
-By accessing or using our service ("<font color="#%s">Project Rain</font>"), you agree to be bound by these Terms of Service.
+By accessing or using our service ("<font color="#%s">Seraphim</font>"), you agree to be bound by these Terms of Service.
 
 <b>Updates to this Agreement</b>
 <font color="rgb(116, 118, 125)"><b>We may revise this Agreement and its content at any time with a notice and all such revisions are effective immediately upon acceptance by when you click "Agree".</b></font>
@@ -45113,7 +45113,7 @@ end
     game:GetService("Debris"):AddItem(Music, 2);
     game:GetService("Debris"):AddItem(Converted["_ScreenGui"], 2);
     accepted = true;
-    writefile("Project Rain/tos_accepted_82126_0822UTC0.txt", "yes");
+    writefile("Seraphim/tos_accepted_82126_0822UTC0.txt", "yes");
 end)
 
 Converted._Deny.MouseButton1Click:Connect(function()
@@ -45147,7 +45147,7 @@ Converted._Deny.MouseButton1Click:Connect(function()
     end
 
     roblox_prompt_gui.promptOverlay.ErrorPrompt.TitleFrame.ErrorTitle.TextColor3 = Color3.fromRGB(125, 196, 228)
-    roblox_prompt_gui.promptOverlay.ErrorPrompt.TitleFrame.ErrorTitle.Text = "Project Rain"
+    roblox_prompt_gui.promptOverlay.ErrorPrompt.TitleFrame.ErrorTitle.Text = "Seraphim"
     roblox_prompt_gui.promptOverlay.ErrorPrompt.MessageArea.ErrorFrame.ErrorMessage.Text = "You must accept the Terms of Service to use PR"
 end)
 
@@ -45200,8 +45200,8 @@ end;
             "spotify_redirect_url",
             
         })
-        SaveManager:SetFolder('Project Rain/Deepwoken-Config')
-        ThemeManager:SetFolder('Project Rain/Deepwoken-Config')
+        SaveManager:SetFolder('Seraphim/Deepwoken-Config')
+        ThemeManager:SetFolder('Seraphim/Deepwoken-Config')
         SaveManager:BuildConfigSection(aztup.tabs.UI.Tab);
         ThemeManager:ApplyToTab(aztup.tabs.UI.Tab);
 
@@ -45546,11 +45546,11 @@ local custom_font = {}
 
 
 function custom_font.make_lexend_font()
-    local font_custom_asset = getcustomasset("Project Rain/fonts/Lexend.ttf")
-    local font_custom_asset_bold = getcustomasset("Project Rain/fonts/Lexend-Bold.ttf")
-    local font_custom_asset_medium = getcustomasset("Project Rain/fonts/Lexend-Medium.ttf")
+    local font_custom_asset = getcustomasset("Seraphim/Fonts/Lexend.ttf")
+    local font_custom_asset_bold = getcustomasset("Seraphim/Fonts/Lexend-Bold.ttf")
+    local font_custom_asset_medium = getcustomasset("Seraphim/Fonts/Lexend-Medium.ttf")
 
-    writefile("Project Rain/fonts/Lexend.json", game:GetService("HttpService"):JSONEncode({
+    writefile("Seraphim/Fonts/Lexend.json", game:GetService("HttpService"):JSONEncode({
         name = "Lexend",
         faces = {
             {
@@ -45574,7 +45574,7 @@ function custom_font.make_lexend_font()
         }
     }))
 
-    local path_asset = getcustomasset("Project Rain/fonts/Lexend.json");
+    local path_asset = getcustomasset("Seraphim/Fonts/Lexend.json");
     local fonts = {
         regular = Font.new(
             path_asset,
@@ -46590,7 +46590,7 @@ function kick_window(message)
         end
     
         roblox_prompt_gui.promptOverlay.ErrorPrompt.TitleFrame.ErrorTitle.TextColor3 = Color3.fromRGB(125, 196, 228)
-        roblox_prompt_gui.promptOverlay.ErrorPrompt.TitleFrame.ErrorTitle.Text = "Project Rain"
+        roblox_prompt_gui.promptOverlay.ErrorPrompt.TitleFrame.ErrorTitle.Text = "Seraphim"
         roblox_prompt_gui.promptOverlay.ErrorPrompt.MessageArea.ErrorFrame.ErrorMessage.Text = message
     end);
     while task.wait() do
@@ -46604,7 +46604,7 @@ return {
 
         if game.PlaceId ~= 4111023553 then 
             xpcall(function()
-                local blacklisted_servers = isfile("Project Rain/hopper blacklisted servers.json") and game:GetService("HttpService"):JSONDecode(readfile("Project Rain/hopper blacklisted servers.json")) or {};
+                local blacklisted_servers = isfile("Seraphim/hopper blacklisted servers.json") and game:GetService("HttpService"):JSONDecode(readfile("Seraphim/hopper blacklisted servers.json")) or {};
                 
                 for id, server in blacklisted_servers do
                     if server.expiry < tick() then
@@ -46617,7 +46617,7 @@ return {
                         expiry = tick() + (expiry or 900)
                     }
                 
-                    writefile("Project Rain/hopper blacklisted servers.json", game:GetService("HttpService"):JSONEncode(blacklisted_servers));
+                    writefile("Seraphim/hopper blacklisted servers.json", game:GetService("HttpService"):JSONEncode(blacklisted_servers));
                 end;
 
                 blacklist(game.JobId, expiry or (10 * 60))
@@ -46640,7 +46640,7 @@ return {
         local server = '%s';
         local slot = "%s";
 
-        queueonteleport('if game.PlaceId == 4111023553 then return; end; xpcall(function() local sound = Instance.new("Sound", game:GetService("CoreGui")); game:GetService("Debris"):AddItem(sound, 6); sound.Volume = 1.3; sound.SoundId = getcustomasset("Project Rain/assets/notification.mp3"); sound:Play(); end, warn);')
+        queueonteleport('if game.PlaceId == 4111023553 then return; end; xpcall(function() local sound = Instance.new("Sound", game:GetService("CoreGui")); game:GetService("Debris"):AddItem(sound, 6); sound.Volume = 1.3; sound.SoundId = getcustomasset("Seraphim/assets/notification.mp3"); sound:Play(); end, warn);')
 
         while task.wait() do
             game:GetService("ReplicatedStorage").Requests:WaitForChild("StartMenu"):WaitForChild("PickSlot"):FireServer(slot, {
@@ -46726,7 +46726,7 @@ end
 -- BEGIN MODULE: src/utility/fflags
 module_map["src/utility/fflags"] = function(require)
 local fflags = {} do
-    fflags.current = isfile("Project Rain/fflags.txt") and readfile("Project Rain/fflags.txt") or "{}";
+    fflags.current = isfile("Seraphim/fflags.txt") and readfile("Seraphim/fflags.txt") or "{}";
 
     function fflags:get_main()
         if not self.cached then
@@ -46744,7 +46744,7 @@ end;
         decoded[flag] = value;
         self.current = services.HttpService:JSONEncode(decoded);
         self.cached = services.HttpService:JSONDecode(self.current or "{}");
-        writefile("Project Rain/fflags.txt", self.current);
+        writefile("Seraphim/fflags.txt", self.current);
     end;
 end
 
@@ -48771,7 +48771,7 @@ return function(Library, context)
 				local sound = Instance.new('Sound', game:GetService('CoreGui'))
 				game:GetService('Debris'):AddItem(sound, 6)
 				sound.Volume = aztup_options.NotificationVolume.Value
-				sound.SoundId = getcustomasset('Project Rain/assets/notification.mp3')
+				sound.SoundId = getcustomasset('Seraphim/assets/notification.mp3')
 				sound:Play()
 			end, warn)
 		end
@@ -51013,7 +51013,7 @@ local SaveManager = {} do
 			auto_loading = true;
 			local success, err = self:Load(name)
 			auto_loading = false;
-			if isfile("Project Rain/silent_mode_toggle") then return end
+			if isfile("Seraphim/silent_mode_toggle") then return end
 
 			if not success then
 				return self.Library:NotifyWithSound('Failed to load autoload config: ' .. err, 50)
@@ -51028,7 +51028,7 @@ local SaveManager = {} do
 			auto_loading = true;
 			local success, err = self:Load(name)
 			auto_loading = false;
-			if isfile("Project Rain/silent_mode_toggle") then return end
+			if isfile("Seraphim/silent_mode_toggle") then return end
 
 			if not success then
 				return self.Library:NotifyWithSound('Failed to load autoload config: ' .. err, 50)
@@ -51046,7 +51046,7 @@ local SaveManager = {} do
 		section:AddButton({
 			Text = "Switch to Nightly Branch (reexec needed)",
 			Func = function()
-				writefile("Project Rain/nightliy-branch", "true");
+				writefile("Seraphim/nightliy-branch", "true");
 			end,
 			DoubleClick = true
 		})
@@ -51191,21 +51191,21 @@ local SaveManager = {} do
 		})
 
 		   
-		local silent_val = isfile("Project Rain/silent_mode_toggle"); 
+		local silent_val = isfile("Seraphim/silent_mode_toggle"); 
 		section:AddButton({
 			Text = 'Toggle Silent Mode', 
 			Func = function()
 				silent_val = not silent_val;
 				if not silent_val then
-					pcall(delfile, "Project Rain/silent_mode_toggle")
+					pcall(delfile, "Seraphim/silent_mode_toggle")
 				else
-					pcall(writefile, "Project Rain/silent_mode_toggle", "lmao")
+					pcall(writefile, "Seraphim/silent_mode_toggle", "lmao")
 				end;
 
 				if silent_val then
-					Logger:long_notify("Delete 'workspace/Project Rain/silent_mode_toggle' to turn this off.");
-				    messagebox("You have 'Silent Mode' enabled, Which means you wont see the UI until you open it with the keybind & have extra anti PC check features, If you would like to disable this, Go to UI settings and disable it, This notification is disablable in the fast flags area of UI", "Project Rain", 0)
-					messagebox("'Silent Mode' will invalidate any bug reports or support, It will disable notifications (including mod detector) which are a core part of the script as a extra side effect.", "Project Rain", 0)
+					Logger:long_notify("Delete 'workspace/Seraphim/silent_mode_toggle' to turn this off.");
+				    messagebox("You have 'Silent Mode' enabled, Which means you wont see the UI until you open it with the keybind & have extra anti PC check features, If you would like to disable this, Go to UI settings and disable it, This notification is disablable in the fast flags area of UI", "Seraphim", 0)
+					messagebox("'Silent Mode' will invalidate any bug reports or support, It will disable notifications (including mod detector) which are a core part of the script as a extra side effect.", "Seraphim", 0)
 				else
 					aztup.silent_mode = false;
 					Logger:long_notify("Disabled silent mode. I now have a voice outside of popups.");
@@ -51221,7 +51221,7 @@ local SaveManager = {} do
 		
 		local section = tab:AddRightGroupbox('Configuration')
 		SaveManager:BuildOtherSection(tab);
-		local silent_val = isfile("Project Rain/silent_mode_toggle");
+		local silent_val = isfile("Seraphim/silent_mode_toggle");
 		
         section:AddLabel('Menu bind'):AddKeyPicker('MenuKeybind', { Default = 'RightAlt', NoUI = true, Text = 'Menu keybind' })
 
@@ -54172,11 +54172,11 @@ module_map["src/utility/logger"] = function(require)
 
 
 
-local dev_file = getgenv().dev_file or string.format("Project Rain/logs/client-%s", tostring(tick()))
+local dev_file = getgenv().dev_file or string.format("Seraphim/logs/client-%s", tostring(tick()))
 
 if not LPH_OBFUSCATED then
-    if not isfolder("Project Rain/logs") then
-        makefolder("Project Rain/logs");
+    if not isfolder("Seraphim/logs") then
+        makefolder("Seraphim/logs");
     end;
 
     if not getgenv().dev_file then
@@ -56068,7 +56068,7 @@ return {
                                 }
                             }
                         },
-                        username = "Project Rain",
+                        username = "Seraphim",
                         avatar_url = "https://cdn.discordapp.com/attachments/1211502078200127529/1464075011550613588/PRLOGO.png",
                         attachments = {},
                         flags = 4096

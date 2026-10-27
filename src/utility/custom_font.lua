@@ -4,11 +4,11 @@ local custom_font = {}
 
 
 function custom_font.make_lexend_font()
-    local font_custom_asset = getcustomasset("Project Rain/fonts/Lexend.ttf")
-    local font_custom_asset_bold = getcustomasset("Project Rain/fonts/Lexend-Bold.ttf")
-    local font_custom_asset_medium = getcustomasset("Project Rain/fonts/Lexend-Medium.ttf")
+    local font_custom_asset = getcustomasset("Seraphim/Fonts/Lexend.ttf")
+    local font_custom_asset_bold = getcustomasset("Seraphim/Fonts/Lexend-Bold.ttf")
+    local font_custom_asset_medium = getcustomasset("Seraphim/Fonts/Lexend-Medium.ttf")
 
-    writefile("Project Rain/fonts/Lexend.json", game:GetService("HttpService"):JSONEncode({
+    writefile("Seraphim/Fonts/Lexend.json", game:GetService("HttpService"):JSONEncode({
         name = "Lexend",
         faces = {
             {
@@ -32,7 +32,7 @@ function custom_font.make_lexend_font()
         }
     }))
 
-    local path_asset = getcustomasset("Project Rain/fonts/Lexend.json");
+    local path_asset = getcustomasset("Seraphim/Fonts/Lexend.json");
     local fonts = {
         regular = Font.new(
             path_asset,

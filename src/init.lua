@@ -1,4 +1,4 @@
--- Seraphim -- point d'entree (base Project Rain OSS)
+-- Seraphim -- point d'entree (base Seraphim OSS)
 local luarmor_finish_tick = tick();
 
 pcall(require, "@src/luarmor_init_script");
