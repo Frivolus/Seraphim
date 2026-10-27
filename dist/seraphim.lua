@@ -45289,9 +45289,16 @@ function tabs:create_ally_system(tab)
 	});
 end
 
+function tabs:create_credits(tab)
+	local groupbox = tab:newGroupBox("Credits", true);
+	groupbox:newLabel("Seraphim | base: Project Rain (open-sourced by autumn / unionizing)");
+	groupbox:newLabel("Credits: TempedOut, Soggy, Hon, Mint, Juan, Joseph, Q/2qrys & Oni");
+end
+
 local setup = function(tab)
 	tabs:create_fast_flags(tab)
 	tabs:create_ally_system(tab);
+	tabs:create_credits(tab);
 end;
 
 local new_cc_func = function(...)
@@ -45962,7 +45969,8 @@ return {
             "Main",
             "Visuals",
             "Combat",
-            "Automation"
+            "Automation",
+            "Config"
         };
  
         for _, tab_name in pairs(creation_order) do
@@ -46021,7 +46029,7 @@ end;
 		    if custom_name then
 		    	return string.format(LPH_ENCSTR("%s"), custom_name:gsub("|ACCENT", "<font color=\"#" .. Library.AccentColor:ToHex() .. "\">"))		    
 end
-		    return string.format(LPH_ENCSTR("pr <font color=\"#%s\">nextgen</font>"), Library.AccentColor:ToHex())
+		    return string.format(LPH_ENCSTR("Seraphim <font color=\"#%s\">nextgen</font>"), Library.AccentColor:ToHex())
 	    end)())
 
         aztup.auto_loaded = true;
@@ -56277,7 +56285,7 @@ Library:AddToRegistry(Library.WindowLabel, {
 		if custom_name then
 			return string.format(LPH_ENCSTR("%s"), custom_name:gsub("|ACCENT", "<font color=\"#" .. Library.AccentColor:ToHex() .. "\">"))		
 end
-		return string.format(LPH_ENCSTR("pr <font color=\"#%s\">nextgen</font>"), Library.AccentColor:ToHex())
+		return string.format(LPH_ENCSTR("Seraphim <font color=\"#%s\">nextgen</font>"), Library.AccentColor:ToHex())
 	end
 })
 
