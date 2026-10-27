@@ -333,6 +333,7 @@ end
     game:GetService("Debris"):AddItem(Music, 2);
     game:GetService("Debris"):AddItem(Converted["_ScreenGui"], 2);
     accepted = true;
+    writefile("Seraphim/tos_accepted.txt", "yes");
     writefile("Seraphim/tos_accepted_82126_0822UTC0.txt", "yes");
 end)
 
