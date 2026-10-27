@@ -70,7 +70,7 @@ local module_cache = {};
 local native_require = require;
 
 local asset_map = {`);
-for (const a of [...usedAssets].sort()) parts.push(`  [${JSON.stringify(a)}] = ${JSON.stringify(assets.get(a))},`);
+for (const a of [...usedAssets].sort()) parts.push(`  [${JSON.stringify(a)}] = ${JSON.stringify(assets.get(a) || "")},`);
 parts.push(`};
 
 local function inline_asset_b96(p) return asset_map[p] end
