@@ -96,3 +96,38 @@ Wowzers, Citam, yv5, testeurs & staff.
 - Methodo : apres chaque modif, verifier avec Select-String sur le fichier ET sur
   dist, ne pas se fier au message de succes d'un script.
 - Etat : 267 modules, 11 assets, check.mjs (aucun), marqueur present dans dist.
+---
+
+## Journal ¡ª Batch 5 : boot 100% propre (valid¨¦ en jeu)
+
+### Bugs corriges
+1. `attempt to index nil with 'SetValue'` -> `ThemeManager:LoadDefault()` appele par
+   `src/ui/tos.lua` AVANT toute creation de dropdown. Fix : garde `_tl` dans LoadDefault
+   + fallback `ApplyTheme`. Commit 817dc93.
+2. `ThemeUpdate()` masquait la table `aztup_options` avec un `local` du meme nom -> les
+   couleurs ne se mettaient jamais a jour. Renomme en `fields`. Commit 817dc93.
+3. `Invalid path` -> `custom_font.lua` utilisait encore les chemins `Project Rain/fonts/...`
+   alors que init.lua ecrit dans `Seraphim/Fonts/...`. Rebrand global des chemins (28 fichiers).
+   Commit 7d6aa6e.
+4. Casse des noms de fichiers polices (`lexend.ttf` -> `Lexend.ttf`). Commit suivant.
+5. TOS se reaffiche a chaque lancement : tos.lua ecrivait `tos_accepted_82126_0822UTC0.txt`
+   alors que init.lua verifie `tos_accepted.txt`. tos.lua ecrit maintenant les deux.
+
+### Etat
+- Boot OK en jeu (Volt) : TOS, UI complete, hook, zero erreur console.
+- Loader de test pointe bien sur raw.githubusercontent.com/Frivolus/Seraphim/main/dist/seraphim.lua
+- Aucun appel d'auth (user_service = stub) -> aucun risque de blacklist.
+- Workspace : uniquement `Seraphim/...` (Assets, Fonts, Deepwoken-Config, logs).
+
+### A FAIRE (par ordre)
+1. Porter `src/security/bypass.lua` (27704 o) depuis beyondthetowers/project-rain (absent de l'OSS).
+2. Notre `src/features/hooking.lua` (18210 o) est TRONQUE vs la reference (22430 o) -> comparer/completer.
+3. Verifier `src/utility/trace.lua` (absent chez nous) : dependance probable de bypass/hooking.
+4. Notre `src/features/loader.lua` (870 o) est un stub vs 15675 o en reference.
+5. Rebrand texte TOS (mention luarmor -> Panda Auth plus tard).
+6. Panda Auth sur `user_service.validate()`.
+7. Tester Noclip / Speed / Fly en jeu.
+
+### Regle anti-compression
+Le repo GitHub est la source de verite. TOUJOURS relire les fichiers depuis le repo
+avant de les modifier, ne jamais les reecrire de memoire.
