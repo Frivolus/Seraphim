@@ -45290,8 +45290,11 @@ end
 
 function tabs:create_credits(tab)
 	local groupbox = tab:newGroupBox("Credits", false);
-	groupbox:newLabel("Seraphim | base: Project Rain (open-sourced by autumn / unionizing)", true);
-	groupbox:newLabel("Credits: TempedOut, Soggy, Hon, Mint, Juan, Joseph, Q/2qrys & Oni", true);
+	groupbox:newLabel("Base: Project Rain");
+	groupbox:newLabel("autumn / unionizing");
+	groupbox:newLabel("TempedOut, Soggy, Hon,");
+	groupbox:newLabel("Mint, Juan, Joseph,");
+	groupbox:newLabel("Q/2qrys & Oni");
 end
 
 local setup = function(tab)
