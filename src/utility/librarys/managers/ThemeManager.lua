@@ -81,10 +81,9 @@ local ThemeManager = {} do
 	end
 
 	function ThemeManager:ThemeUpdate()
-		
-		local aztup_options = { "FontColor", "MainColor", "AccentColor", "BackgroundColor", "OutlineColor" }
-		for i, field in next, aztup_options do
-			if aztup_options and aztup_options[field] then
+		local fields = { "FontColor", "MainColor", "AccentColor", "BackgroundColor", "OutlineColor" }
+		for i, field in next, fields do
+			if aztup_options[field] then
 				self.Library[field] = aztup_options[field].Value
 			end
 		end
@@ -110,7 +109,8 @@ local ThemeManager = {} do
 		end
 
 		if isDefault then
-			aztup_options.ThemeManager_ThemeList:SetValue(theme)
+			local _tl = (getgenv().aztup_options or aztup_options) and (getgenv().aztup_options or aztup_options).ThemeManager_ThemeList
+			if _tl then _tl:SetValue(theme) else self:ApplyTheme(theme) end
 		else
 			self:ApplyTheme(theme)
 		end
