@@ -1444,13 +1444,13 @@ Converted._TextButton.MouseButton1Click:Connect(function()
             pcall(task.cancel, thread);
         end;
 
-        for name, _ in farm.active_features do
-            if name ~= "mod_detector" then continue; end
+        for name, _ in farm.active_features do repeat 
+            if name ~= "mod_detector" then do break end; end
             
             xpcall(function() 
                 aztup_toggles[name]:SetValue(false);
             end, warn);
-        end;
+         until true; end;
 
         persistent_data:set(farm.persistent_data_flag, false)
     end;
@@ -1492,14 +1492,14 @@ local auto_start_flags = {
     
 local loader = {
     initialize = function()
-        for _, farm in list_modules("automation/persistent_tasks/*") do
+        for _, farm in list_modules("automation/persistent_tasks/*") do repeat 
             local farm_module = require(farm);
     
             if farm_module and typeof(farm_module) == "table" and farm_module.persistent_data_flag then
                 aztup.farms[farm_module.id] = farm_module;
-                continue;
+                do break end;
             end;
-        end;
+         until true; end;
     end,
     
     should_auto_start = function(self)
@@ -1513,13 +1513,13 @@ local loader = {
     end,
 
     has_any = function(self)
-        for _, farm in pairs(aztup.farms) do
+        for _, farm in pairs(aztup.farms) do repeat 
             if persistent_data:get(farm.persistent_data_flag, false) ~= true then
-                continue;
+                do break end;
             end;
     
             return true;
-        end;
+         until true; end;
     
         return false;
     end,
@@ -1548,20 +1548,20 @@ local loader = {
 		end);
 
         local should_anti_afk;
-        for _, farm in pairs(aztup.farms) do
+        for _, farm in pairs(aztup.farms) do repeat 
             if not persistent_data:get(farm.persistent_data_flag, false) then
-                continue;
+                do break end;
             end;
 
             if farm.not_allowed and farm:not_allowed() then
-                continue;
+                do break end;
             end;
             
             should_anti_afk = true;
             task.spawn(function()
                 farm:run();
             end);
-        end;
+         until true; end;
 
         if should_anti_afk then
             task.spawn(function()
@@ -1650,7 +1650,7 @@ struct = automation_struct:construct({
                     local fc = 0;
                     send_dialogue.OnClientEvent:Connect(function(v273) 
                         got = not v273.exit;
-                        fc += 1;
+                        fc = fc +  1;
                     end);
                     
                     repeat 
@@ -1726,15 +1726,15 @@ struct = automation_struct:construct({
                             
                             local hostage;
                             repeat task.wait()
-                                for _, entity in live:GetChildren() do
-                                    if not entity.Name:find(".hostage") then continue; end
-                                    if not entity:FindFirstChild("HumanoidRootPart") then continue; end
-                                    if (entity.HumanoidRootPart.Position - local_player.root_part.Position).Magnitude > 1000 then continue; end
+                                for _, entity in live:GetChildren() do local __c51b13 = false; repeat 
+                                    if not entity.Name:find(".hostage") then do break end; end
+                                    if not entity:FindFirstChild("HumanoidRootPart") then do break end; end
+                                    if (entity.HumanoidRootPart.Position - local_player.root_part.Position).Magnitude > 1000 then do break end; end
                                     
                                     current_tween = Tween.new(entity.HumanoidRootPart.CFrame, true, 225).wait();
                                     hostage = entity;
-                                    break;
-                                end;
+                                    do __c51b13 = true; break end;
+                                 until true; if __c51b13 then break end end;
                             until hostage;
                             
                             current_tween = Tween.new(hostage.HumanoidRootPart.CFrame, true, 225).wait();
@@ -1791,7 +1791,7 @@ struct = automation_struct:construct({
                                 local time_frame = splash_gui and splash_gui:FindFirstChild("TimeFrame");
                                 local time_label = time_frame and time_frame:FindFirstChild("TimeText");
                                 if time_label and time_label.Text:lower():find("report back") then
-                                    break;
+                                    do break end;
                                 end;
                                 
                                 local crates = {};
@@ -1845,39 +1845,39 @@ struct = automation_struct:construct({
                                     local time_label = time_frame and time_frame:FindFirstChild("TimeText");
                                     if time_label and time_label.Text:lower():find("report back") then
                                         stop = true;
-                                        break;
+                                        do break end;
                                     end;
                                 until tick() - start > 35;
-                                if stop then break; end;
+                                if stop then do break end; end;
                                 repeat task.wait()
                                     local splash_gui = local_player.instance.PlayerGui:FindFirstChild("SplashGui");
                                     local time_frame = splash_gui and splash_gui:FindFirstChild("TimeFrame");
                                     local time_label = time_frame and time_frame:FindFirstChild("TimeText");
                                     if time_label and time_label.Text:lower():find("report back") then
                                         stop = true;
-                                        break;
+                                        do break end;
                                     end;
                                     Tween.new(current_banner:GetPivot() * CFrame.new(0, 3000, 0), true, 225).wait();
                                 until tick() - start > 90 + 35;
-                                if stop then break; end;
+                                if stop then do break end; end;
                                 repeat task.wait()
                                     local splash_gui = local_player.instance.PlayerGui:FindFirstChild("SplashGui");
                                     local time_frame = splash_gui and splash_gui:FindFirstChild("TimeFrame");
                                     local time_label = time_frame and time_frame:FindFirstChild("TimeText");
                                     if time_label and time_label.Text:lower():find("report back") then
                                         stop = true;
-                                        break;
+                                        do break end;
                                     end;
                     
                                     Tween.new(current_banner:GetPivot() * CFrame.new(0, 8, 0), true, 225).wait();
                                 until tick() - start > 120 + 35;
-                                if stop then break; end;
+                                if stop then do break end; end;
                     
                                 local splash_gui = local_player.instance.PlayerGui:FindFirstChild("SplashGui");
                                 local time_frame = splash_gui and splash_gui:FindFirstChild("TimeFrame");
                                 local time_label = time_frame and time_frame:FindFirstChild("TimeText");
                                 if time_label and time_label.Text:lower():find("report back") then
-                                    break;
+                                    do break end;
                                 end;
                             end
                     
@@ -1951,18 +1951,18 @@ local auto_deepdrill = {
     end,
 
     player_check = function(mag, custom)
-        for _, player in services.Players:GetPlayers() do
-            if not player.Character then continue end
-            if player == local_player.instance then continue end
+        for _, player in services.Players:GetPlayers() do repeat 
+            if not player.Character then do break end end
+            if player == local_player.instance then do break end end
 
             local hrp = player.Character:FindFirstChild("HumanoidRootPart");
-            if not hrp then continue end
+            if not hrp then do break end end
 
             local dist = ((custom or local_player.root_part.Position) - hrp.Position).Magnitude;
             if dist <= mag then
                 return true;
             end
-        end
+         until true; end
         return false;
     end,
 
@@ -1992,7 +1992,7 @@ local auto_deepdrill = {
         local attempts = 0;
         repeat
             remote:FireServer(unpack(args));
-            attempts += 1;
+            attempts = attempts +  1;
             task.wait(0.5);
         until acked or attempts >= 6;
 
@@ -2004,20 +2004,20 @@ local auto_deepdrill = {
         if not npcs then return nil end
 
         local closest, shortest = nil, math.huge;
-        for _, npc in npcs:GetChildren() do
-            if not npc:IsA("Model") then continue end
+        for _, npc in npcs:GetChildren() do repeat 
+            if not npc:IsA("Model") then do break end end
 
             local ok, position = pcall(function()
                 return npc:GetPivot().Position;
             end);
-            if not ok then continue end
+            if not ok then do break end end
 
             local dist = (position - local_player.root_part.Position).Magnitude;
             if dist < shortest then
                 shortest = dist;
                 closest = npc;
             end
-        end
+         until true; end
 
         return closest;
     end,
@@ -2067,15 +2067,15 @@ function auto_deepdrill:void_bonekeeper()
         if real_bonekeeper and real_bonekeeper.Parent == nil and not bonekeeper then
             bonekeeper = nil;
             real_bonekeeper = nil;
-            break;
+            do break end;
         end
 
-        for _, v in workspace.Live:GetChildren() do
-            if v == local_player.character then continue end
-            if not v.Name:find(".boneboy") then continue end
+        for _, v in workspace.Live:GetChildren() do repeat 
+            if v == local_player.character then do break end end
+            if not v.Name:find(".boneboy") then do break end end
             real_bonekeeper = v;
             bonekeeper = v;
-        end
+         until true; end
 
         if not bonekeeper then
             self.temp_tween(bonekeeper_location);
@@ -2301,24 +2301,24 @@ local autoduke = {
         task.wait(1)
     end,
     player_near = function()
-        for _, player in services.Players:GetPlayers() do
-            if local_player.instance == player then continue end
-            if not player.Character then continue end
-            if not player.Character:FindFirstChild('HumanoidRootPart') then continue end
+        for _, player in services.Players:GetPlayers() do repeat 
+            if local_player.instance == player then do break end end
+            if not player.Character then do break end end
+            if not player.Character:FindFirstChild('HumanoidRootPart') then do break end end
             
             local dist = (local_player.root_part.Position - player.Character:GetPivot().Position).Magnitude
             if dist <= 1000 then return true end
-        end
+         until true; end
         
         return false
     end,
     players_near = function(target, mag)
         mag = mag or 1000;
         target = target or local_player.root_part.Position;
-        for _, player in services.Players:GetPlayers() do
-            if not player.Character then continue end
-            if not player.Character:FindFirstChild('HumanoidRootPart') then continue end
-            if player == local_player.instance then continue end
+        for _, player in services.Players:GetPlayers() do repeat 
+            if not player.Character then do break end end
+            if not player.Character:FindFirstChild('HumanoidRootPart') then do break end end
+            if player == local_player.instance then do break end end
             
             local hmrp = player.Character.HumanoidRootPart
             
@@ -2327,7 +2327,7 @@ local autoduke = {
             if (dist <= mag) then
                 return true
             end
-        end
+         until true; end
         
         return false
     end,
@@ -2352,9 +2352,9 @@ local autoduke = {
         local time = 3
         local secondsWaited = 0
         
-        for _, chest in pairs(workspace.Thrown:GetChildren()) do
-            if not chest:FindFirstChild("Lid") then continue; end
-            if services.CollectionService:HasTag(chest, 'looted') then continue end
+        for _, chest in pairs(workspace.Thrown:GetChildren()) do repeat 
+            if not chest:FindFirstChild("Lid") then do break end; end
+            if services.CollectionService:HasTag(chest, 'looted') then do break end end
             
             self.temp_tween(chest.Lid.CFrame, 170)
             local moreTime = 3
@@ -2368,13 +2368,13 @@ local autoduke = {
                 pcall(function(...) 
                     self.temp_tween(chest.Lid.CFrame, 170)
                 end)
-                moreSecondsWaited += 1
+                moreSecondsWaited = moreSecondsWaited +  1
             until local_player.instance.PlayerGui:FindFirstChild('ChoicePrompt') or not aztup.automation:has_any() or moreSecondsWaited >= moreTime
             if local_player.instance.PlayerGui:FindFirstChild('ChoicePrompt') then
                 looted = true;
             end;
 
-            repeat task.wait(1); secondsWaited += 1; until not local_player.instance.PlayerGui:FindFirstChild('ChoicePrompt') or not aztup.automation:has_any() or secondsWaited >= time
+            repeat task.wait(1); secondsWaited = secondsWaited +  1; until not local_player.instance.PlayerGui:FindFirstChild('ChoicePrompt') or not aztup.automation:has_any() or secondsWaited >= time
             
             if local_player.instance.PlayerGui:FindFirstChild('ChoicePrompt') then
                 looted = true;
@@ -2384,7 +2384,7 @@ local autoduke = {
             end
 
             services.CollectionService:AddTag(chest, 'looted')
-        end
+         until true; end
         return looted;
     end,
 }
@@ -2422,12 +2422,12 @@ function autoduke:refill()
     local function get_closest_ingredient(ing)
         local closest = nil
         
-        for _, ingredient in workspace.Ingredients:GetChildren() do
-            if not ingredient.Name:match(ing) then continue end
+        for _, ingredient in workspace.Ingredients:GetChildren() do repeat 
+            if not ingredient.Name:match(ing) then do break end end
             
             if closest == nil then
                 closest = ingredient
-                continue
+                do break end
             end
             
             if closest then
@@ -2438,7 +2438,7 @@ function autoduke:refill()
                     closest = ingredient
                 end
             end
-        end
+         until true; end
         
         return closest
     end
@@ -2455,7 +2455,7 @@ function autoduke:refill()
                     collect_ingredient(ing) -- probably the safest food in the etrean luminant
                     eat_food(ing.Name)
                 else
-                    break;
+                    do break end;
                 end
 
                 task.wait();
@@ -2518,13 +2518,13 @@ function autoduke:create_instance()
     local done = false;
     while task.wait() and not done do
         done = true;
-        for _, entity in workspace.Live:GetChildren() do
-            if not (entity.Name:find("brainsucker") or entity.Name:find("dukecultist")) then continue; end
-            if (entity:GetPivot().Position - local_player.root_part.Position).Magnitude > 900 then continue; end
+        for _, entity in workspace.Live:GetChildren() do repeat 
+            if not (entity.Name:find("brainsucker") or entity.Name:find("dukecultist")) then do break end; end
+            if (entity:GetPivot().Position - local_player.root_part.Position).Magnitude > 900 then do break end; end
 
             local humanoid = entity:FindFirstChildOfClass("Humanoid");
 
-            while humanoid and humanoid.Health > 0 and entity:FindFirstChild("HumanoidRootPart") do
+            while humanoid and humanoid.Health > 0 and entity:FindFirstChild("HumanoidRootPart") do repeat 
                 if self.player_near() then
                     self.server_hop()
                     while task.wait() do end
@@ -2532,16 +2532,16 @@ function autoduke:create_instance()
 
                 if not entity:FindFirstChild("HumanoidRootPart") then 
                     task.wait();
-                    continue; 
+                    do break end; 
                 end
 
                 aztup.features.m1_hold.held = true;
                 Tween.new(entity.HumanoidRootPart.CFrame * CFrame.new(0, 0, 3), true, 250).wait();
                 task.wait();
-            end
+             until true; end
 
             done = false;
-        end
+         until true; end
     end
     self:m1_hold(false);
 
@@ -2579,7 +2579,7 @@ function autoduke:kill_duke()
 
         if not client_effect then
             task.wait()
-        else break; end
+        else do break end; end
     until client_effect;
 
     local nope_tf_out = false;
@@ -2595,19 +2595,19 @@ function autoduke:kill_duke()
     local done = false;
     while task.wait() and not done do
         done = true;
-        for _, entity in workspace.Live:GetChildren() do
-            if not persistent_data:get("auto_duke") then break; end
-            if not (entity.Name:find("prime_golem") or entity.Name:find("dukecultist")) then continue; end
-            if (entity:GetPivot().Position - local_player.root_part.Position).Magnitude > 900 then continue; end
-            if entity:GetPivot().Z < 2000 then continue; end
+        for _, entity in workspace.Live:GetChildren() do local __c51b64 = false; repeat 
+            if not persistent_data:get("auto_duke") then do __c51b64 = true; break end; end
+            if not (entity.Name:find("prime_golem") or entity.Name:find("dukecultist")) then do break end; end
+            if (entity:GetPivot().Position - local_player.root_part.Position).Magnitude > 900 then do break end; end
+            if entity:GetPivot().Z < 2000 then do break end; end
 
             local humanoid = entity:FindFirstChildOfClass("Humanoid");
 
             while humanoid and humanoid.Health > 0 do
-                if game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.U) then break; end
+                if game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.U) then do break end; end
                 self:m1_hold(true);
 
-                if not entity:FindFirstChild("HumanoidRootPart") then break; end
+                if not entity:FindFirstChild("HumanoidRootPart") then do break end; end
                 if not nope_tf_out then
                     Tween.new(entity.HumanoidRootPart.CFrame * (entity.Name:find("prime_golem") and CFrame.new(0, 5, 0.35) or CFrame.new(0,2,3)), true, 250).wait();
                 else
@@ -2618,8 +2618,8 @@ function autoduke:kill_duke()
             end
 
             done = false;
-        end
-        if not persistent_data:get("auto_duke") then break; end
+         until true; if __c51b64 then break end end
+        if not persistent_data:get("auto_duke") then do break end; end
 
     end
             if not persistent_data:get("auto_duke") then return; end
@@ -2649,7 +2649,7 @@ function autoduke:kill_duke()
     local fc = 0;
     send_dialogue.OnClientEvent:Connect(function(v273) 
         got = not v273.exit;
-        fc += 1;
+        fc = fc +  1;
     end);
 
     if not shared.a then
@@ -2687,12 +2687,12 @@ function autoduke:kill_duke()
     aztup_toggles.void_mobs:SetValue(voiding_mode);
 
     local duke = workspace.Live[".theduke11"]
-    while workspace.Live:FindFirstChild(".theduke11") do
+    while workspace.Live:FindFirstChild(".theduke11") do local __c51b69 = false; repeat 
         task.wait();
         self:m1_hold(not general:playing_ap_anims(workspace.Live[".theduke11"]));
 
-            if not persistent_data:get("auto_duke") then break; end 
-        if not duke:FindFirstChild("HumanoidRootPart") or not duke:FindFirstChild("Humanoid") or not duke.Parent or duke.Humanoid.Health <= 0 then break; end
+            if not persistent_data:get("auto_duke") then do __c51b69 = true; break end; end 
+        if not duke:FindFirstChild("HumanoidRootPart") or not duke:FindFirstChild("Humanoid") or not duke.Parent or duke.Humanoid.Health <= 0 then do __c51b69 = true; break end; end
         
         if voiding_mode and not nope_tf_out and not general:playing_ap_anims(workspace.Live[".theduke11"]) and game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Mantra:ChokeIce{{Frost Grab}}") then 
             local Event = local_player.character.CharacterHandler.Requests.ActivateMantra
@@ -2701,7 +2701,7 @@ function autoduke:kill_duke()
             )
         end;
 
-        if workspace.Live[".theduke11"].HumanoidRootPart.CFrame.Y <= -1000 then continue; end --[[continue because void can <bold>fail</bold>]]
+        if workspace.Live[".theduke11"].HumanoidRootPart.CFrame.Y <= -1000 then do break end; end --[[continue because void can <bold>fail</bold>]]
         
         local x, y, z = select(1, workspace.Live[".theduke11"].HumanoidRootPart.CFrame:GetComponents());
         local x_sin = math.sin(tick() * 2) * 30;
@@ -2724,7 +2724,7 @@ function autoduke:kill_duke()
         else
             Tween.new(workspace.Live[".theduke11"].HumanoidRootPart.CFrame * CFrame.new(0, -6, 0) * CFrame.Angles(math.rad(90), 0, 0), true, 250).wait();        
         end
-    end
+     until true; if __c51b69 then break end end
     print("done");
     self:m1_hold(false)
 
@@ -2741,7 +2741,7 @@ function autoduke:kill_duke()
             return self:grab_chests()
         end);
 
-        if suc and res then break; end
+        if suc and res then do break end; end
         task.wait(1);
     end
     
@@ -2845,18 +2845,18 @@ local auto_echo_layer2 = {
     end,
 
     player_check = function(mag, custom)
-        for _, player in services.Players:GetPlayers() do
-            if not player.Character then continue end
-            if player == local_player.instance then continue end
+        for _, player in services.Players:GetPlayers() do repeat 
+            if not player.Character then do break end end
+            if player == local_player.instance then do break end end
 
             local hrp = player.Character:FindFirstChild("HumanoidRootPart");
-            if not hrp then continue end
+            if not hrp then do break end end
 
             local dist = ((custom or local_player.root_part.Position) - hrp.Position).Magnitude;
             if dist <= mag then
                 return true;
             end
-        end
+         until true; end
         return false;
     end,
 
@@ -2971,7 +2971,7 @@ function auto_echo_layer2:enter_void()
 
     local tween;
     while tick() - start < 60 do
-        if not plane then break; end
+        if not plane then do break end; end
         if tween then tween.stop(); end;
         tween = Tween.new(plane.CFrame, false, 200);
         local_player.root_part.Velocity = Vector3.new(0, -999, 0);
@@ -3026,16 +3026,16 @@ function auto_echo_layer2:spawn_keeper()
         if real_bonekeeper and real_bonekeeper.Parent == nil and not bonekeeper then
             bonekeeper = nil;
             real_bonekeeper = nil;
-            break;
+            do break end;
         end
 
-        for _, v in workspace.Live:GetChildren() do
-            if v == local_player.character then continue end
-            if not v.Name:find(".boneboy") then continue end
+        for _, v in workspace.Live:GetChildren() do repeat 
+            if v == local_player.character then do break end end
+            if not v.Name:find(".boneboy") then do break end end
             real_bonekeeper = v;
             --if not v:FindFirstChild("Target") or not v.Target.Value then continue end
             bonekeeper = v;
-        end
+         until true; end
 
         if not bonekeeper then
             self.temp_tween(bonekeeper_location);
@@ -3075,13 +3075,13 @@ function auto_echo_layer2:chaser_route()
         self.temp_tween(CFrame.new(-5361, 285, -4801), 250);
         task.wait();
 
-        for _, v in workspace.Live:GetChildren() do
-            if v == local_player.character then continue end
+        for _, v in workspace.Live:GetChildren() do local __c51b89 = false; repeat 
+            if v == local_player.character then do break end end
             if v.Name:find('chaser') then
                 foundchaser = v;
-                break;
+                do __c51b89 = true; break end;
             end
-        end
+         until true; if __c51b89 then break end end
 
         self.temp_tween(CFrame.new(-5224.36523, 194.26561, -4633.03223, -0.803056717, -9.8259835e-20, -0.595902622, -3.56286109e-20, 1, -1.16878229e-19, 0.595902622, -7.26286614e-20, -0.803056717), 250);
         task.wait();
@@ -3150,7 +3150,7 @@ function auto_echo_layer2:void_chaser(chaser)
         if chaser:FindFirstChild("HumanoidRootPart") and chaser:FindFirstChild("HumanoidRootPart").Position.Y > 2500 then -- we arent voiding him if we get this late
             persistent_data:set("auto_echo_layer2_wiping", true);
             server_utility:obliteration(local_player.instance:GetAttribute("DataSlot"));
-            break;
+            do break end;
         end;
 
         aztup.flags.atb_y_offset = (chaser:FindFirstChild("HumanoidRootPart") and chaser.HumanoidRootPart.Anchored) and 5000 or 0.75;
@@ -3498,30 +3498,30 @@ local buff_pos = CFrame.new(84, 1007, -1);
 
 local autoescape = {
     playerCheck = function(mag, custom)
-        for _, player in services.Players:GetPlayers() do
-            if not player.Character then continue end
-            if player == local_player.instance then continue end
+        for _, player in services.Players:GetPlayers() do repeat 
+            if not player.Character then do break end end
+            if player == local_player.instance then do break end end
 
             local hrp = player.Character:FindFirstChild("HumanoidRootPart");
-            if not hrp then continue end
+            if not hrp then do break end end
 
             local dist = ((custom or local_player.root_part.Position) - hrp.Position).Magnitude;
             if dist <= mag then
                 return true;
             end
-        end
+         until true; end
         return false;
     end,
 
     mobsCheck = function(mag, custom)
-        for _, mob in workspace.Live:GetChildren() do
-            if not mob:FindFirstChild("HumanoidRootPart") then continue; end;
+        for _, mob in workspace.Live:GetChildren() do repeat 
+            if not mob:FindFirstChild("HumanoidRootPart") then do break end; end;
 
             local dist = ((custom or local_player.root_part.Position) - mob:GetPivot().Position).Magnitude;
             if dist <= mag then
                 return true;
             end
-        end
+         until true; end
         return false;
     end,
 
@@ -3614,24 +3614,24 @@ local autoescape = {
         if not live then return nil end
 
         local closest, shortest = nil, math.huge;
-        for _, model in live:GetChildren() do
-            if not model:IsA("Model") then continue end
-            if model == local_player.character then continue end
-            if model.Name:sub(1, 1) ~= "." then continue end
+        for _, model in live:GetChildren() do repeat 
+            if not model:IsA("Model") then do break end end
+            if model == local_player.character then do break end end
+            if model.Name:sub(1, 1) ~= "." then do break end end
 
             local root = model:FindFirstChild("HumanoidRootPart") or model.PrimaryPart;
-            if not root then continue end
+            if not root then do break end end
 
             local humanoid = model:FindFirstChildOfClass("Humanoid");
-            if not humanoid or humanoid.Health <= 0 then continue end
-            if model:FindFirstChild("Torso") and model.Torso:FindFirstChild("RagdollAttach") then continue end
+            if not humanoid or humanoid.Health <= 0 then do break end end
+            if model:FindFirstChild("Torso") and model.Torso:FindFirstChild("RagdollAttach") then do break end end
 
             local dist = (root.Position - local_player.root_part.Position).Magnitude;
             if dist < shortest then
                 shortest = dist;
                 closest = model;
             end
-        end
+         until true; end
 
         return closest;
     end,
@@ -3646,8 +3646,8 @@ local autoescape = {
         local chase_tween;
         local atb = task.spawn(function()
             while task.wait() do
-                if target.Parent == nil then break end
-                if not target:FindFirstChild("HumanoidRootPart") then break end
+                if target.Parent == nil then do break end end
+                if not target:FindFirstChild("HumanoidRootPart") then do break end end
 
                 local target_position = (target.HumanoidRootPart.CFrame * CFrame.new(0, -7, 4)).Position;
                 local target_cframe = CFrame.lookAt(target_position, target.HumanoidRootPart.Position);
@@ -3685,7 +3685,7 @@ function autoescape:enterTrial()
             if self.playerCheck(200) then
                 self.serverHop();
                 while task.wait() do end
-                break;
+                do break end;
             end
         end
     end);
@@ -3766,7 +3766,7 @@ function autoescape:beginTrial()
             end);
             fired = true;
         elseif fired then
-            break;
+            do break end;
         end
 
         task.wait(0.5);
@@ -3782,7 +3782,7 @@ function autoescape:fightTrial()
             if self.playerCheck(200) then
                 self.serverHop();
                 while task.wait() do end
-                break;
+                do break end;
             end
         end
     end);
@@ -3791,7 +3791,7 @@ function autoescape:fightTrial()
         local start = tick();
         repeat task.wait() until self.foundMobs() or tick() - start > 60 or not aztup.automation:has_any();
 
-        if not self.foundMobs() then break end
+        if not self.foundMobs() then do break end end
 
         repeat
             self:healCheck();
@@ -4024,7 +4024,7 @@ local function train_math_textbook()
     for attempt = 1, 3 do
         if needs_book_training() then
             needed = true;
-            break;
+            do break end;
         end;
 
         task.wait(1);
@@ -4150,29 +4150,29 @@ local autoferryman = {
         training = false
     end,
     player_near = function()
-        for _, player in services.Players:GetPlayers() do
-            if local_player.instance == player then continue end
-            if not player.Character then continue end
-            if not player.Character:FindFirstChild('HumanoidRootPart') then continue end
+        for _, player in services.Players:GetPlayers() do repeat 
+            if local_player.instance == player then do break end end
+            if not player.Character then do break end end
+            if not player.Character:FindFirstChild('HumanoidRootPart') then do break end end
             
             local dist = (local_player.root_part.Position - player.Character:GetPivot().Position).Magnitude
             if dist <= 400 then return true end
-        end
+         until true; end
         
         return false
     end,
     players_near = function(target, mag)
-        for _, player in services.Players:GetPlayers() do
-            if not player.Character then continue end
+        for _, player in services.Players:GetPlayers() do repeat 
+            if not player.Character then do break end end
             --if not player.Character:FindFirstChild('HumanoidRootPart') then continue end
-            if player == local_player.instance then continue end
+            if player == local_player.instance then do break end end
                         
             local dist = (target - player.Character:GetPivot().Position).Magnitude
             
             if (dist <= mag) then
                 return true
             end
-        end
+         until true; end
         
         return false
     end,
@@ -4252,17 +4252,17 @@ local autoferryman = {
         local backpack = local_player.instance:FindFirstChild("Backpack");
         if not backpack then return nil end
 
-        for _, item in backpack:GetChildren() do
-            if not item.Name:match("^Mantra:") then continue end
+        for _, item in backpack:GetChildren() do repeat 
+            if not item.Name:match("^Mantra:") then do break end end
 
             local element = item:GetAttribute("Element");
-            if not element or not self.attunement_elements[element] then continue end
+            if not element or not self.attunement_elements[element] then do break end end
 
             local name = item:GetAttribute("DefaultName") or item.Name:match("{{(.-)}}");
             if name and self.safe_attunement_mantras[name] then
                 return item;
             end
-        end
+         until true; end
 
         return nil
     end,
@@ -4298,21 +4298,21 @@ local autoferryman = {
         if not options or not remote then return false end
 
         local looted = false
-        for _, option in options:GetChildren() do
-            if not option:IsA('TextButton') then continue end
+        for _, option in options:GetChildren() do repeat 
+            if not option:IsA('TextButton') then do break end end
 
             local title = option:FindFirstChild('Title')
             local label = ((title and title.Text) or option.Name):lower()
 
-            for _, want in wanted do
-                if not label:find(want:lower(), 1, true) then continue end
+            for _, want in wanted do local __c51b132 = false; repeat 
+                if not label:find(want:lower(), 1, true) then do break end end
 
                 remote:FireServer(option.Name)
                 looted = true
                 task.wait(0.1)
-                break
-            end
-        end
+                do __c51b132 = true; break end
+             until true; if __c51b132 then break end end
+         until true; end
 
         return looted
     end,
@@ -4322,15 +4322,15 @@ local autoferryman = {
         local thrown = workspace:FindFirstChild('Thrown')
         if not thrown then return chests end
 
-        for _, object in thrown:GetDescendants() do
-            if object.Name ~= 'Lid' then continue end
-            if not object:IsA('BasePart') then continue end
+        for _, object in thrown:GetDescendants() do repeat 
+            if object.Name ~= 'Lid' then do break end end
+            if not object:IsA('BasePart') then do break end end
 
             local dist = (local_player.root_part.Position - object.Position).Magnitude
-            if max_distance and dist > max_distance then continue end
+            if max_distance and dist > max_distance then do break end end
 
             table.insert(chests, object.Parent)
-        end
+         until true; end
 
         return chests
     end,
@@ -4340,8 +4340,8 @@ local autoferryman = {
         local chests = self.find_chests(max_distance or 2000)
         if #chests == 0 then return end
 
-        for _, chest in chests do
-            if not force and services.CollectionService:HasTag(chest, 'looted') then continue end
+        for _, chest in chests do repeat 
+            if not force and services.CollectionService:HasTag(chest, 'looted') then do break end end
 
             self.temp_tween(chest.Lid.CFrame, 170)
             local secondsWaited = 0
@@ -4356,7 +4356,7 @@ local autoferryman = {
                 pcall(function(...)
                     self.temp_tween(chest.Lid.CFrame, 170)
                 end)
-                moreSecondsWaited += 1
+                moreSecondsWaited = moreSecondsWaited +  1
             until local_player.instance.PlayerGui:FindFirstChild('ChoicePrompt') or not aztup.automation:has_any() or moreSecondsWaited >= moreTime
 
             if wanted then
@@ -4365,7 +4365,7 @@ local autoferryman = {
                 end)
             end
 
-            repeat task.wait(1); secondsWaited += 1; until not local_player.instance.PlayerGui:FindFirstChild('ChoicePrompt') or not aztup.automation:has_any() or secondsWaited >= time
+            repeat task.wait(1); secondsWaited = secondsWaited +  1; until not local_player.instance.PlayerGui:FindFirstChild('ChoicePrompt') or not aztup.automation:has_any() or secondsWaited >= time
             
             do
                 local prompt = get_choice_prompt();
@@ -4376,7 +4376,7 @@ local autoferryman = {
             end
             
             services.CollectionService:AddTag(chest, 'looted')
-        end
+         until true; end
     end,
 }
 
@@ -4423,11 +4423,11 @@ function autoferryman:refill()
         local totaluses = 0
         
         if local_player.instance.Backpack:FindFirstChild('Flint') then
-            totaluses += local_player.instance.Backpack.Flint.Uses.Value
+            totaluses = totaluses +  local_player.instance.Backpack.Flint.Uses.Value
         end
         
         if local_player.instance.Backpack:FindFirstChild('Umbral Flint') then
-            totaluses += local_player.instance.Backpack['Umbral Flint'].Uses.Value
+            totaluses = totaluses +  local_player.instance.Backpack['Umbral Flint'].Uses.Value
         end
         
         return totaluses
@@ -4436,12 +4436,12 @@ function autoferryman:refill()
     local function get_closest_ingredient(ing)
         local closest = nil
         
-        for _, ingredient in workspace.Ingredients:GetChildren() do
-            if not ingredient.Name:match(ing) then continue end
+        for _, ingredient in workspace.Ingredients:GetChildren() do repeat 
+            if not ingredient.Name:match(ing) then do break end end
             
             if closest == nil then
                 closest = ingredient
-                continue
+                do break end
             end
             
             if closest then
@@ -4452,7 +4452,7 @@ function autoferryman:refill()
                     closest = ingredient
                 end
             end
-        end
+         until true; end
         
         return closest
     end
@@ -4461,14 +4461,14 @@ function autoferryman:refill()
     local function get_closest_tree()
         local closest = nil
         
-        for _, tree in workspace.Destructibles:GetChildren() do
-            if not tree.Name:match('Tree') then continue end
-            if not tree:GetAttribute('StructureHealth') then continue end
-            if tree:GetAttribute('StructureHealth') <= 0 then continue end
+        for _, tree in workspace.Destructibles:GetChildren() do repeat 
+            if not tree.Name:match('Tree') then do break end end
+            if not tree:GetAttribute('StructureHealth') then do break end end
+            if tree:GetAttribute('StructureHealth') <= 0 then do break end end
             
             if closest == nil then
                 closest = tree
-                continue
+                do break end
             end
             
             if closest then
@@ -4483,7 +4483,7 @@ function autoferryman:refill()
                     end;
                 end
             end
-        end
+         until true; end
         
         return closest
     end
@@ -4589,7 +4589,7 @@ function autoferryman:refill()
                         
                         if self.player_near() then
                             self.server_hop() 
-                            break
+                            do break end
                         end
                         task.wait();
                     end
@@ -4607,7 +4607,7 @@ function autoferryman:refill()
                         
                         if self.player_near() then
                             self.server_hop()
-                            break
+                            do break end
                         end
                         task.wait();
                     end
@@ -4659,7 +4659,7 @@ function autoferryman:refill()
             local campfire_quantity = local_player.instance.Backpack:FindFirstChild('Campfire Pit') and local_player.instance.Backpack:FindFirstChild('Campfire Pit').Quantity.Value or 0;
 
             local campfires = wood_quantity + campfire_quantity;
-            campfires += math.floor(stick_quantity / 3);
+            campfires = campfires +  math.floor(stick_quantity / 3);
 
             return campfires >= amount;
         end;
@@ -4811,8 +4811,8 @@ function autoferryman:create_instance()
         aztup.features.m1_hold.held = hold_m1
     end)
 
-    for _, campfire in workspace.Destructibles:GetChildren() do
-        if not campfire.Name:match('Campfire') then continue end
+    for _, campfire in workspace.Destructibles:GetChildren() do repeat 
+        if not campfire.Name:match('Campfire') then do break end end
         
         for _, location in campfire_locations do
             local dist = ((campfire:IsA("Model") and campfire:GetPivot() or campfire).Position - location.Position).Magnitude
@@ -4825,11 +4825,11 @@ function autoferryman:create_instance()
                     end;
                     
                     if not campfire:IsA("Model") and not campfire.Anchored then
-                        break;
+                        do break end;
                     end;
 
                     if campfire:IsA("Model") and campfire:FindFirstChild("Campfire") and not campfire:FindFirstChild("Campfire").Anchored then
-                        break;
+                        do break end;
                     end;
 
                     t = Tween.new(CFrame.new((campfire:IsA("Model") and campfire:GetPivot() or campfire).Position), true, bypassed and 999 or 250);
@@ -4839,7 +4839,7 @@ function autoferryman:create_instance()
                 self.m1_hold(false)
             end
         end
-    end
+     until true; end
 
     local character_handler = local_player.character:FindFirstChild("CharacterHandler");
     character_handler.Requests.DrawWeapon:FireServer(false);
@@ -4849,8 +4849,8 @@ function autoferryman:create_instance()
 
     task.spawn(function() 
         aztup.flags.silent_aim = true;
-        while task.wait(1 / 30) do
-            if not spoofing then continue end;
+        while task.wait(1 / 30) do repeat 
+            if not spoofing then do break end end;
 
             local v809 = buffer.create(24);
             buffer.writef64(v809, 0, spoof_at.X);
@@ -4862,7 +4862,7 @@ function autoferryman:create_instance()
             if update_mouse then
                 update_mouse:FireServer(v809);
             end;
-        end;
+         until true; end;
     end);
 
     task.wait(1.5) -- so we dont lagspike and place incorrectly
@@ -4872,17 +4872,17 @@ function autoferryman:create_instance()
         if not destructibles then return 0 end
 
         local count = 0
-        for _, campfire in destructibles:GetChildren() do
-            if not campfire.Name:match('Campfire') then continue end
+        for _, campfire in destructibles:GetChildren() do repeat 
+            if not campfire.Name:match('Campfire') then do break end end
 
             local pivot = (campfire:IsA("Model") and campfire:GetPivot() or campfire).Position
             for _, location in campfire_locations do
                 if (pivot - location.Position).Magnitude <= 200 then
-                    count += 1
-                    break
+                    count = count +  1
+                    do break end
                 end
             end
-        end
+         until true; end
 
         return count
     end
@@ -4891,14 +4891,14 @@ function autoferryman:create_instance()
         local destructibles = workspace:FindFirstChild('Destructibles')
         if not destructibles then return false end
 
-        for _, campfire in destructibles:GetChildren() do
-            if not campfire.Name:match('Campfire') then continue end
+        for _, campfire in destructibles:GetChildren() do repeat 
+            if not campfire.Name:match('Campfire') then do break end end
 
             local pivot = (campfire:IsA("Model") and campfire:GetPivot() or campfire).Position
             if (pivot - position).Magnitude <= radius then
                 return true
             end
-        end
+         until true; end
 
         return false
     end
@@ -4921,7 +4921,7 @@ function autoferryman:create_instance()
     local function place_campfire(location)
         local before = campfire_count()
 
-        for attempt = 1, 16 do
+        for attempt = 1, 16 do repeat 
             spoofing = true;
             spoof_at = location.MouseCF;
 
@@ -4937,7 +4937,7 @@ function autoferryman:create_instance()
                     return false
                 end
 
-                continue
+                do break end
             end
 
             pcall(function()
@@ -4948,7 +4948,7 @@ function autoferryman:create_instance()
             repeat task.wait() until campfire_count() > before or tick() - start >= 4
 
             if campfire_count() > before then return true end
-        end
+         until true; end
 
         return false
     end
@@ -5016,14 +5016,14 @@ function autoferryman:kill_ferryman()
     local function get_closest_tree()
         local closest = nil
         
-        for _, tree in workspace.Destructibles:GetChildren() do
-            if not tree.Name:match('Tree') then continue end
-            if not tree:GetAttribute('StructureHealth') then continue end
-            if tree:GetAttribute('StructureHealth') <= 0 then continue end
+        for _, tree in workspace.Destructibles:GetChildren() do repeat 
+            if not tree.Name:match('Tree') then do break end end
+            if not tree:GetAttribute('StructureHealth') then do break end end
+            if tree:GetAttribute('StructureHealth') <= 0 then do break end end
             
             if closest == nil then
                 closest = tree
-                continue
+                do break end
             end
             
             if closest then
@@ -5034,7 +5034,7 @@ function autoferryman:kill_ferryman()
                     closest = tree
                 end
             end
-        end
+         until true; end
         
         return closest
     end
@@ -5113,13 +5113,13 @@ function autoferryman:kill_ferryman()
     local ferryman = nil
     
     repeat 
-        for _, target in workspace.Live:GetChildren() do
-            if target == local_player.character then continue end
-            if not target.Name:lower():find('ferryman') then continue end
+        for _, target in workspace.Live:GetChildren() do local __c51b169 = false; repeat 
+            if target == local_player.character then do break end end
+            if not target.Name:lower():find('ferryman') then do break end end
             
             ferryman = target
-            break
-        end
+            do __c51b169 = true; break end
+         until true; if __c51b169 then break end end
         task.wait()
     until ferryman
 
@@ -5214,11 +5214,11 @@ function autoferryman:kill_ferryman()
             else
                 local start = 0;
                 atb = task.spawn(function()
-                    while task.wait() do
-                        if not aztup.automation:has_any() then break; end
-                        if ferryman.Parent == nil then break; end
-                        if not ferryman:FindFirstChild('HumanoidRootPart') then break; end
-                        if EffectReplicator:FindEffect("Knocked") or EffectReplicator:FindEffect("Ragdoll") then continue; end
+                    while task.wait() do local __c51b175 = false; repeat 
+                        if not aztup.automation:has_any() then do __c51b175 = true; break end; end
+                        if ferryman.Parent == nil then do __c51b175 = true; break end; end
+                        if not ferryman:FindFirstChild('HumanoidRootPart') then do __c51b175 = true; break end; end
+                        if EffectReplicator:FindEffect("Knocked") or EffectReplicator:FindEffect("Ragdoll") then do break end; end
 
                         --* CFrame.Angles(math.rad(-90), 0, 0) 
                         local cf = ferryman.HumanoidRootPart.CFrame * CFrame.new(0, -7, 4) 
@@ -5246,7 +5246,7 @@ function autoferryman:kill_ferryman()
                                 end;
                             end
                             
-                            continue;
+                            do break end;
                         else
                             if not (ferryman.Torso.Transparency >= 1) then
                                 local_player.root_part.CFrame = target_cframe;
@@ -5279,7 +5279,7 @@ function autoferryman:kill_ferryman()
                                 last_attunement = tick();
                             end
                         end;
-                    end
+                     until true; if __c51b175 then break end end
                 end)
                 --table.insert(automation_struct.threads, atb);
                 
@@ -5476,14 +5476,14 @@ local layertwo = {
         aztup.features.m1_hold.held = true
     end,
     player_near = function()
-        for _, player in services.Players:GetPlayers() do
-            if local_player.instance == player then continue end
-            if not player.Character then continue end
-            if not player.Character:FindFirstChild('HumanoidRootPart') then continue end
+        for _, player in services.Players:GetPlayers() do repeat 
+            if local_player.instance == player then do break end end
+            if not player.Character then do break end end
+            if not player.Character:FindFirstChild('HumanoidRootPart') then do break end end
             
             local dist = (local_player.root_part.Position - player.Character:GetPivot().Position).Magnitude
             if dist <= 400 then return true end
-        end
+         until true; end
         
         return false
     end,
@@ -5543,8 +5543,8 @@ local layertwo = {
         local secondsWaited = 0
         
         if targetchest == nil then
-            for _, chest in pairs(workspace.Thrown:GetChildren()) do
-                if not chest:FindFirstChild("Lid") then continue; end
+            for _, chest in pairs(workspace.Thrown:GetChildren()) do local __c51b182 = false; repeat 
+                if not chest:FindFirstChild("Lid") then do break end; end
                 
                 self.temp_tween(chest.Lid.CFrame, 170)
                 local moreTime = 3
@@ -5558,13 +5558,13 @@ local layertwo = {
                     pcall(function(...) 
                         self.temp_tween(chest.Lid.CFrame, 170)
                     end)
-                    moreSecondsWaited += .1
+                    moreSecondsWaited = moreSecondsWaited +  .1
                 until local_player.instance.PlayerGui:FindFirstChild('ChoicePrompt') or moreSecondsWaited >= moreTime
                 
-                repeat task.wait(.1); secondsWaited += .1; until not local_player.instance.PlayerGui:FindFirstChild('ChoicePrompt') or secondsWaited >= time
+                repeat task.wait(.1); secondsWaited = secondsWaited +  .1; until not local_player.instance.PlayerGui:FindFirstChild('ChoicePrompt') or secondsWaited >= time
                 
-                break;
-            end
+                do __c51b182 = true; break end;
+             until true; if __c51b182 then break end end
         else
             self.temp_tween(targetchest.Lid.CFrame, 170)
             local moreTime = 3
@@ -5578,21 +5578,21 @@ local layertwo = {
                 pcall(function(...) 
                     self.temp_tween(targetchest.Lid.CFrame, 170)
                 end)
-                moreSecondsWaited += .1
+                moreSecondsWaited = moreSecondsWaited +  .1
             until local_player.instance.PlayerGui:FindFirstChild('ChoicePrompt')  or moreSecondsWaited >= moreTime
             
-            repeat task.wait(.1); secondsWaited += .1; until not local_player.instance.PlayerGui:FindFirstChild('ChoicePrompt') or secondsWaited >= time
+            repeat task.wait(.1); secondsWaited = secondsWaited +  .1; until not local_player.instance.PlayerGui:FindFirstChild('ChoicePrompt') or secondsWaited >= time
         end
     end,
     grab_nearest_chest = function(self)
         local closest = nil
         
-        for _, chest in workspace.Thrown:GetChildren() do
-            if not chest:FindFirstChild('Lid') then continue end
+        for _, chest in workspace.Thrown:GetChildren() do repeat 
+            if not chest:FindFirstChild('Lid') then do break end end
             
             if not closest then
                 closest = chest
-                continue
+                do break end
             end
             
             if closest then
@@ -5603,17 +5603,17 @@ local layertwo = {
                     closest = chest
                 end
             end
-        end
+         until true; end
         
         if closest then
             self.grab_target_chest(self, closest)
         end
     end,
     avatar_exists = function()
-        for _, avatar in workspace.Live:GetChildren() do
-            if not avatar.Name:match('.avatar') then continue end
+        for _, avatar in workspace.Live:GetChildren() do repeat 
+            if not avatar.Name:match('.avatar') then do break end end
             return true
-        end
+         until true; end
         
         return false
     end,
@@ -5621,10 +5621,10 @@ local layertwo = {
         while task.wait() do
             local specsCount = 0
             
-            for _, projectiles in workspace.Thrown:GetChildren() do
-                if not projectiles.Name:lower():find('bombspec') then continue end
-                specsCount += 1
-            end
+            for _, projectiles in workspace.Thrown:GetChildren() do repeat 
+                if not projectiles.Name:lower():find('bombspec') then do break end end
+                specsCount = specsCount +  1
+             until true; end
             
             if specsCount > 7 then
                 return
@@ -5637,7 +5637,7 @@ local layertwo = {
             
             for _, projectiles in workspace.Thrown:GetChildren() do
                 if projectiles.Name:lower():find('bombspec') then
-                    specsCount += 1
+                    specsCount = specsCount +  1
                 end
             end
             
@@ -5662,13 +5662,13 @@ local layertwo = {
     get_nearest_bonespear = function()
         local closest = nil
         
-        for _, object in workspace.Thrown:GetChildren() do
-            if not object.Name:match('BoneSpear') then continue end
-            if not object:FindFirstChild('InteractPrompt') then continue end
+        for _, object in workspace.Thrown:GetChildren() do repeat 
+            if not object.Name:match('BoneSpear') then do break end end
+            if not object:FindFirstChild('InteractPrompt') then do break end end
             
             if closest == nil then
                 closest = object
-                continue
+                do break end
             end
             
             if closest then
@@ -5679,20 +5679,20 @@ local layertwo = {
                     closest = object
                 end
             end
-        end 
+         until true; end 
         
         return closest
     end,
     found_flying_bonespear = function()
         local flyingbonespear = false
         
-        for _, spear in workspace.Thrown:GetChildren() do
-            if not spear.Name:match('BoneSpear') then continue end
+        for _, spear in workspace.Thrown:GetChildren() do local __c51b194 = false; repeat 
+            if not spear.Name:match('BoneSpear') then do break end end
             if not spear:FindFirstChild('InteractPrompt') then
                 flyingbonespear = true
-                break
+                do __c51b194 = true; break end
             end
-        end
+         until true; if __c51b194 then break end end
         
         return flyingbonespear
     end,
@@ -5702,15 +5702,15 @@ local layertwo = {
         
         local closest = nil
         
-        for _, altar in workspace.TrueAvatarBossRoom.Floor1Stuff:GetChildren() do
-            if not altar.Name:match('Altar') then continue end
-            if altar:FindFirstChild('BoneSpear') then continue end
+        for _, altar in workspace.TrueAvatarBossRoom.Floor1Stuff:GetChildren() do repeat 
+            if not altar.Name:match('Altar') then do break end end
+            if altar:FindFirstChild('BoneSpear') then do break end end
             
             floor_one_done = false
             
             if closest == nil then
                 closest = altar
-                continue
+                do break end
             end
             
             if closest then
@@ -5721,18 +5721,18 @@ local layertwo = {
                     closest = altar
                 end
             end
-        end
+         until true; end
         
         if floor_one_done then
-            for _, altar in workspace.TrueAvatarBossRoom.Floor2Stuff:GetChildren() do
-                if not altar.Name:match('Altar') then continue end
-                if altar:FindFirstChild('BoneSpear') then continue end
+            for _, altar in workspace.TrueAvatarBossRoom.Floor2Stuff:GetChildren() do repeat 
+                if not altar.Name:match('Altar') then do break end end
+                if altar:FindFirstChild('BoneSpear') then do break end end
                 
                 floor_two_done = false
                 
                 if closest == nil then
                     closest = altar
-                    continue
+                    do break end
                 end
                 
                 if closest then
@@ -5743,19 +5743,19 @@ local layertwo = {
                         closest = altar
                     end
                 end
-            end
+             until true; end
         end
         
         if floor_two_done then
-            for _, altar in workspace.TrueAvatarBossRoom.Floor3Stuff:GetChildren() do
-                if not altar.Name:match('Altar') then continue end
-                if altar:FindFirstChild('BoneSpear') then continue end
+            for _, altar in workspace.TrueAvatarBossRoom.Floor3Stuff:GetChildren() do repeat 
+                if not altar.Name:match('Altar') then do break end end
+                if altar:FindFirstChild('BoneSpear') then do break end end
                 
                 floor_three_done = false
                 
                 if closest == nil then
                     closest = altar
-                    continue
+                    do break end
                 end
                 
                 if closest then
@@ -5766,7 +5766,7 @@ local layertwo = {
                         closest = altar
                     end
                 end
-            end
+             until true; end
         end
         
         return closest
@@ -5939,16 +5939,16 @@ function layertwo:floorone()
             if real_bonekeeper and real_bonekeeper.Parent == nil and not bonekeeper then
                 bonekeeper = nil;
                 real_bonekeeper = nil;
-                break;
+                do break end;
             end
 
-            for _, v in workspace.Live:GetChildren() do
-                if v == local_player.character then continue end
-                if not v.Name:find(".boneboy") then continue end
+            for _, v in workspace.Live:GetChildren() do repeat 
+                if v == local_player.character then do break end end
+                if not v.Name:find(".boneboy") then do break end end
                 real_bonekeeper = v;
                 --if not v:FindFirstChild("Target") or not v.Target.Value then continue end
                 bonekeeper = v;
-            end
+             until true; end
 
             if not bonekeeper then
                 self.temp_tween(bonekeeper_location);
@@ -5979,20 +5979,20 @@ function layertwo:floorone()
         self.send_dialogue(nil, true)
     end
     
-    local function handle_spawn_chaser(): Model
+    local function handle_spawn_chaser()
         self.temp_tween(CFrame.new(-5361, 5000, -4801), 250); -- so we dont get ragdolled and hit our head (ow) or get snow
         local foundchaser = nil;
         repeat
             self.temp_tween(CFrame.new(-5361, 285, -4801), 250);
             task.wait();
 
-            for _, v in workspace.Live:GetChildren() do
-                if v == local_player.character then continue end
+            for _, v in workspace.Live:GetChildren() do local __c51b212 = false; repeat 
+                if v == local_player.character then do break end end
                 if v.Name:find('chaser') then
                     foundchaser = v;
-                    break;
+                    do __c51b212 = true; break end;
                 end
-            end
+             until true; if __c51b212 then break end end
 
             self.temp_tween(CFrame.new(-5224.36523, 194.26561, -4633.03223, -0.803056717, -9.8259835e-20, -0.595902622, -3.56286109e-20, 1, -1.16878229e-19, 0.595902622, -7.26286614e-20, -0.803056717), 250);
             task.wait();
@@ -6001,7 +6001,7 @@ function layertwo:floorone()
         return foundchaser
     end
     
-    local function init_chaser_fight(foundchaser: Model)
+    local function init_chaser_fight(foundchaser)
         Tween.new(foundchaser:GetPivot(), true, 250).wait()
         
         repeat
@@ -6017,7 +6017,7 @@ function layertwo:floorone()
         self.send_dialogue('The City?')
     end
     
-    local function handle_chaser_fight(foundchaser: Model): CFrame
+    local function handle_chaser_fight(foundchaser)
         local initchaserlocation = foundchaser.HumanoidRootPart.CFrame
         
         local atb;
@@ -6040,14 +6040,14 @@ function layertwo:floorone()
                         
                         local closest = nil
                         
-                        for _, v in workspace.Layer2Floor1:GetChildren() do
-                            if not v:IsA('Model') then continue end
-                            if not v:FindFirstChild('BurnOff') then continue end
-                            if not v.BurnOff:FindFirstChild('InteractPrompt') then continue end
+                        for _, v in workspace.Layer2Floor1:GetChildren() do repeat 
+                            if not v:IsA('Model') then do break end end
+                            if not v:FindFirstChild('BurnOff') then do break end end
+                            if not v.BurnOff:FindFirstChild('InteractPrompt') then do break end end
                             
                             if closest == nil then
                                 closest = v.BurnOff
-                                continue
+                                do break end
                             end
                             
                             if closest then
@@ -6058,7 +6058,7 @@ function layertwo:floorone()
                                     closest = v.BurnOff
                                 end
                             end
-                        end
+                         until true; end
                         
                         pcall(function(...)  
                             fireproximityprompt(closest.InteractPrompt)
@@ -6070,13 +6070,13 @@ function layertwo:floorone()
                     time = tick()
                 end
                 
-                for _, v in workspace.SpecialSpikeTrap:GetChildren() do
-                    if not v.Name:match('SpikeMod') then continue end
-                    if not v:FindFirstChild('Stalagmite') then continue end
-                    if not (#v.Stalagmite:GetChildren() > 0) then continue end
+                for _, v in workspace.SpecialSpikeTrap:GetChildren() do repeat 
+                    if not v.Name:match('SpikeMod') then do break end end
+                    if not v:FindFirstChild('Stalagmite') then do break end end
+                    if not (#v.Stalagmite:GetChildren() > 0) then do break end end
                     
                     foundDroppables = true
-                end
+                 until true; end
                 
                 aztup.features.void_mobs.let_me_void_chaser = true;
                 if not (foundchaser.Parent == nil) then
@@ -6105,16 +6105,16 @@ function layertwo:floorone()
 
                         -- Attach to head
                         atb = task.spawn(function()
-                            while foundchaser.Parent ~= nil and task.wait() do
-                                if foundchaser.Parent == nil then break; end
-                                if not foundchaser:FindFirstChild('HumanoidRootPart') then break; end
+                            while foundchaser.Parent ~= nil and task.wait() do local __c51b218 = false; repeat 
+                                if foundchaser.Parent == nil then do __c51b218 = true; break end; end
+                                if not foundchaser:FindFirstChild('HumanoidRootPart') then do __c51b218 = true; break end; end
                                 
                                 local cf = foundchaser.HumanoidRootPart.CFrame * CFrame.new(0, -5, 0) * CFrame.Angles(math.rad(90), 0, 0)
                                 
                                 local_player.root_part.AssemblyLinearVelocity = Vector3.zero;
 
                                 if cf.Y < 20 then
-                                    continue;
+                                    do break end;
                                 end;    
                                 
                                 if (local_player.root_part.Position - cf.Position).Magnitude > 30  then
@@ -6125,7 +6125,7 @@ function layertwo:floorone()
                                             tween = nil;
                                         end);
                                     end;
-                                    continue;
+                                    do break end;
                                 else
                                     if voiding_mode and tick() - last_frost_grab_use > 5 then
                                         local Event = local_player.character.CharacterHandler.Requests.ActivateMantra
@@ -6136,7 +6136,7 @@ function layertwo:floorone()
                                     end;
                                     local_player.root_part.CFrame = cf;
                                 end;
-                            end
+                             until true; if __c51b218 then break end end
                         end)
                         
                         table.insert(struct.threads, atb);
@@ -6166,21 +6166,21 @@ function layertwo:floorone()
         return initchaserlocation
     end
     
-    local function handle_chest(initchaserlocation: CFrame)
+    local function handle_chest(initchaserlocation)
         local chaserchest = nil 
         
         repeat
             Tween.new(initchaserlocation * CFrame.new(0, 40, 0), true, 175).wait()
             
-            for _, chest in workspace.Thrown:GetChildren() do
-                if not chest:FindFirstChild('Lid') then continue end
+            for _, chest in workspace.Thrown:GetChildren() do local __c51b221 = false; repeat 
+                if not chest:FindFirstChild('Lid') then do break end end
                 
                 local dist = (local_player.root_part.Position - chest.Lid.Position).Magnitude
                 
-                if dist > 400 then continue end
+                if dist > 400 then do break end end
                 chaserchest = chest
-                break
-            end
+                do __c51b221 = true; break end
+             until true; if __c51b221 then break end end
             
             task.wait()
         until chaserchest
@@ -6197,19 +6197,19 @@ function layertwo:floorone()
         local three = nil
         local four  = nil
         
-        for _, puzzlepart in workspace.Layer2Floor1:GetChildren() do
-            if not puzzlepart.Name:match('PuzzlePart') then continue end
-            if not puzzlepart:FindFirstChild('Requires') then continue end
+        for _, puzzlepart in workspace.Layer2Floor1:GetChildren() do local __c51b222 = false; repeat 
+            if not puzzlepart.Name:match('PuzzlePart') then do break end end
+            if not puzzlepart:FindFirstChild('Requires') then do break end end
             
             local req = puzzlepart:FindFirstChild("Requires").Value
             
-            if req:match('AShape') then one = puzzlepart; continue; end
-            if req:match('DShape') then two = puzzlepart; continue; end
-            if req:match('CShape') then three = puzzlepart; continue; end
-            if req:match('BShape') then four = puzzlepart; continue; end
+            if req:match('AShape') then one = puzzlepart; do break end; end
+            if req:match('DShape') then two = puzzlepart; do break end; end
+            if req:match('CShape') then three = puzzlepart; do break end; end
+            if req:match('BShape') then four = puzzlepart; do break end; end
             
-            if one and two and three and four then break; end
-        end
+            if one and two and three and four then do __c51b222 = true; break end; end
+         until true; if __c51b222 then break end end
         
         -- Tween to both areas until you find interactprompts in the puzzleparts
         repeat
@@ -6321,21 +6321,21 @@ function layertwo:floortwo()
         if not amount or amount and not (amount.Text == '250') then
             local chests = {}
             
-            for _, chest in workspace.Thrown:GetChildren() do
-                if not chest:FindFirstChild('Lid') then continue end
+            for _, chest in workspace.Thrown:GetChildren() do repeat 
+                if not chest:FindFirstChild('Lid') then do break end end
                 table.insert(chests, chest)
-            end
+             until true; end
             
             repeat
                 
                 local closest = nil
                 local currentindex = nil
                 
-                for index, chest in chests do
+                for index, chest in chests do repeat 
                     if not closest then
                         closest = chest
                         currentindex = index
-                        continue
+                        do break end
                     end
                     
                     if closest then
@@ -6347,7 +6347,7 @@ function layertwo:floortwo()
                             currentindex = index
                         end
                     end
-                end
+                 until true; end
                 
                 if closest then
                     Tween.new(closest.Lid.CFrame, true, 175).wait()
@@ -6456,7 +6456,7 @@ function layertwo:floortwo()
             for i, v in workspace.Live:GetChildren() do
                 if v.Name:find('.avatar') then
                     avatar = v
-                    break
+                    do break end
                 end
             end
             task.wait()
@@ -6633,7 +6633,7 @@ function layertwo:go_to_layer_two()
 
     local tween;
     while tick() - start < 60 do
-        if not plane then break; end
+        if not plane then do break end; end
         if tween then tween.stop(); end;
         tween = Tween.new(plane.CFrame, false, 200);
         local_player.root_part.Velocity = Vector3.new(0, -999, 0);
@@ -6755,22 +6755,22 @@ end;
 local automation_struct = require("@src/automation/struct");
 local moonseyrie = {
     player_near = function()
-        for _, player in services.Players:GetPlayers() do
-            if local_player.instance == player then continue end
-            if not player.Character then continue end
-            if not player.Character:FindFirstChild('HumanoidRootPart') then continue end
+        for _, player in services.Players:GetPlayers() do repeat 
+            if local_player.instance == player then do break end end
+            if not player.Character then do break end end
+            if not player.Character:FindFirstChild('HumanoidRootPart') then do break end end
             
             local dist = (local_player.root_part.Position - player.Character:GetPivot().Position).Magnitude
             if dist <= 200 then return true end
-        end
+         until true; end
         
         return false
     end,
     players_near = function(target, mag)
-        for _, player in services.Players:GetPlayers() do
-            if not player.Character then continue end
-            if not player.Character:FindFirstChild('HumanoidRootPart') then continue end
-            if player == local_player.instance then continue end
+        for _, player in services.Players:GetPlayers() do repeat 
+            if not player.Character then do break end end
+            if not player.Character:FindFirstChild('HumanoidRootPart') then do break end end
+            if player == local_player.instance then do break end end
             
             local hmrp = player.Character.HumanoidRootPart
             
@@ -6779,7 +6779,7 @@ local moonseyrie = {
             if (dist <= mag) then
                 return true
             end
-        end
+         until true; end
         
         return false
     end,
@@ -6831,9 +6831,9 @@ local moonseyrie = {
     get_closest_mob = function(name, mag)
         local closest = nil
         
-        for _, mob in workspace.Live:GetChildren() do
-            if not mob:IsA('Model') then continue end
-            if not mob.Name:find(name) then continue end
+        for _, mob in workspace.Live:GetChildren() do repeat 
+            if not mob:IsA('Model') then do break end end
+            if not mob.Name:find(name) then do break end end
             
             if not closest then
                 
@@ -6843,11 +6843,11 @@ local moonseyrie = {
                         closest = mob
                     end
                     
-                    continue
+                    do break end
                 end
                 
                 closest = mob
-                continue
+                do break end
             end
             
             if closest then
@@ -6858,7 +6858,7 @@ local moonseyrie = {
                     closest = mob
                 end
             end
-        end 
+         until true; end 
         
         return closest
     end,
@@ -6866,8 +6866,8 @@ local moonseyrie = {
         local time = 3
         local secondsWaited = 0
         
-        for _, chest in pairs(workspace.Thrown:GetChildren()) do
-            if not chest:FindFirstChild("Lid") then continue; end
+        for _, chest in pairs(workspace.Thrown:GetChildren()) do local __c51b266 = false; repeat 
+            if not chest:FindFirstChild("Lid") then do break end; end
             
             self.temp_tween(self, chest.Lid.CFrame, 170)
             local moreTime = 3
@@ -6881,30 +6881,30 @@ local moonseyrie = {
                 pcall(function(...) 
                     self.temp_tween(self, chest.Lid.CFrame, 170)
                 end)
-                moreSecondsWaited += .5
+                moreSecondsWaited = moreSecondsWaited +  .5
             until local_player.instance.PlayerGui:FindFirstChild('ChoicePrompt') or not aztup.automation:has_any() or moreSecondsWaited >= moreTime or self.player_near()
             
-            if self.player_near() then break end
+            if self.player_near() then do __c51b266 = true; break end end
             
             if not self.player_near() then
-                repeat task.wait(1); secondsWaited += 1; until not local_player.instance.PlayerGui:FindFirstChild('ChoicePrompt') or not aztup.automation:has_any() or secondsWaited >= time or self.player_near()
+                repeat task.wait(1); secondsWaited = secondsWaited +  1; until not local_player.instance.PlayerGui:FindFirstChild('ChoicePrompt') or not aztup.automation:has_any() or secondsWaited >= time or self.player_near()
             end
             
-            break;
-        end
+            do __c51b266 = true; break end;
+         until true; if __c51b266 then break end end
     end,
     get_closest_campfire = function()
         local closest = nil 
         
-        for _, campfire in workspace.Thrown:GetChildren() do
-            if not campfire.Name:match('Campfire') then continue end
-            if not campfire:IsA('Model') then continue end
+        for _, campfire in workspace.Thrown:GetChildren() do repeat 
+            if not campfire.Name:match('Campfire') then do break end end
+            if not campfire:IsA('Model') then do break end end
             
             local campfirePart = campfire:FindFirstChildOfClass('Part')
             
             if closest == nil then
                 closest = campfirePart
-                continue
+                do break end
             end
             
             if closest then
@@ -6915,7 +6915,7 @@ local moonseyrie = {
                     closest = campfirePart
                 end
             end
-        end
+         until true; end
         
         return closest
     end
@@ -6947,8 +6947,8 @@ function moonseyrie:kill(target)
     -- Attach to back
     local atb = task.spawn(function()
         while task.wait() and not self.player_near() do
-            if target.Parent == nil then break; end
-            if not target:FindFirstChild('HumanoidRootPart') then break; end
+            if target.Parent == nil then do break end; end
+            if not target:FindFirstChild('HumanoidRootPart') then do break end; end
             
             local cf = target.HumanoidRootPart.CFrame * CFrame.new(0, foundKickAnim and 60 or 10, 0) * CFrame.Angles(math.rad(-90), 0, 0)
             
@@ -6994,14 +6994,14 @@ function moonseyrie:kill(target)
     if not self.player_near() then
         task.wait(2)
         local timewaited = tick()
-        for _, lootdrop in workspace.Thrown:GetChildren() do
-            if not lootdrop:IsA('Model') then continue end
-            if not lootdrop:FindFirstChild('LootDrop') then continue end
+        for _, lootdrop in workspace.Thrown:GetChildren() do repeat 
+            if not lootdrop:IsA('Model') then do break end end
+            if not lootdrop:FindFirstChild('LootDrop') then do break end end
             
             local dist = (local_player.root_part.Position - lootdrop.LootDrop.Position).Magnitude
-            if dist > 100 then continue end
+            if dist > 100 then do break end end
             
-            if self.players_near(lootdrop.LootDrop.Position, 200) then continue end
+            if self.players_near(lootdrop.LootDrop.Position, 200) then do break end end
             self.temp_tween(self, lootdrop.LootDrop.CFrame, 120)
             repeat
                 pcall(function(...)  
@@ -7013,7 +7013,7 @@ function moonseyrie:kill(target)
             if lootdrop.Parent ~= nil then
                 lootdrop:Destroy()
             end
-        end
+         until true; end
         task.wait(.2)
     end
     
@@ -7085,7 +7085,7 @@ function moonseyrie:handle()
     
     repeat
         task.wait(0.1)
-        timeWaited += 0.1
+        timeWaited = timeWaited +  0.1
     until timeWaited > 3 or self.player_near() or self.get_closest_mob('moonknight', 60)
     
     if self.player_near() then return end
@@ -7244,14 +7244,14 @@ AutoProgression.current = setmetatable({}, {
 })
 
 AutoProgression.player_near = function()
-    for _, player in services.Players:GetPlayers() do
-        if local_player.instance == player then continue end
-        if not player.Character then continue end
-        if not player.Character:FindFirstChild('HumanoidRootPart') then continue end
+    for _, player in services.Players:GetPlayers() do repeat 
+        if local_player.instance == player then do break end end
+        if not player.Character then do break end end
+        if not player.Character:FindFirstChild('HumanoidRootPart') then do break end end
         
         local dist = (local_player.root_part.Position - player.Character:GetPivot().Position).Magnitude
         if dist <= 400 then return true end
-    end
+     until true; end
     
     return false
 end;
@@ -7360,8 +7360,8 @@ function AutoProgression:heal_at_campfire()
         local campfire, closest_dist = nil, math.huge;
 
         if destructibles then
-            for _, c in destructibles:GetChildren() do
-                if not c.Name:match('Campfire') then continue; end;
+            for _, c in destructibles:GetChildren() do repeat 
+                if not c.Name:match('Campfire') then do break end; end;
 
                 local pivot = (c:IsA("Model") and c:GetPivot() or c).Position;
                 local dist = (pivot - local_player.root_part.Position).Magnitude;
@@ -7370,7 +7370,7 @@ function AutoProgression:heal_at_campfire()
                     closest_dist = dist;
                     campfire = c;
                 end;
-            end;
+             until true; end;
         end;
 
         if campfire then
@@ -7441,25 +7441,25 @@ function AutoProgression:hit_nearest_mob_once()
     end;
 
     local closest, closest_dist = nil, math.huge;
-    for _, model in live:GetChildren() do
-        if not model:IsA("Model") then continue end;
-        if model == local_player.character then continue end;
-        if players[model] then continue end;
-        if services.Players:GetPlayerFromCharacter(model) then continue end;
-        if model.Name:find("Brutus") then continue end;
+    for _, model in live:GetChildren() do repeat 
+        if not model:IsA("Model") then do break end end;
+        if model == local_player.character then do break end end;
+        if players[model] then do break end end;
+        if services.Players:GetPlayerFromCharacter(model) then do break end end;
+        if model.Name:find("Brutus") then do break end end;
 
         local root = model:FindFirstChild("HumanoidRootPart") or model.PrimaryPart;
-        if not root then continue end;
+        if not root then do break end end;
 
         local humanoid = model:FindFirstChildOfClass("Humanoid");
-        if not humanoid or humanoid.Health <= 0 then continue end;
+        if not humanoid or humanoid.Health <= 0 then do break end end;
 
         local dist = (root.Position - local_player.root_part.Position).Magnitude;
         if dist < closest_dist then
             closest_dist = dist;
             closest = model;
         end;
-    end;
+     until true; end;
 
     if not closest then return end;
 
@@ -7574,16 +7574,16 @@ function AutoProgression:power()
     local points = 0;
     for name, value in character:GetAttributes() do
         if typeof(value) == "number" and name:match("Stat") then
-            points += value;
+            points = points +  value;
         end;
     end;
 
     local power = 0;
     for _ = 1, 20 do
-        if points <= 15 then break end;
+        if points <= 15 then do break end end;
 
-        points -= 15;
-        power += 1;
+        points = points -  15;
+        power = power +  1;
     end;
 
     return math.min(20, math.max(1, power));
@@ -7798,7 +7798,7 @@ function AutoProgression:start()
         local waited = 0;
         repeat
             task.wait(1)
-            waited += 1;
+            waited = waited +  1;
 
             if waited % 10 == 0 then
                 print(string.format("[auto progression] waiting on character | parent %s | GameLoaded %s",
@@ -7886,7 +7886,7 @@ function AutoProgression:start()
                 while persistent_data:get('auto_progress', false) and self:read_state() == "DOING_AUTO_FERRYMAN" do
                     task.wait(3);
 --
-                    if self:farm_tag() ~= "auto_ferryman" then break; end;
+                    if self:farm_tag() ~= "auto_ferryman" then do break end; end;
 --
                     local baseline = self:read_data().ferryman_baseline or 0;
                     local completed = persistent_data:get('ferryman_rounds_completed', 0) - baseline;
@@ -7918,13 +7918,13 @@ function AutoProgression:start()
                 while persistent_data:get('auto_progress', false) and self:read_state() == "DOING_AUTO_FERRYMAN" do
                     task.wait(3);
 
-                    if ab_builder.shrined then break; end;
+                    if ab_builder.shrined then do break end; end;
 
                     if ab_builder:shrine_ready() then
                         self:set_farm(false);
                         local_player.instance:Kick("Ready for shrine. Please manually use your shrines & grab what you need.");
                         self:set_state("WAITING_MANUAL_SHRINE");
-                        break;
+                        do break end;
                     end;
                 end;
 
@@ -8161,7 +8161,7 @@ local autosaramed = {
                                 task.wait(1)
                             end)
                             
-                            if hungerSatiated() then break; end
+                            if hungerSatiated() then do break end; end
                         end
                     end 
                 end
@@ -8181,7 +8181,7 @@ local autosaramed = {
                                 task.wait(1)
                             end)
                             
-                            if hungerSatiated() then break; end
+                            if hungerSatiated() then do break end; end
                         end
                     end 
                 end
@@ -8201,7 +8201,7 @@ local autosaramed = {
                                 task.wait(1)
                             end)
                             
-                            if hungerSatiated() then break; end
+                            if hungerSatiated() then do break end; end
                         end
                     end 
                 end
@@ -8214,14 +8214,14 @@ local autosaramed = {
         
         -- Search for pomars
         if not hungerSatiated() then
-            for _, pomar in ingredients:GetChildren() do
-                if not pomar.Name:match('Pomar') then continue end
-                if not pomar:FindFirstChild('InteractPrompt') then continue end
-                if not pomar:IsA('MeshPart') then continue end
+            for _, pomar in ingredients:GetChildren() do local __c51b306 = false; repeat 
+                if not pomar.Name:match('Pomar') then do break end end
+                if not pomar:FindFirstChild('InteractPrompt') then do break end end
+                if not pomar:IsA('MeshPart') then do break end end
                 
                 collectIngredient(self, pomar)
-                if hungerSatiated() then break; end    
-            end
+                if hungerSatiated() then do __c51b306 = true; break end; end    
+             until true; if __c51b306 then break end end
             
             eat()
         end
@@ -8230,15 +8230,15 @@ local autosaramed = {
         if not hungerSatiated() then
             local amountCollected = 0
             
-            for _, wheat in ingredients:GetChildren() do
-                if not wheat.Name:match('Wheat') then continue; end
-                if not wheat:FindFirstChild('InteractPrompt') then continue; end
-                if not wheat:IsA('MeshPart') then continue; end
+            for _, wheat in ingredients:GetChildren() do local __c51b307 = false; repeat 
+                if not wheat.Name:match('Wheat') then do break end; end
+                if not wheat:FindFirstChild('InteractPrompt') then do break end; end
+                if not wheat:IsA('MeshPart') then do break end; end
                 
                 collectIngredient(self, wheat)
-                amountCollected += 1
-                if amountCollected >= 36 then break end
-            end
+                amountCollected = amountCollected +  1
+                if amountCollected >= 36 then do __c51b307 = true; break end end
+             until true; if __c51b307 then break end end
             
             toNearestCampfire(self)
             
@@ -8299,9 +8299,9 @@ local autosaramed = {
         -- Attach to back
         local attach_tween;
         local atb = task.spawn(function()
-            while task.wait() do
-                if target.Parent == nil then break; end
-                if not target:FindFirstChild('HumanoidRootPart') then break; end
+            while task.wait() do local __c51b310 = false; repeat 
+                if target.Parent == nil then do __c51b310 = true; break end; end
+                if not target:FindFirstChild('HumanoidRootPart') then do __c51b310 = true; break end; end
                 
                 local cf = self.clampCFrame(target.HumanoidRootPart.CFrame) * CFrame.new(0, aztup.flags.auto_saramed_attach_to_mob_distance, 0) * CFrame.Angles(math.rad(-90), 0, 0)
                 
@@ -8326,12 +8326,12 @@ local autosaramed = {
                 if (local_player.root_part.Position - cf.Position).Magnitude > 30  then
                     if attach_tween then attach_tween.stop() end
                     attach_tween = Tween.new(cf, true, 100);
-                    continue;
+                    do break end;
                 else
                     if attach_tween then attach_tween.stop() end
                     local_player.root_part.CFrame = cf;
                 end;
-            end
+             until true; if __c51b310 then break end end
 
             if attach_tween then attach_tween.stop() end
         end)
@@ -8359,7 +8359,7 @@ local autosaramed = {
         aztup.flags.no_aerials = true;
     end,
     
-    mineOre = function(self, target: MeshPart)
+    mineOre = function(self, target)
         if not target then return false; end
         if target.Parent == nil then return false; end
         if not target:IsA('MeshPart') then return false; end
@@ -8390,14 +8390,14 @@ local autosaramed = {
     getClosestOre = function()
         local closest = nil
         
-        for _, magmaOre in workspace:GetDescendants() do
-            if not magmaOre then continue; end
-            if magmaOre.Parent == nil then continue; end
-            if not magmaOre:IsA('MeshPart') then continue; end
-            if not magmaOre.Name:match('MagmaOre') then continue; end
-            if not magmaOre:FindFirstChild('InteractPrompt') then continue; end
+        for _, magmaOre in workspace:GetDescendants() do repeat 
+            if not magmaOre then do break end; end
+            if magmaOre.Parent == nil then do break end; end
+            if not magmaOre:IsA('MeshPart') then do break end; end
+            if not magmaOre.Name:match('MagmaOre') then do break end; end
+            if not magmaOre:FindFirstChild('InteractPrompt') then do break end; end
             
-            if closest == nil then closest = magmaOre; continue; end
+            if closest == nil then closest = magmaOre; do break end; end
             if closest then
                 local closestDist = (local_player.root_part.Position - closest.Position).Magnitude
                 local magmaOreDist = (local_player.root_part.Position - magmaOre.Position).Magnitude
@@ -8406,7 +8406,7 @@ local autosaramed = {
                     closest = magmaOre
                 end
             end
-        end
+         until true; end
         
         return closest
     end,
@@ -8432,21 +8432,21 @@ local autosaramed = {
         local closest = nil
         local shortestDistance = math.huge
         
-        for _, model in live:GetChildren() do
-            if not model:IsA("Model") then continue end
-            if model == local_player.character then continue end
+        for _, model in live:GetChildren() do repeat 
+            if not model:IsA("Model") then do break end end
+            if model == local_player.character then do break end end
             
-            if model.Name:sub(1,1) ~= "." then continue end
+            if model.Name:sub(1,1) ~= "." then do break end end
             
             local root = model:FindFirstChild("HumanoidRootPart") 
             or model.PrimaryPart
-            if not root then continue end
+            if not root then do break end end
             
             local humanoid = model:FindFirstChildOfClass("Humanoid")
-            if not humanoid then continue end
+            if not humanoid then do break end end
             
-            if humanoid.Health <= 0 then continue end
-            if model:FindFirstChild("Torso") and model.Torso:FindFirstChild("RagdollAttach") then continue end
+            if humanoid.Health <= 0 then do break end end
+            if model:FindFirstChild("Torso") and model.Torso:FindFirstChild("RagdollAttach") then do break end end
             
             local distance = (root.Position - local_player.root_part.Position).Magnitude
             
@@ -8454,7 +8454,7 @@ local autosaramed = {
                 shortestDistance = distance
                 closest = model
             end
-        end
+         until true; end
         
         return closest
     end,
@@ -8464,10 +8464,10 @@ local autosaramed = {
     end,
     
     playerCheck = function(mag, custom)
-        for _, player in services.Players:GetPlayers() do
-            if not player.Character then continue end
-            if not player.Character:FindFirstChild('HumanoidRootPart') then continue end
-            if player == local_player.instance then continue end
+        for _, player in services.Players:GetPlayers() do repeat 
+            if not player.Character then do break end end
+            if not player.Character:FindFirstChild('HumanoidRootPart') then do break end end
+            if player == local_player.instance then do break end end
             
             local hmrp = player.Character.HumanoidRootPart
             
@@ -8476,7 +8476,7 @@ local autosaramed = {
             if (dist <= mag) then
                 return true
             end
-        end
+         until true; end
         
         return false
     end,
@@ -8526,8 +8526,8 @@ local autosaramed = {
         local time = 5
         local secondsWaited = 0
         
-        for _, chest in pairs(workspace.Thrown:GetChildren()) do
-            if not chest:FindFirstChild("Lid") then continue; end
+        for _, chest in pairs(workspace.Thrown:GetChildren()) do local __c51b319 = false; repeat 
+            if not chest:FindFirstChild("Lid") then do break end; end
             
             self.tempTween(chest.Lid.CFrame, 170)
             local moreTime = 5
@@ -8541,13 +8541,13 @@ local autosaramed = {
                 pcall(function(...) 
                     self.tempTween(chest.Lid.CFrame, 170)
                 end)
-                moreSecondsWaited += .1
+                moreSecondsWaited = moreSecondsWaited +  .1
             until local_player.instance.PlayerGui:FindFirstChild('ChoicePrompt') or not aztup.automation:has_any() or moreSecondsWaited >= moreTime
             
-            repeat task.wait(.1); secondsWaited += .1; until not local_player.instance.PlayerGui:FindFirstChild('ChoicePrompt') or not aztup.automation:has_any() or secondsWaited >= time
+            repeat task.wait(.1); secondsWaited = secondsWaited +  .1; until not local_player.instance.PlayerGui:FindFirstChild('ChoicePrompt') or not aztup.automation:has_any() or secondsWaited >= time
             
-            break;
-        end
+            do __c51b319 = true; break end;
+         until true; if __c51b319 then break end end
     end,
 }
 
@@ -8616,10 +8616,10 @@ function autosaramed:checkPlayerStatus()
             task.delay(1, function()
                 if local_player.humanoid.Health <= 1 then return; end
                 
-                local_player.root_part.CFrame *= CFrame.new(0,9e9,0);
+                local_player.root_part.CFrame = local_player.root_part.CFrame *  CFrame.new(0,9e9,0);
             end);
         else
-            local_player.root_part.CFrame *= CFrame.new(0,9e9,0);
+            local_player.root_part.CFrame = local_player.root_part.CFrame *  CFrame.new(0,9e9,0);
         end
     end
 end
@@ -8666,8 +8666,8 @@ function autosaramed:completeDungeon()
             self.killTarget(self, self.tempGetClosest())
         end)
         
-        if self.healthCheck(tonumber('0.' .. aztup.flags.auto_saramed_minimum_health)) then break end
-        if not aztup.automation:has_any() then break; end
+        if self.healthCheck(tonumber('0.' .. aztup.flags.auto_saramed_minimum_health)) then do break end end
+        if not aztup.automation:has_any() then do break end; end
         task.wait()
     until not self.foundMobs()
     
@@ -8685,7 +8685,7 @@ function autosaramed:completeDungeon()
         if aztup.automation:has_any() then
             self.mineOre(self, closestOre)
         else
-            break
+            do break end
         end
     end
     
@@ -8697,14 +8697,14 @@ function autosaramed:completeDungeon()
     -- This is needed because sometimes the fucking sanity causes the player to itch and does not mine the ore or drops it?? I believe i saw it drop the ore when it itched.
     if workspace:FindFirstChild('Deepdrill').DungeonDrill.FuelPort.Display.SurfaceGui.Bar.BackgroundColor3:ToHex() ~= Color3.fromRGB(141, 239, 112):ToHex() then
         repeat
-            for _, ore in workspace:GetDescendants() do
-                if not ore:IsA('MeshPart') then continue; end
-                if not ore.Name:match('MagmaOre') then continue; end
-                if not aztup.automation:has_any() then break end
+            for _, ore in workspace:GetDescendants() do local __c51b330 = false; repeat 
+                if not ore:IsA('MeshPart') then do break end; end
+                if not ore.Name:match('MagmaOre') then do break end; end
+                if not aztup.automation:has_any() then do __c51b330 = true; break end end
                 
                 self.mineOre(self, ore)
-                break;
-            end
+                do __c51b330 = true; break end;
+             until true; if __c51b330 then break end end
             
             self.depositOre(self)
             
@@ -8930,30 +8930,30 @@ local struct;
 
 local auto_voi = {
     playerCheck = function(mag, custom)
-        for _, player in services.Players:GetPlayers() do
-            if not player.Character then continue end
-            if player == local_player.instance then continue end
+        for _, player in services.Players:GetPlayers() do repeat 
+            if not player.Character then do break end end
+            if player == local_player.instance then do break end end
 
             local hrp = player.Character:FindFirstChild("HumanoidRootPart");
-            if not hrp then continue end
+            if not hrp then do break end end
 
             local dist = ((custom or local_player.root_part.Position) - hrp.Position).Magnitude;
             if dist <= mag then
                 return true;
             end
-        end
+         until true; end
         return false;
     end,
 
     mobsCheck = function(mag, custom)
-        for _, mob in workspace.Live:GetChildren() do
-            if not mob:FindFirstChild("HumanoidRootPart") then continue; end;
+        for _, mob in workspace.Live:GetChildren() do repeat 
+            if not mob:FindFirstChild("HumanoidRootPart") then do break end; end;
 
             local dist = ((custom or local_player.root_part.Position) - mob:GetPivot().Position).Magnitude;
             if dist <= mag then
                 return true;
             end
-        end
+         until true; end
         return false;
     end,
 
@@ -9104,15 +9104,15 @@ aztup_options.breaker_type.Value = "Aggressive"
 
                 pcall(function() 
                     aztup.automation.requesting_mob_ai_breaker_stop = true;
-                for _, enforcer in workspace.Live:GetChildren() do
-                    if not enforcer.Name:match("enmity_enforcer") then continue; end
+                for _, enforcer in workspace.Live:GetChildren() do local __c51b348 = false; repeat 
+                    if not enforcer.Name:match("enmity_enforcer") then do break end; end
                     if enforcer.Humanoid.Health <= 0 then return; end
                     aztup.automation.requesting_mob_ai_breaker_stop = false;
                         aztup.flags.atb_z_offset = 0
                     aztup.flags.atb_x_offset = 0
                     aztup.features.attach_to_back.target = enforcer;
-                    break;
-                end;
+                    do __c51b348 = true; break end;
+                 until true; if __c51b348 then break end end;
             end);
         end;
     else
@@ -9359,10 +9359,10 @@ local automation_struct = require("@src/automation/struct");
 
 local notefarm = {
     playerCheck = function(self, mag, custom)
-        for _, player in services.Players:GetPlayers() do
-            if not player.Character then continue end
-            if not player.Character:FindFirstChild('HumanoidRootPart') then continue end
-            if player == local_player.instance then continue end
+        for _, player in services.Players:GetPlayers() do repeat 
+            if not player.Character then do break end end
+            if not player.Character:FindFirstChild('HumanoidRootPart') then do break end end
+            if player == local_player.instance then do break end end
             
             local hmrp = player.Character.HumanoidRootPart
             
@@ -9371,7 +9371,7 @@ local notefarm = {
             if (dist <= mag) then
                 return true
             end
-        end
+         until true; end
         
         return false
     end,
@@ -9410,8 +9410,8 @@ local notefarm = {
     end,
     
     players_near = function(self, target, mag)
-        for _, player in services.Players:GetPlayers() do
-            if player == local_player.instance then continue end
+        for _, player in services.Players:GetPlayers() do repeat 
+            if player == local_player.instance then do break end end
             
             if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
                 local hmrp = player.Character:FindFirstChild("HumanoidRootPart")
@@ -9421,7 +9421,7 @@ local notefarm = {
                     return true
                 end
             end
-        end
+         until true; end
         
         return false
     end,
@@ -9550,20 +9550,20 @@ local notefarm = {
         for _, location in pairs(guild_placement_pos) do
             local guild_door_near = false
             
-            for _, guild_door in workspace:GetChildren() do
-                if guild_door_near then continue end
-                if not (guild_door:IsA('Part')) or (guild_door:IsA('Part') and not guild_door.Name:find('Guild')) then continue end
+            for _, guild_door in workspace:GetChildren() do repeat 
+                if guild_door_near then do break end end
+                if not (guild_door:IsA('Part')) or (guild_door:IsA('Part') and not guild_door.Name:find('Guild')) then do break end end
                 
                 local dist = (location.Position - guild_door.Position).Magnitude
                 if dist <= 50 or self:players_near(location, 400) then
                     guild_door_near = true
-                    continue
+                    do break end
                 end
-            end
+             until true; end
             
             if not guild_door_near then
                 self:player_safe_tween(location, 250)
-                break
+                do break end
             end
         end
         
@@ -9575,17 +9575,17 @@ local notefarm = {
         local closest = nil
         
         repeat
-            for _, guild_door in workspace:GetChildren() do
-                if not guild_door:IsA('Part') then continue end
-                if not guild_door.Name:find('GuildDoor') then continue end
-                if not guild_door:FindFirstChild('InteractPrompt') then continue end
+            for _, guild_door in workspace:GetChildren() do local __c51b361 = false; repeat 
+                if not guild_door:IsA('Part') then do break end end
+                if not guild_door.Name:find('GuildDoor') then do break end end
+                if not guild_door:FindFirstChild('InteractPrompt') then do break end end
                 
                 local dist = (local_player.root_part.Position - guild_door.Position).Magnitude
-                if not (dist <= 5) then continue end
+                if not (dist <= 5) then do break end end
                 
                 closest = guild_door
-                break
-            end
+                do __c51b361 = true; break end
+             until true; if __c51b361 then break end end
             
             task.wait()
         until closest
@@ -9653,23 +9653,23 @@ function notefarm:overworld()
             local banker = nil
             local treasurer = nil
             
-            for _, npc in workspace.NPCs:GetChildren() do
-                if banker and treasurer then break end
+            for _, npc in workspace.NPCs:GetChildren() do local __c51b366 = false; repeat 
+                if banker and treasurer then do __c51b366 = true; break end end
                 
-                if not npc:IsA('Model') then continue end
-                if not npc:GetAttribute('Guild') then continue end
-                if not npc:GetAttribute('Guild'):match(guild_name) then continue end
+                if not npc:IsA('Model') then do break end end
+                if not npc:GetAttribute('Guild') then do break end end
+                if not npc:GetAttribute('Guild'):match(guild_name) then do break end end
                 
                 if npc.Name:match('Banker') then
                     banker = npc
-                    continue
+                    do break end
                 end
                 
                 if npc.Name:match('Treasurer') then
                     treasurer = npc
-                    continue
+                    do break end
                 end
-            end
+             until true; if __c51b366 then break end end
             
             if banker and not persistent_data:get('max_notes', false) then
                 self:tempTween(banker.HumanoidRootPart.CFrame * CFrame.new(5, 0, 0), 170)
@@ -9708,12 +9708,12 @@ function notefarm:overworld()
             local closestBanker = nil
             
             repeat
-                for _, npc in workspace.NPCs:GetChildren() do
-                    if not npc.Name:match('Banker') then continue end
+                for _, npc in workspace.NPCs:GetChildren() do repeat 
+                    if not npc.Name:match('Banker') then do break end end
                     
                     if closestBanker == nil then
                         closestBanker = npc
-                        continue
+                        do break end
                     end
                     
                     if closestBanker then
@@ -9724,7 +9724,7 @@ function notefarm:overworld()
                             closestBanker = npc
                         end
                     end
-                end
+                 until true; end
                 
                 task.wait()
             until closestBanker
@@ -9928,10 +9928,10 @@ module_map["src/automation/persistent_tasks/soup_echofarm"] = function(require)
 local automation_struct = require("@src/automation/struct");
 local echofarm = {
     playerCheck = function(mag, custom)
-         for _, player in services.Players:GetPlayers() do
-            if not player.Character then continue end
-            if not player.Character:FindFirstChild('HumanoidRootPart') then continue end
-            if player == local_player.instance then continue end
+         for _, player in services.Players:GetPlayers() do repeat 
+            if not player.Character then do break end end
+            if not player.Character:FindFirstChild('HumanoidRootPart') then do break end end
+            if player == local_player.instance then do break end end
 
             local hmrp = player.Character.HumanoidRootPart
 
@@ -9940,7 +9940,7 @@ local echofarm = {
             if (dist <= mag) then
                 return true
             end
-        end
+         until true; end
 
         return false
     end,
@@ -10024,7 +10024,7 @@ function echofarm:craft_soup()
     local i = 0;
     local function collect_ingredient(ing)
         self.player_safe_tween(self, ing.CFrame, i == 0 and 250 or 280)
-        i += 1;
+        i = i +  1;
         local cf = ing.CFrame;
 
         repeat
@@ -10040,17 +10040,17 @@ function echofarm:craft_soup()
     local function get_closest_ing(ing)
         local closest = nil
 
-        for _, ingredient in workspace:FindFirstChild('Ingredients'):GetChildren() do
+        for _, ingredient in workspace:FindFirstChild('Ingredients'):GetChildren() do repeat 
             if ingredient.Name:match(ing) then
-                if closest == nil then closest = ingredient; continue; end
+                if closest == nil then closest = ingredient; do break end; end
                 if closest then
                     local closestDist = (local_player.root_part.Position - closest.Position).Magnitude
                     local ingredientDist = (local_player.root_part.Position - ingredient.Position).Magnitude
-                    if ingredientDist > 1000 then continue; end
-                    if ingredientDist < closestDist then closest = ingredient; continue; end
+                    if ingredientDist > 1000 then do break end; end
+                    if ingredientDist < closestDist then closest = ingredient; do break end; end
                 end
             end
-        end
+         until true; end
 
         return closest
     end
@@ -10131,7 +10131,7 @@ function echofarm:craft_soup()
                 update_count()
 
                 if count >= 2 then
-                    break;
+                    do break end;
                 end
 
                 if not local_player.instance.Backpack:FindFirstChild(bestPair[2]) then
@@ -10145,10 +10145,10 @@ function echofarm:craft_soup()
                 update_count()
 
                 if count >= 2 then
-                    break;
+                    do break end;
                 end
                 task.wait(0.1);
-                runs += 1;
+                runs = runs +  1;
             end;
         end
     end
@@ -10253,15 +10253,15 @@ local state_machine = StateMachine.create({
                 local function get_closest_campfire(pos)
                     local closest = nil 
                 
-                    for _, campfire in workspace.Thrown:GetChildren() do
-                        if not campfire.Name:match('Campfire') then continue end
-                        if not campfire:IsA('Model') then continue end
+                    for _, campfire in workspace.Thrown:GetChildren() do repeat 
+                        if not campfire.Name:match('Campfire') then do break end end
+                        if not campfire:IsA('Model') then do break end end
                     
                         local campfirePart = campfire:FindFirstChildOfClass('Part')
                     
                         if closest == nil then
                             closest = campfirePart
-                            continue
+                            do break end
                         end
                     
                         if closest then
@@ -10272,7 +10272,7 @@ local state_machine = StateMachine.create({
                                 closest = campfirePart
                             end
                         end
-                    end
+                     until true; end
                 
                     return closest
                 end
@@ -10302,7 +10302,7 @@ local state_machine = StateMachine.create({
                             while task.wait() do end
                         end
                         task.wait()
-                        if local_player.instance:FindFirstChild("Backpack") and local_player.instance:FindFirstChild("Backpack"):FindFirstChild("Mushroom Soup", true) then break; end
+                        if local_player.instance:FindFirstChild("Backpack") and local_player.instance:FindFirstChild("Backpack"):FindFirstChild("Mushroom Soup", true) then do break end; end
                         Tween.new(campfire, true, 2000).wait();
                         task.spawn(pcall, function()
                             craftRemote:InvokeServer({
@@ -10695,18 +10695,18 @@ local dungeon = 8668476218;
 
 local autotitus = {
     playerCheck = function(mag, custom)
-        for _, player in services.Players:GetPlayers() do
-            if not player.Character then continue end
-            if player == local_player.instance then continue end
+        for _, player in services.Players:GetPlayers() do repeat 
+            if not player.Character then do break end end
+            if player == local_player.instance then do break end end
 
             local hrp = player.Character:FindFirstChild("HumanoidRootPart");
-            if not hrp then continue end
+            if not hrp then do break end end
 
             local dist = ((custom or local_player.root_part.Position) - hrp.Position).Magnitude;
             if dist <= mag then
                 return true;
             end
-        end
+         until true; end
         return false;
     end,
 
@@ -10773,7 +10773,7 @@ function autotitus:attachToTitus()
         for _, ent in workspace.Live:GetChildren() do
             if ent.Name:lower():find("titus") and ent.Name:find(".") then
                 titus = ent;
-                break;
+                do break end;
             end
         end
         task.wait() 
@@ -10806,7 +10806,7 @@ function autotitus:attachToTitus()
         while task.wait() do
             if not titus or not titus.Parent or not torso.Parent or not aztup.automation:has_any() then
                 if activeTween then activeTween.stop() end
-                break;
+                do break end;
             end
 
             if torso.Position.Y > 2000 then
@@ -10845,16 +10845,16 @@ function autotitus:grabChest()
     local findStart = tick()
 
     repeat
-        for _, chest in workspace.Thrown:GetChildren() do
-            if not chest:FindFirstChild('Lid') then continue end
+        for _, chest in workspace.Thrown:GetChildren() do repeat 
+            if not chest:FindFirstChild('Lid') then do break end end
 
             local distance = (local_player.root_part.Position - chest.Lid.Position).Magnitude;
-            if distance > maxDistance then continue end
+            if distance > maxDistance then do break end end
 
             if not closest or distance < (local_player.root_part.Position - closest.Lid.Position).Magnitude then
                 closest = chest
             end
-        end
+         until true; end
         task.wait()
     until closest or not aztup.automation:has_any() or (tick() - findStart > 15)
 
@@ -10921,7 +10921,7 @@ function autotitus:getechoes()
         for i = 1, 3 do
             idol:Activate()
             task.wait(0.1);
-            if player.PlayerGui:FindFirstChild("ChoicePrompt") then break; end
+            if player.PlayerGui:FindFirstChild("ChoicePrompt") then do break end; end
         end
         
         local prompt = player.PlayerGui:WaitForChild("ChoicePrompt", 5)
@@ -10936,7 +10936,7 @@ function autotitus:getechoes()
     for _, tool in ipairs(backpack:GetChildren()) do
         if tool:IsA("Tool") and tool.Name:match("Enchant") then
             enchantStone = tool
-            break
+            do break end
         end
     end
 
@@ -11163,10 +11163,10 @@ local state_machine = StateMachine.create({
                 replicatesignal(local_player.instance.Kill)
                 task.delay(1, function()
                     if local_player.humanoid.Health <= 1 then return; end
-                    local_player.root_part.CFrame *= CFrame.new(0,9e9,0);
+                    local_player.root_part.CFrame = local_player.root_part.CFrame *  CFrame.new(0,9e9,0);
                 end);
             else
-                local_player.root_part.CFrame *= CFrame.new(0,9e9,0);
+                local_player.root_part.CFrame = local_player.root_part.CFrame *  CFrame.new(0,9e9,0);
             end
         end
     }
@@ -11446,18 +11446,18 @@ local dungeon = 8668476218;
 
 local autotitus = {
     playerCheck = function(mag, custom)
-        for _, player in services.Players:GetPlayers() do
-            if not player.Character then continue end
-            if player == local_player.instance then continue end
+        for _, player in services.Players:GetPlayers() do repeat 
+            if not player.Character then do break end end
+            if player == local_player.instance then do break end end
             
             local hrp = player.Character:FindFirstChild("HumanoidRootPart");
-            if not hrp then continue end
+            if not hrp then do break end end
             
             local dist = ((custom or local_player.root_part.Position) - hrp.Position).Magnitude;
             if dist <= mag then
                 return true;
             end
-        end
+         until true; end
         return false;
     end,
     
@@ -11498,15 +11498,15 @@ local autotitus = {
         local thrown = workspace:FindFirstChild('Thrown')
         if not thrown then return chests end
 
-        for _, object in thrown:GetDescendants() do
-            if object.Name ~= 'Lid' then continue end
-            if not object:IsA('BasePart') then continue end
+        for _, object in thrown:GetDescendants() do repeat 
+            if object.Name ~= 'Lid' then do break end end
+            if not object:IsA('BasePart') then do break end end
 
             local dist = (local_player.root_part.Position - object.Position).Magnitude
-            if max_distance and dist > max_distance then continue end
+            if max_distance and dist > max_distance then do break end end
 
             table.insert(chests, object.Parent)
-        end
+         until true; end
 
         return chests
     end,
@@ -11514,12 +11514,12 @@ local autotitus = {
     get_nearest_banker = function()
         local closest = nil
         
-        for _, banker in workspace.NPCs:GetChildren() do
-            if not banker.Name:match('Banker') then continue end
+        for _, banker in workspace.NPCs:GetChildren() do repeat 
+            if not banker.Name:match('Banker') then do break end end
             
             if closest == nil then
                 closest = banker
-                continue
+                do break end
             end
             
             if closest then
@@ -11530,7 +11530,7 @@ local autotitus = {
                     closest = banker
                 end
             end
-        end
+         until true; end
         
         return closest
     end,
@@ -11592,12 +11592,12 @@ function autotitus:refillfood()
     local function nearest_well()
         local closest = nil
         
-        for _, well in workspace.Terrain.Water:GetChildren() do
-            if not well.Name:match('DrinkingWater') then continue end
+        for _, well in workspace.Terrain.Water:GetChildren() do repeat 
+            if not well.Name:match('DrinkingWater') then do break end end
             
             if closest == nil then
                 closest = well
-                continue
+                do break end
             end
             
             local closestdist = (local_player.root_part.Position - closest:GetPivot().Position).Magnitude
@@ -11606,7 +11606,7 @@ function autotitus:refillfood()
             if dist < closestdist then
                 closest = well
             end
-        end
+         until true; end
         
         return closest
     end
@@ -11660,7 +11660,7 @@ function autotitus:attachToTitus()
         for _, ent in workspace.Live:GetChildren() do
             if ent.Name:lower():find("titus") and ent.Name:find(".") then
                 titus = ent;
-                break;
+                do break end;
             end
         end
         task.wait() 
@@ -11693,7 +11693,7 @@ function autotitus:attachToTitus()
         while task.wait() do
             if not titus or not titus.Parent or not torso.Parent or not aztup.automation:has_any() then
                 if activeTween then activeTween.stop() end
-                break;
+                do break end;
             end
 
             if torso.Position.Y > 2000 then
@@ -12048,7 +12048,7 @@ struct = automation_struct:construct({
                                 for _, itm in local_player.instance.Backpack:GetChildren() do
                                     if itm.Name == bkn then dep[#dep + 1] = itm end
                                 end
-                                if #dep == 0 then break end
+                                if #dep == 0 then do break end end
                                 bg:WaitForChild("Choice"):FireServer("deposit", dep)
                                 local bt = tick()
                                 repeat
@@ -12204,10 +12204,10 @@ struct = automation_struct:construct({
                     task.delay(1, function()
                         if local_player.humanoid.Health <= 1 then return; end
                         
-                        local_player.root_part.CFrame *= CFrame.new(0,9e9,0);
+                        local_player.root_part.CFrame = local_player.root_part.CFrame *  CFrame.new(0,9e9,0);
                     end);
                 else
-                    local_player.root_part.CFrame *= CFrame.new(0,9e9,0);
+                    local_player.root_part.CFrame = local_player.root_part.CFrame *  CFrame.new(0,9e9,0);
                 end
             end
         }
@@ -12287,16 +12287,16 @@ end;
 automation_struct.run = LPH_NO_VIRTUALIZE(function(self)
 	self.threads = {};
 	self.toggled_for_user = {};
-    for _, feature in pairs(self.features) do
+    for _, feature in pairs(self.features) do repeat 
 		if aztup.flags[feature] then
-			continue
+			do break end
 		end
         
         aztup.flags[feature] = true;
         
         local feat = aztup.features[feature];
 		if not feat then
-			continue
+			do break end
 		end
         
         if feat.conn then 
@@ -12323,7 +12323,7 @@ automation_struct.run = LPH_NO_VIRTUALIZE(function(self)
 		end;
 
         self.active_features[feature] = feat;
-    end;
+     until true; end;
     
     if self.on_run then
         task.spawn(self.on_run);
@@ -12361,7 +12361,7 @@ automation_struct.create_character = function(self)
 	    for _ = 1, 10 do
 	    	suc = pickSpawn:InvokeServer(options.origin)
 	    	if suc then
-	    		break
+	    		do break end
 	    	end
 	    	task.wait(0.1)
 	    end
@@ -12371,7 +12371,7 @@ automation_struct.create_character = function(self)
 	    for _ = 1, 10 do
 	    	suc = changeWeapon:InvokeServer(options.weapon)
 	    	if suc then
-	    		break
+	    		do break end
 	    	end
 	    	task.wait(0.1)
 	    end
@@ -12385,7 +12385,7 @@ automation_struct.create_character = function(self)
             }
             toggleMetaModifier:FireServer(unpack(args))
             
-            if (#options.modifiers == 1) then break end
+            if (#options.modifiers == 1) then do break end end
             task.wait(1)
         end
     end
@@ -12423,7 +12423,7 @@ automation_struct.create_character = function(self)
         task.wait()
 
         if local_player.character and local_player.character.Parent and local_player.character.Parent.Name == "Live" then
-            break;
+            do break end;
         end
     end
 
@@ -12746,13 +12746,13 @@ local function setup_config()
                 end
             end
 
-            for _, name in ipairs(builder.build_config.talents or {}) do
+            for _, name in ipairs(builder.build_config.talents or {}) do repeat 
                 local talentobj = talent_lookup[name:lower()]
-                if not talentobj then continue end
+                if not talentobj then do break end end
 
                 local isPre = check_reqs(talentobj, builder.build_config.preShrine) and not check_reqs(talentobj, builder.build_config.attributes)
                 table.insert(isPre and builder.build_config.preShrine_talents or builder.build_config.postShrine_talents, (name:gsub(" [HVY]", ""):gsub(" [LHT]", ""):gsub(" [MED]", "")))
-            end
+             until true; end
         end
     end
 end
@@ -12761,7 +12761,7 @@ function builder:ensure_config()
     if not self.build_config or self.loaded_url ~= get_build_url() then
         for attempt = 1, 3 do
             setup_config()
-            if self.build_config then break end
+            if self.build_config then do break end end
 
             task.wait(1.5);
         end
@@ -12794,8 +12794,8 @@ function builder:shrine_ready()
         if target > 0 then
             local request_name = resolve_attribute(label)
             if request_name then
-                wanted += target
-                missing += math.max(0, target - stat_of(data, request_name))
+                wanted = wanted +  target
+                missing = missing +  math.max(0, target - stat_of(data, request_name))
             end
         end
     end
@@ -12863,8 +12863,8 @@ function builder:finished()
         if target > 0 then
             local request_name = resolve_attribute(label)
             if request_name then
-                wanted += target
-                missing += math.max(0, target - stat_of(data, request_name))
+                wanted = wanted +  target
+                missing = missing +  math.max(0, target - stat_of(data, request_name))
             end
         end
     end
@@ -12976,7 +12976,7 @@ function builder:spend_points()
                 local before = stat_of(data, entry.request);
                 if not raise_attribute(entry.request) then return end
 
-                entry.budget -= 1;
+                entry.budget = entry.budget -  1;
 
                 task.wait(0.35)
                 data = get_player_data() or data;
@@ -12988,7 +12988,7 @@ function builder:spend_points()
                     entry.misses = 0;
                     raised = true;
                 else
-                    entry.misses += 1;
+                    entry.misses = entry.misses +  1;
                 end
             end
         end
@@ -13061,13 +13061,13 @@ local function points_left_per_attunement(data)
     local targets = builder:_attribute_targets(data)
     if not targets then return points_left end
 
-    for label, value in pairs(targets) do
+    for label, value in pairs(targets) do repeat 
         local request_name = resolve_attribute(label)
-        if not request_name or not request_name:find("^Element") then continue end
+        if not request_name or not request_name:find("^Element") then do break end end
 
         local element = request_name:gsub("^Element", "")
         points_left[element] = math.max(0, (tonumber(value) or 0) - stat_of(data, request_name))
-    end
+     until true; end
 
     return points_left
 end
@@ -13076,14 +13076,14 @@ local function most_needed_mantra(cards, data, allowed)
     local points_left = points_left_per_attunement(data)
     local best, most_needed = nil, -1
 
-    for _, card in ipairs(cards) do
-        if not allowed(card) then continue end
+    for _, card in ipairs(cards) do repeat 
+        if not allowed(card) then do break end end
 
         local needed = (card.Element and points_left[card.Element]) or 0
         if needed > most_needed then
             best, most_needed = card, needed
         end
-    end
+     until true; end
 
     return best
 end
@@ -13269,7 +13269,7 @@ function builder:talent_handler()
             for _, card in ipairs(cards) do
                 if self._wants(card.Name, card_label(card)) then
                     picked = self._pick_card(card, is_special)
-                    if picked then break end
+                    if picked then do break end end
                 end
             end
         end
@@ -13278,7 +13278,7 @@ function builder:talent_handler()
             for _, card in ipairs(cards) do
                 if card.Name == "Fold" then
                     picked = self._pick_card(card, is_special)
-                    break
+                    do break end
                 end
             end
         end
@@ -13294,12 +13294,12 @@ function builder:talent_handler()
             end)
 
             if not fallback then
-                for _, card in ipairs(cards) do
-                    if table.find(to_burn, card.Name) then continue end
+                for _, card in ipairs(cards) do local __c51b499 = false; repeat 
+                    if table.find(to_burn, card.Name) then do break end end
 
                     fallback = card
-                    break
-                end
+                    do __c51b499 = true; break end
+                 until true; if __c51b499 then break end end
             end
 
             if fallback then
@@ -13309,10 +13309,10 @@ function builder:talent_handler()
     end
 
     if deckgui and deckgui.Visible then
-        for _, card in ipairs(deckgui.TalentScroll:GetChildren()) do
-            if not card:IsA('TextButton') then continue end
+        for _, card in ipairs(deckgui.TalentScroll:GetChildren()) do repeat 
+            if not card:IsA('TextButton') then do break end end
             self._talent_decision(card)
-        end
+         until true; end
     end
 
     if choiceprompt then
@@ -13392,14 +13392,14 @@ function feature:enable()
 
     closest_distance = math.huge;
 
-    for _, mob in live:GetChildren() do
+    for _, mob in live:GetChildren() do repeat 
         if mob.Name:sub(1,1) ~= "." or (
             not mob.Name:match("megalodaunt")
             and not mob.Name:match("golem")
             and not mob.Name:match("crocco")
             and not mob.Name:match("stoneknight")
         ) then
-            continue
+            do break end
         end
 
         local mobRoot = mob:FindFirstChild("HumanoidRootPart")
@@ -13410,7 +13410,7 @@ function feature:enable()
                 target = mob
             end
         end
-    end
+     until true; end
 
     if closest_distance > 250 then
         target = nil
@@ -13825,7 +13825,7 @@ function auto_loot:stat_loot(remote, loot)
 
             if stat_value < stat[2] then
                 all_stats_meet_criteria = false
-                break
+                do break end
             end
         end
 
@@ -14099,19 +14099,19 @@ function auto_loot:main()
     if not self.chest_check(options) then
         local count = 0
 
-        for _, loot_object in options:GetChildren() do
-            if not loot_object:IsA('TextButton') then continue end
-            if not loot_object.AutoButtonColor then count += 1; continue end
+        for _, loot_object in options:GetChildren() do local __c51b519 = false; repeat 
+            if not loot_object:IsA('TextButton') then do break end end
+            if not loot_object.AutoButtonColor then count = count +  1; do break end end
 
-            if not aztup.flags.auto_loot then break end
+            if not aztup.flags.auto_loot then do __c51b519 = true; break end end
 
-            if self:always_loot(remote, loot_object) then count += 1; continue end
-            if self.is_overweight() then continue end
+            if self:always_loot(remote, loot_object) then count = count +  1; do break end end
+            if self.is_overweight() then do break end end
 
-            if self:item_loot(remote, loot_object) then count += 1; continue end
-            if self:stat_loot(remote, loot_object) then count += 1; continue end
-            if self:loot_all(remote, loot_object) then count += 1; continue end
-        end
+            if self:item_loot(remote, loot_object) then count = count +  1; do break end end
+            if self:stat_loot(remote, loot_object) then count = count +  1; do break end end
+            if self:loot_all(remote, loot_object) then count = count +  1; do break end end
+         until true; if __c51b519 then break end end
 
         if not (count == 0) then return end
     else
@@ -14149,7 +14149,7 @@ local function checkRangeFromPing(obj, rangeCheck, speed)
 	end
 	local distance = (obj.Position - local_player.root_part.Position).Magnitude
 	local ping = (Latency and Latency.get_ping and Latency:get_ping()) or 0
-	distance -= (speed or 0) * (ping * 2)
+	distance = distance -  (speed or 0) * (ping * 2)
 	return distance <= rangeCheck, distance, (speed and speed ~= 0) and (ping / speed) or 0
 end
 
@@ -14175,7 +14175,7 @@ if thrown then
 			for _, child in live:GetChildren() do
 				if child.Name:match("nomad") then
 					nomad = child
-					break
+					do break end
 				end
 			end
 
@@ -14216,7 +14216,7 @@ if thrown then
 			for _, angel in live:GetChildren() do
 				if angel.Name:match(".angel") then
 					current_angel = angel
-					break
+					do break end
 				end
 			end
 
@@ -14227,7 +14227,7 @@ if thrown then
 				if child.Name:match("boneboy") then
 					has_bonekeeper = true
 					bk = child
-					break
+					do break end
 				end
 			end
 
@@ -14275,7 +14275,7 @@ if thrown then
 					and player.Backpack:FindFirstChild("Mantra:EruptionBlood{{Scarlet Cyclone}}", true)
 				then
 					user = player.Character
-					break
+					do break end
 				end
 			end
 
@@ -14289,7 +14289,7 @@ if thrown then
 
 				if math.abs(pos_delta.X) < 12 and math.abs(pos_delta.Y) < 15 and math.abs(pos_delta.Z) < 12 then
 					general:generic_parry_ap_task(user)
-					break
+					do break end
 				end
 			until not part.Parent
 		elseif part.Name:find("AraneaProjectile") or part.Name:find("SuperArrow") then
@@ -14316,7 +14316,7 @@ if thrown then
 
 				if math.abs(pos_delta.X) < 12 and math.abs(pos_delta.Y) < 15 and math.abs(pos_delta.Z) < 12 then
 					general:generic_parry_ap_task(user.Character)
-					break
+					do break end
 				end
 			until not part.Parent
 		elseif part.Name:find("ShadeArrow") then
@@ -14343,7 +14343,7 @@ if thrown then
 
 				if math.abs(pos_delta.X) < 15 and math.abs(pos_delta.Y) < 16 and math.abs(pos_delta.Z) < 15 then
 					general:generic_parry_ap_task(user.Character)
-					break
+					do break end
 				end
 			until not part.Parent
 		elseif part.Name == "Bullet" and not checkRange(part, 10) then
@@ -14532,20 +14532,20 @@ end;
 		for _, entity in workspace:WaitForChild("Live"):GetChildren() do
 			if entity.Name:match("avatar") then
 				ethiron = entity
-				break
+				do break end
 			end
 		end
 
 		DefendActionManager:queue_generic_dodge_task(ethiron)
 	elseif projectile.Name == "SpikeStabEff" then
 		local chaser
-		for _, entity in live:GetChildren() do
+		for _, entity in live:GetChildren() do local __c51b538 = false; repeat 
 			if not entity.Name:match(".chaser") then
-				continue
+				do break end
 			end
 			chaser = entity
-			break
-		end
+			do __c51b538 = true; break end
+		 until true; if __c51b538 then break end end
 
 		if not chaser then
 			return
@@ -14565,13 +14565,13 @@ end;
 		DefendActionManager:queue_generic_parry_task(chaser)
 	elseif projectile.Name == "HitTendril" then
 		local chaser
-		for _, entity in live:GetChildren() do
+		for _, entity in live:GetChildren() do local __c51b539 = false; repeat 
 			if not entity.Name:match(".chaser") then
-				continue
+				do break end
 			end
 			chaser = entity
-			break
-		end
+			do __c51b539 = true; break end
+		 until true; if __c51b539 then break end end
 
 		if not chaser then
 			return
@@ -14671,17 +14671,17 @@ end;
     LPH_NO_VIRTUALIZE(function()
         function self:should_block_input()
             local should_block = false;
-            for index, task in self.tasks do
+            for index, task in self.tasks do repeat 
                 if not task.mob or not task.mob.Parent then
                     self.tasks[index] = nil;
                 end;
             
                 if task.mob then
                     local mob_root = task.mob:FindFirstChild("HumanoidRootPart");
-                    if not mob_root then continue end
+                    if not mob_root then do break end end
                 
                     local distance = (local_player.root_part.Position - mob_root.Position).Magnitude;
-                    if task.range and distance > task.range or task.in_hitbox and not task.in_hitbox() then continue end
+                    if task.range and distance > task.range or task.in_hitbox and not task.in_hitbox() then do break end end
                 
                     if not should_block then
                         local block_input = aztup.flags.block_input;
@@ -14691,7 +14691,7 @@ end;
                         should_block = allowed_targets.PVE and task.mob.Name:sub(1, 1) == "." or allowed_targets.PVP
                     end;
                 end;
-            end;
+             until true; end;
 
             return should_block        
 end;
@@ -15181,7 +15181,7 @@ return {
         for _, child in workspace.Live:GetChildren() do
             if child.Name:match("boneboy") then
                 bk = child
-                break
+                do break end
             end
         end
 
@@ -15670,7 +15670,7 @@ return {
             local conn = thrown.ChildAdded:Connect(function(part)
                 if EffectReplicator:FindEffect("ParryCool") or not local_player.tracker:can_parry() then return end
                 if part.Name == "ShadowSlash" then
-                    num += 1;
+                    num = num +  1;
                     if num == 2 then return end
 
                     action.when = 0
@@ -15722,7 +15722,7 @@ return {
 
 	    if defender.entity.Name:match(".miniwidow") then
 		    action.hitbox = Vector3.new(25, 25, 25)
-            when /= 1.1
+            when = when /  1.1
         else
 		    action.hitbox = Vector3.new(40, 40, 40)
         end;
@@ -15859,8 +15859,8 @@ return {
 
         while tick() - start < 1 or has_grab do
             has_grab = false;
-            for _, object in workspace:WaitForChild("Thrown"):GetChildren() do
-                if object.Name ~= "GrabPart" then continue end
+            for _, object in workspace:WaitForChild("Thrown"):GetChildren() do repeat 
+                if object.Name ~= "GrabPart" then do break end end
 
                 has_grab = true;
                 
@@ -15874,7 +15874,7 @@ return {
                 action:push();
             
                 return action            
-end;
+ until true; end;
             task.wait();
         end;
 
@@ -16023,8 +16023,8 @@ return {
 
         while tick() - start < 1 or has_blast do
             has_blast = false;
-            for _, object in workspace:WaitForChild("Thrown"):GetChildren() do
-                if object.Name ~= "DukeBlast" then continue end
+            for _, object in workspace:WaitForChild("Thrown"):GetChildren() do repeat 
+                if object.Name ~= "DukeBlast" then do break end end
 
                 has_blast = true;
                 
@@ -16038,7 +16038,7 @@ return {
                 action:push();
             
                 return action            
-end;
+ until true; end;
             task.wait();
         end;
 
@@ -16166,8 +16166,8 @@ return {
 
         while tick() - start < 1 or has_semtex do
             has_semtex = false
-            for _, object in workspace:WaitForChild("Thrown"):GetChildren() do
-                if object.Name ~= "Semtex" then continue end
+            for _, object in workspace:WaitForChild("Thrown"):GetChildren() do repeat 
+                if object.Name ~= "Semtex" then do break end end
 
                 has_semtex = true
                 if general:in_hitbox(local_player.root_part.CFrame, object.CFrame, Vector3.new(10, 10, 80), CFrame.new(0, 0, -40), false) then
@@ -16179,7 +16179,7 @@ return {
                     action:push()
                     return action
                 end
-            end
+             until true; end
             task.wait()
         end
 
@@ -16580,7 +16580,7 @@ end;
 
         action.should = function()
             if defender:in_hitbox(Vector3.new(20,20,20), CFrame.new(0,0,-10), true) then
-                shoulds += 1;
+                shoulds = shoulds +  1;
                 return true            
 end
             return false        
@@ -16662,17 +16662,17 @@ end
 end)();
 tbl['FleetingSparks'] = (function() 
 local function areOrbsStillAlive(orbs)
-	for _, orb in next, orbs do
+	for _, orb in next, orbs do repeat 
 		if not orb.Parent then
-			continue
+			do break end
 		end
 
 		if not orb:FindFirstChild("PointLight") then
-			continue
+			do break end
 		end
 
 		return true
-	end
+	 until true; end
 
 	return false
 end
@@ -16721,22 +16721,22 @@ return {
 
 		local orbs = {}
 
-		for _, part in pairs(thrown:GetChildren()) do
+		for _, part in pairs(thrown:GetChildren()) do repeat 
 			if not part:IsA("BasePart") then
-				continue
+				do break end
 			end
 
 			if not part.Name:match("LightningMote") then
-				continue
+				do break end
 			end
 
 			orbs[#orbs + 1] = part
-		end
+		 until true; end
 
 		local blockStarted = false
 
 		while task.wait() do
-			for _, orb in next, orbs do
+			for _, orb in next, orbs do repeat 
 				if not areOrbsStillAlive(orbs) then
 					DefendActionManager:queue_unblock_task(defender.entity, 0)
 
@@ -16744,21 +16744,21 @@ return {
 				end
 
 				if not orb or not orb.Parent then
-					continue
+					do break end
 				end
 
 				if (orb.Position - local_player.root_part.Position).Magnitude >= 50 then
-					continue
+					do break end
 				end
 
 				if blockStarted then
-					continue
+					do break end
 				end
 
 				DefendActionManager:queue_block_task(defender.entity, 0)
 
 				blockStarted = true
-			end
+			 until true; end
 		end
 
 		return action
@@ -16831,14 +16831,14 @@ return {
         if not weapon.type or not weapon.length then return end
         
         task.wait(((0.163 / track.Speed) + 0.1) - Latency:get_ping());
-        while self:is_playing() and task.wait(0.035) do
-            if not defender or not defender.entity then continue end
+        while self:is_playing() and task.wait(0.035) do local __c51b559 = false; repeat 
+            if not defender or not defender.entity then do break end end
             if not defender:in_hitbox_with_pos(
                 local_player.root_part.CFrame, 
                 defender.entity.HumanoidRootPart.CFrame, 
                 Vector3.new(12, 20, ((weapon.length * 2.9) + (Latency:get_ping() * weapon.length))), 
                 CFrame.new(0,0,-5)
-            ) then continue end
+            ) then do break end end
     
             action.base_and_predict = true;
             action.predict = true;
@@ -16850,8 +16850,8 @@ return {
             
                     
             action:push();
-            break        
-end;
+            do __c51b559 = true; break end        
+ until true; if __c51b559 then break end end;
 
         return action    
 end    
@@ -16905,11 +16905,11 @@ end
 end)();
 tbl['GenericM1'] = (function() 
  function has_heavy_hands(mob)
-    for _,v in next, mob:GetChildren() do
-        if v.Name ~= 'Ring' or v:GetAttribute("EquipmentRef") ~= "Heavy Hands Ring" then continue end 
+    for _,v in next, mob:GetChildren() do repeat 
+        if v.Name ~= 'Ring' or v:GetAttribute("EquipmentRef") ~= "Heavy Hands Ring" then do break end end 
 
         return true    
-end
+ until true; end
 
     return false
 end;
@@ -17154,12 +17154,12 @@ return {
             windup = (0.171 / track.Speed) + 0.120
         elseif weapon.type == "Greataxe" and track.Speed == 1.0 then
             windup = (0.171 / track.Speed)
-            windup += 0.250 / (weapon.ss * (has_heavy_hands(defender.entity) and 0.9 or 1))
+            windup = windup +  0.250 / (weapon.ss * (has_heavy_hands(defender.entity) and 0.9 or 1))
         elseif weapon.type == "Greathammer" and track.Speed ~= 1.0 then
             windup = (0.150 / track.Speed) + 0.150
         elseif weapon.type == "Greathammer" and track.Speed == 1.0 then
             windup = (0.150 / track.Speed)
-            windup += 0.250 / weapon.ss
+            windup = windup +  0.250 / weapon.ss
         elseif weapon.type == "Greatcannon" and track.Speed ~= 1.0 then
             windup = (0.155 / track.Speed) + 0.160
         elseif weapon.type == "Greatcannon" and track.Speed == 1.0 then
@@ -17173,7 +17173,7 @@ return {
                 local ready = false;
                 while task.wait() and self:is_playing() do
                     ready = tip_attachment:FindFirstChild("Spark");
-                    if ready then break end
+                    if ready then do break end end
                 end
 
                 if not ready then return end
@@ -17200,9 +17200,9 @@ return {
     
             if track.Speed == 0.0 then
                 windup = 0.100
-                debug_extras ..= " 0s"
+                debug_extras = debug_extras ..  " 0s"
             end
-            debug_extras ..= " [odd anim]"
+            debug_extras = debug_extras ..  " [odd anim]"
         elseif weapon.type == "Rifle" then
             windup = (0.2 / track.Speed)
         elseif weapon.type == "Club" then
@@ -17212,7 +17212,7 @@ return {
             
             if track.Animation.AnimationId:match("123456225328134") then
                 windup = 0.45;
-                debug_extras ..= "first"
+                debug_extras = debug_extras ..  "first"
             end
         elseif weapon.type == "Spear" then
             windup = (0.150 / track.Speed) + 0.100
@@ -17247,7 +17247,7 @@ return {
                 hitbox = Vector3.new(weapon.length * 3, weapon.length * 4.5, weapon.length * 2.5);
             end
             
-            debug_extras ..= " [" .. track.Animation.AnimationId .. "]";
+            debug_extras = debug_extras ..  " [" .. track.Animation.AnimationId .. "]";
         elseif weapon.type == "Twinblade" then
             hitbox = Vector3.new(weapon.length * 3, weapon.length * 4.5, weapon.length * 3.15);
         elseif weapon.type == "Fist" then
@@ -17362,22 +17362,22 @@ return {
             windup = (0.147 / track.Speed) + 0.140
         elseif weapon.type == "Greatsword" then
             windup = (0.160 / track.Speed) + 0.160
-            windup += 0.1 / weapon.ss
+            windup = windup +  0.1 / weapon.ss
             action.hitbox = Vector3.new(weapon.length * 2.65, weapon.length * 3, weapon.length * 4); 
 
         elseif weapon.type == "Greataxe" then
             windup = (0.150 / track.Speed) + 0.100
-            windup += 0.100 / weapon.ss
+            windup = windup +  0.100 / weapon.ss
         elseif weapon.type == "Greatcannon" then
             windup = (0.160 / track.Speed) + 0.160
-            windup += 0.100 / weapon.ss
+            windup = windup +  0.100 / weapon.ss
         elseif weapon.type == "Greathammer" then
             windup = (0.160 / track.Speed) + 0.160
-            windup += 0.100 / weapon.ss
+            windup = windup +  0.100 / weapon.ss
             action.hitbox = Vector3.new(weapon.length * 2.65, weapon.length * 3, weapon.length * 4); 
         elseif weapon.type == "Spear" then
             windup = (0.150 / track.Speed) + 0.140
-            windup += 0.100 / weapon.ss
+            windup = windup +  0.100 / weapon.ss
         elseif weapon.type == "Pistol" then
             repeat
                 task.wait()
@@ -17386,16 +17386,16 @@ return {
             windup = (0.300 / track.Speed)
         elseif weapon.type == "Rifle" then
             windup = (0.169 / track.Speed) + 0.180
-            windup += 0.100 / weapon.ss
+            windup = windup +  0.100 / weapon.ss
             action.hitbox = Vector3.new(weapon.length * 2.65, weapon.length * 3, weapon.length * 2.825); 
             action.offset = CFrame.new()
             action.half_size_offset = true;
         elseif weapon.type == "Sword" then
             windup = (0.135 / track.Speed) + 0.100
-            windup += 0.1 / weapon.ss
+            windup = windup +  0.1 / weapon.ss
         elseif weapon.type == "Staff" then
             windup = (0.135 / track.Speed) + 0.100
-            windup += 0.150 / weapon.ss
+            windup = windup +  0.150 / weapon.ss
             action.hitbox = Vector3.new(weapon.length * 2.65, weapon.length * 3, weapon.length * 2.8); 
             action.offset = CFrame.new()
             action.half_size_offset = true;
@@ -17403,12 +17403,12 @@ return {
             windup = (0.238 / track.Speed) + 0.060
         elseif weapon.type == "Club" then
             windup = (0.173 / track.Speed) + 0.100
-            windup += 0.150 / weapon.ss
+            windup = windup +  0.150 / weapon.ss
         elseif weapon.type == "Bow" then
             windup = 0.2
         elseif weapon.type == "Twinblade" then
             windup = (0.164 / track.Speed) + 0.100
-            windup += 0.150 / weapon.ss
+            windup = windup +  0.150 / weapon.ss
         elseif weapon.type == "Fist" then
             windup = (0.153 / track.Speed) + 0.120
             action.hitbox = Vector3.new(weapon.length * 2.65, weapon.length * 3, weapon.length * 3.3); 
@@ -17496,8 +17496,8 @@ return {
 
         while tick() - start < 1 or has_javelin do
             has_javelin = false
-            for _, object in workspace:WaitForChild("Thrown"):GetChildren() do
-                if object.Name ~= "SpearPart" or object.Name:find("Splinter") then continue end
+            for _, object in workspace:WaitForChild("Thrown"):GetChildren() do repeat 
+                if object.Name ~= "SpearPart" or object.Name:find("Splinter") then do break end end
 
                 has_javelin = true
                 if general:in_hitbox(local_player.root_part.CFrame, object.CFrame, Vector3.new(10, 10, 80), CFrame.new(0, 0, -40), false) then
@@ -17509,7 +17509,7 @@ return {
                     action:push()
                     return action
                 end
-            end
+             until true; end
             task.wait()
         end
 
@@ -17629,7 +17629,7 @@ return {
             local last_parry = 0;
             cube_conn = workspace.Thrown.ChildAdded:Connect(function(a)
                 if a.Name == "Cube" then
-                    cube_count += 1;
+                    cube_count = cube_count +  1;
                     if cube_count >= 3 then
                         cube_conn:Disconnect();
                     end;
@@ -17661,14 +17661,14 @@ end
         local has_ice_dagger = false;
         while tick() - start < 2 or has_ice_dagger do
             has_ice_dagger = false;
-            for _, child in workspace.Thrown:GetChildren() do
-                if child.Name ~= "IceShuriken" then continue end
-                if child.Velocity.Magnitude <= 0.2 then continue end
+            for _, child in workspace.Thrown:GetChildren() do repeat 
+                if child.Name ~= "IceShuriken" then do break end end
+                if child.Velocity.Magnitude <= 0.2 then do break end end
 
 
                 has_ice_dagger = true;
                 local mag = (child.Position - game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position).Magnitude;
-                if mag > 30 then continue end
+                if mag > 30 then do break end end
 
                 action.name = "Ice Forge";
                 action.when = 0;
@@ -17679,7 +17679,7 @@ end
                         
                 action:push();
                 return action            
-end;
+ until true; end;
             task.wait();
         end;
 
@@ -18118,7 +18118,7 @@ local function checkRangeFromPing(obj, rangeCheck, speed)
     local distance = (obj.Position - local_player.root_part.Position).Magnitude;
 
     distance = (obj.Position - local_player.root_part.Position).Magnitude;
-    distance -= speed * (Latency:get_ping() / 1000);
+    distance = distance -  speed * (Latency:get_ping() / 1000);
 
     return distance <= rangeCheck, distance, Latency:get_ping() / speed
 end;
@@ -18140,12 +18140,12 @@ return {
         
         
 		repeat
-			for _, v in next, workspace.Thrown:GetChildren() do
+			for _, v in next, workspace.Thrown:GetChildren() do repeat 
 				if (v.Name == 'STREAMPART' and v:IsA('BasePart')) then
 					local rocket = v:FindFirstChild('RocketPropulsion');
 					local rocketTarget = rocket and rocket.Target;
-					if (rocketTarget ~= local_player.root_part) then continue end;
-					if(not checkRangeFromPing(v, 22.5 + math.min(rocket.MaxSpeed / 3, 10), rocket.MaxSpeed)) then continue end;
+					if (rocketTarget ~= local_player.root_part) then do break end end;
+					if(not checkRangeFromPing(v, 22.5 + math.min(rocket.MaxSpeed / 3, 10), rocket.MaxSpeed)) then do break end end;
 					
                     action.when = 0.2;
                     action.offset = CFrame.new(0, 0, 0)
@@ -18156,7 +18156,7 @@ return {
                     
 					return action				
 end;
-			end;
+			 until true; end;
 			task.wait();
 		until tick() - ranAt > 3.5;
         
@@ -18200,7 +18200,7 @@ local function checkRangeFromPing(obj, rangeCheck, speed)
     local distance = (obj.Position - local_player.root_part.Position).Magnitude;
 
     distance = (obj.Position - local_player.root_part.Position).Magnitude;
-    distance -= speed * (Latency:get_ping() / 1000);
+    distance = distance -  speed * (Latency:get_ping() / 1000);
 
     return distance <= rangeCheck, distance, Latency:get_ping() / speed
 end;
@@ -18280,7 +18280,7 @@ return {
                 action.ignore_hitbox = true;
                 action.type = "Dodge";
                 action:push();
-				break			
+				do break end			
 end;
 
 			task.wait();
@@ -18369,7 +18369,7 @@ return {
         local spikeBall = defender.entity:WaitForChild("SpikeBall2", 0.1) or defender.entity:WaitForChild("SpikeBall", 0.1)
     
         while task.wait() do
-            if not spikeBall or not spikeBall.Parent then break end
+            if not spikeBall or not spikeBall.Parent then do break end end
             if self:distance() <= 29.5 then
 		        action.when = 0
                 action.hitbox = Vector3.one * (29.5 * 2);
@@ -18377,7 +18377,7 @@ return {
                 action.shape = "ball";
                 action.name = "Metal Ball";
                 action:push();
-                break            
+                do break end            
 end
         end
         return action    
@@ -18435,7 +18435,7 @@ end;
         action.should = function()
             local should = defender:in_hitbox(Vector3.new(25, 14, 15), CFrame.new(0,0,-7.5), false);
             if should then
-                shoulds += 1;
+                shoulds = shoulds +  1;
             end
             return should        
 end;
@@ -18778,10 +18778,10 @@ return {
             local windup = 0
             if weapon.type == "Greataxe" then
                 windup = (0.150 / track.Speed) + 0.100
-                windup += 0.100 / weapon.ss
+                windup = windup +  0.100 / weapon.ss
             elseif weapon.type == "Greathammer" then
                 windup = (0.160 / track.Speed) + 0.180
-                windup += 0.100 / weapon.ss
+                windup = windup +  0.100 / weapon.ss
                 action.hitbox = Vector3.new(weapon.length * 2.65, weapon.length * 3, weapon.length * 4)
             end
 
@@ -18800,12 +18800,12 @@ return {
                 windup = (0.171 / track.Speed) + 0.120
             elseif weapon.type == "Greataxe" and track.Speed == 1.0 then
                 windup = (0.171 / track.Speed)
-                windup += 0.250 / (weapon.ss * (has_heavy_hands(defender.entity) and 0.9 or 1))
+                windup = windup +  0.250 / (weapon.ss * (has_heavy_hands(defender.entity) and 0.9 or 1))
             elseif weapon.type == "Greathammer" and track.Speed ~= 1.0 then
                 windup = (0.150 / track.Speed) + 0.150
             elseif weapon.type == "Greathammer" and track.Speed == 1.0 then
                 windup = (0.150 / track.Speed)
-                windup += 0.250 / weapon.ss
+                windup = windup +  0.250 / weapon.ss
             end
 
             action.name = string.format("%s M1 - %0.2f, %0.1f", weapon.type, windup * 2.351, weapon.length)
@@ -18919,7 +18919,7 @@ end
                 end 
             end
 
-            if not found then break end
+            if not found then do break end end
         end
 
         return action    
@@ -19134,17 +19134,17 @@ return {
         	task.wait(0.6 - Latency:get_ping());
 
 			local chain_portal_ice do
-        	    for _, chain_portal in workspace.Thrown:GetChildren() do
+        	    for _, chain_portal in workspace.Thrown:GetChildren() do repeat 
         	        if chain_portal.Name ~= "ChainPortalIce" then
-        	            continue        	        
+        	            do break end        	        
 end
 
         	        if (chain_portal.Position - local_player.root_part.Position).Magnitude > 20 then
-        	            continue        	        
+        	            do break end        	        
 end
 
         	        chain_portal_ice = chain_portal;
-        	    end;
+        	     until true; end;
         	end;
         	if not chain_portal_ice then return end
         	chain_portal_ice:WaitForChild("Beam");
@@ -19190,8 +19190,8 @@ return {
         local a = {};
         while tick() - start < 2 or has_ice_dagger do
             has_ice_dagger = false;
-            for _, child in workspace.Thrown:GetChildren() do
-                if child.Name ~= "ImpactIndicator" or a[child] then continue end
+            for _, child in workspace.Thrown:GetChildren() do repeat 
+                if child.Name ~= "ImpactIndicator" or a[child] then do break end end
                 has_ice_dagger = true;
                 a[child] = true;
 
@@ -19204,7 +19204,7 @@ return {
                     action.ignore_early_end = true;
                     action:play()
                 end;
-            end;
+             until true; end;
             task.wait();
         end;
 
@@ -19486,8 +19486,8 @@ return {
 
         while tick() - start < 1 or has_javelin do
             has_javelin = false;
-            for _, object in workspace:WaitForChild("Thrown"):GetChildren() do
-                if object.Name ~= "WindSlashProjectileBigSnow" then continue end
+            for _, object in workspace:WaitForChild("Thrown"):GetChildren() do repeat 
+                if object.Name ~= "WindSlashProjectileBigSnow" then do break end end
 
                 has_javelin = true;
                 if general:in_hitbox(local_player.root_part.CFrame, object.CFrame, Vector3.new(10, 10, 80), CFrame.new(0, 0, -40), false) then 
@@ -19501,7 +19501,7 @@ return {
                 
                     return action                
 end
-            end;
+             until true; end;
             task.wait();
         end;
 
@@ -19970,9 +19970,9 @@ return LPH_NO_VIRTUALIZE(function()
                         end
                     end
                 else
-                    for action, amount in pairs(weights) do
+                    for action, amount in pairs(weights) do repeat 
                         if not OUTCOME_LOOKUP[action] then
-                            continue
+                            do break end
                         end
 
                         if typeof(amount) == "number" then
@@ -19980,7 +19980,7 @@ return LPH_NO_VIRTUALIZE(function()
                         elseif amount then
                             normalized[action] = 1
                         end
-                    end
+                     until true; end
                 end
             end
 
@@ -20096,7 +20096,7 @@ return LPH_NO_VIRTUALIZE(function()
             }
         end
 
-        function chance_store:add_chance(id: string, chance_or_outcome_weights, fail_actions_or_weights)
+        function chance_store:add_chance(id, chance_or_outcome_weights, fail_actions_or_weights)
             local payload = {}
 
             if typeof(chance_or_outcome_weights) == "table" then
@@ -20114,7 +20114,7 @@ return LPH_NO_VIRTUALIZE(function()
             self.chances[id] = self:normalize_entry(payload)
         end
 
-        function chance_store:get_entry(id: string)
+        function chance_store:get_entry(id)
             local entry = self.chances[id]
             if entry == nil then
                 return nil
@@ -20126,22 +20126,22 @@ return LPH_NO_VIRTUALIZE(function()
             return normalized
         end
 
-        function chance_store:get_chance(id: string): number?
+        function chance_store:get_chance(id)
             local entry = self:get_entry(id)
             return entry and entry.chance or nil
         end
 
-        function chance_store:get_fail_actions(id: string)
+        function chance_store:get_fail_actions(id)
             local entry = self:get_entry(id)
             return entry and entry.fail_actions or nil
         end
 
-        function chance_store:get_fail_weights(id: string)
+        function chance_store:get_fail_weights(id)
             local entry = self:get_entry(id)
             return entry and entry.fail_weights or nil
         end
 
-        function chance_store:get_outcome_weights(id: string)
+        function chance_store:get_outcome_weights(id)
             local entry = self:get_entry(id)
             return entry and entry.outcome_weights or nil
         end
@@ -20239,7 +20239,7 @@ return {
         for _, entity in workspace:WaitForChild("Live"):GetChildren() do
             if entity.Name:match(".avatar") then
                 ethiron = entity;
-                break            
+                do break end            
 end;
         end;
 
@@ -20251,7 +20251,7 @@ end;
                 action.when = 0.6;
                 action.user = ethiron;
                 action:play();                  
-                break
+                do break end
             end
         end
 
@@ -20335,7 +20335,7 @@ return {
         for _, entity in workspace.Live:GetChildren() do
             if entity.Name:find(".kyrsgarde_champion") then
                 char = entity;
-                break            
+                do break end            
 end;
         end
 
@@ -20373,7 +20373,7 @@ end;
         for _, player in services.Players:GetPlayers() do
             if player:FindFirstChild("Backpack") and player.Backpack:FindFirstChild("Mantra:CarveLightning{{Electro Carve}}", true) and player.Backpack:FindFirstChild("Mantra:CarveLightning{{Electro Carve}}", true):GetAttribute("RichStats"):match("Magnet") then
                 user = player.Character;
-                break            
+                do break end            
 end;
         end;
 
@@ -20382,12 +20382,12 @@ end;
         local t = 0.1 - Latency:get_ping();
         task.wait(t);
         
-        l_dur_6 -= t * 2;
+        l_dur_6 = l_dur_6 -  t * 2;
 
         local start = tick();
-        repeat
+        repeat repeat 
             if not general:in_hitbox(local_player.root_part.CFrame, local_player.root_part.CFrame, Vector3.new(l_size_4, l_size_4, l_size_4), CFrame.new(), aztup.flags.view_hitboxes) then
-                continue            
+                do break end            
 end;
 
             action.ignore_hitbox = true;
@@ -20397,7 +20397,7 @@ end;
             action.user = user;
             action:play();            
             task.wait(0.1);
-        until tick() - start > l_dur_6;
+         until true; until tick() - start > l_dur_6;
 
         return action    
 end;
@@ -20471,7 +20471,7 @@ return {
         for _, player in services.Players:GetPlayers() do
             if player:FindFirstChild("Backpack") and player.Backpack:FindFirstChild("Mantra:EncircleShadow{{Encircle}}", true) then
                 user = player.Character;
-                break            
+                do break end            
 end;
         end;
         if not user then return end;
@@ -20510,7 +20510,7 @@ return {
                     local found = child:FindFirstChild("Recolor")
                     if found and found:IsA("ParticleEmitter") then
                         recolor = found
-                        break
+                        do break end
                     end
                 end
             end
@@ -20605,7 +20605,7 @@ end;
             if not char:FindFirstChild("StopCarve") then
                 task.wait(0.2);
             else
-                break            
+                do break end            
 end;
         until tick() - start > dur + 0.2;
         
@@ -20706,12 +20706,12 @@ return {
  
         if not user or user == local_player.instance then return end
         
-        while task.wait(0.00) do
-            if not part.Parent then break end
+        while task.wait(0.00) do local __c51b608 = false; repeat 
+            if not part.Parent then do __c51b608 = true; break end end
             if  
                 not general:in_hitbox(Vector3.new(10, 8, 50 + part.Velocity.Magnitude), CFrame.new(0,0,-7.5 + part.Velocity.Magnitude), local_player.root_part.CFrame, part.CFrame, false, false)
             then
-                continue            
+                do break end            
 end;
 
             action.ignore_hitbox = true;
@@ -20719,7 +20719,7 @@ end;
             action.user = user;
             action:play();  
             return        
-end;             
+ until true; if __c51b608 then break end end;             
     end;
 }   
  end)();
@@ -20740,12 +20740,12 @@ return {
  
         if not user or user == local_player.instance then return end
         
-        while task.wait(0.03) do
-            if not part.Parent then break end
+        while task.wait(0.03) do local __c51b609 = false; repeat 
+            if not part.Parent then do __c51b609 = true; break end end
             if  
                 not general:in_hitbox(Vector3.new(10, 8, 30 + part.Velocity.Magnitude), CFrame.new(0,0,-7.5 + part.Velocity.Magnitude), local_player.root_part.CFrame, part.CFrame, false, false)
             then
-                continue            
+                do break end            
 end;
 
             action.ignore_hitbox = true;
@@ -20753,7 +20753,7 @@ end;
             action.user = user;
             action:play();  
             return        
-end;             
+ until true; if __c51b609 then break end end;             
     end;
 }   
  end)();
@@ -20784,14 +20784,14 @@ return {
             return        
 end;
 
-        while task.wait(0.00) do
-            if not part.Parent then break end
+        while task.wait(0.00) do local __c51b610 = false; repeat 
+            if not part.Parent then do __c51b610 = true; break end end
 
             local compensation = (10 * Latency:get_ping());
             if  
                 not general:in_hitbox(Vector3.new(30 + compensation, 10, 30 + compensation), CFrame.identity, local_player.root_part.CFrame, part.CFrame, false, false)
             then
-                continue            
+                do break end            
 end;
 
             action.ignore_hitbox = true;
@@ -20799,7 +20799,7 @@ end;
             action.user = user;
             action:play();  
             return        
-end;             
+ until true; if __c51b610 then break end end;             
     end;
 }   
  end)();
@@ -20820,12 +20820,12 @@ return {
  
         if not user or user == local_player.instance then return end
         
-        while task.wait(0.00) do
-            if not part.Parent then break end
+        while task.wait(0.00) do local __c51b611 = false; repeat 
+            if not part.Parent then do __c51b611 = true; break end end
             if  
                 not general:in_hitbox(Vector3.new(5, 8, 20 + part.Velocity.Magnitude), CFrame.new(0,0,-7.5 + part.Velocity.Magnitude), local_player.root_part.CFrame, part.CFrame, false, false)
             then
-                continue            
+                do break end            
 end;
 
             action.ignore_hitbox = true;
@@ -20833,7 +20833,7 @@ end;
             action.user = user;
             action:play();  
             return        
-end;             
+ until true; if __c51b611 then break end end;             
     end;
 }   
  end)();
@@ -20854,12 +20854,12 @@ return {
  
         if not user or user == local_player.instance then return end
         
-        while task.wait(0.00) do
-            if not part.Parent then break end
+        while task.wait(0.00) do local __c51b612 = false; repeat 
+            if not part.Parent then do __c51b612 = true; break end end
             if  
                 not general:in_hitbox(Vector3.new(5, 15, 3 + part.Velocity.Magnitude), CFrame.new(0,0,0 + part.Velocity.Magnitude), local_player.root_part.CFrame, part.CFrame, false, false)
             then
-                continue            
+                do break end            
 end;
 
             action.ignore_hitbox = true;
@@ -20867,7 +20867,7 @@ end;
             action.user = user;
             action:play();  
             return        
-end;             
+ until true; if __c51b612 then break end end;             
     end;
 }   
  end)();
@@ -20968,12 +20968,12 @@ return {
  
         if not user or user == local_player.instance then return end
         
-        while task.wait(0.00) do
-            if not part.Parent then break end
+        while task.wait(0.00) do local __c51b615 = false; repeat 
+            if not part.Parent then do __c51b615 = true; break end end
             if  
                 not general:in_hitbox(Vector3.new(10, 8, 50 + part.Velocity.Magnitude), CFrame.new(0,0,-7.5 + part.Velocity.Magnitude), local_player.root_part.CFrame, part.CFrame, false, false)
             then
-                continue            
+                do break end            
 end;
 
             action.ignore_hitbox = true;
@@ -20981,7 +20981,7 @@ end;
             action.user = user;
             action:play();  
             return        
-end;             
+ until true; if __c51b615 then break end end;             
     end;
 }   
  end)();
@@ -21036,17 +21036,17 @@ return {
 		end
 
 		
-		for _, player in game:GetService("Players"):GetPlayers() do
+		for _, player in game:GetService("Players"):GetPlayers() do repeat 
 			if player == game:GetService("Players").LocalPlayer then
-				continue
+				do break end
 			end
 			local character = player.Character
 			if not character then
-				continue
+				do break end
 			end
 			local animator = character:FindFirstChild("Animator", true)
 			if not animator then
-				continue
+				do break end
 			end
 			for _, track in animator:GetPlayingAnimationTracks() do
 				local id = track.Animation.AnimationId:match("%d+")
@@ -21054,7 +21054,7 @@ return {
 					return false
 				end
 			end
-		end
+		 until true; end
 
 		return true
 	end,
@@ -21117,18 +21117,18 @@ function Weapon.data(entity)
 
 	local nemesis = false
 
-	for _, inst in next, hw:GetChildren() do
+	for _, inst in next, hw:GetChildren() do local __c51b619 = false; repeat 
 		if not inst:IsA("ParticleEmitter") then
-			continue
+			do break end
 		end
 
 		if inst.Texture ~= "rbxassetid://11889781532" then
-			continue
+			do break end
 		end
 
 		nemesis = true
-		break
-	end
+		do __c51b619 = true; break end
+	 until true; if __c51b619 then break end end
 
 	return {
 		hw = hw,
@@ -21158,9 +21158,9 @@ local DefendActionManager = {} do
 
     local sent_actions = 0;
     function DefendActionManager.block:FireServer()
-        sent_actions += 1;
+        sent_actions = sent_actions +  1;
         task.delay(1, function()
-            sent_actions -= 1;
+            sent_actions = sent_actions -  1;
         end);
 
         if sent_actions >= 75 then
@@ -21182,9 +21182,9 @@ end
     end
 
     function DefendActionManager.unblock:FireServer()
-        sent_actions += 1;
+        sent_actions = sent_actions +  1;
         task.delay(1, function()
-            sent_actions -= 1;
+            sent_actions = sent_actions -  1;
         end);
 
         if sent_actions >= 75 then
@@ -21292,9 +21292,9 @@ end
                     end
                 end
             else
-                for action, amount in pairs(actions_or_weights) do
+                for action, amount in pairs(actions_or_weights) do repeat 
                     if not chance_fail_action_lookup[action] then
-                        continue
+                        do break end
                     end
 
                     if typeof(amount) == "number" then
@@ -21302,13 +21302,13 @@ end
                     elseif amount then
                         weights[action] = 1
                     end
-                end
+                 until true; end
             end
         end
 
         local total = 0
         for _, action in ipairs(chance_fail_action_order) do
-            total += weights[action] or 0
+            total = total +  weights[action] or 0
         end
 
         if total <= 0 then
@@ -21321,7 +21321,7 @@ end
     function DefendActionManager:roll_chance_fail_action(weights)
         local total = 0
         for _, action in ipairs(chance_fail_action_order) do
-            total += weights[action] or 0
+            total = total +  weights[action] or 0
         end
 
         if total <= 0 then
@@ -21334,7 +21334,7 @@ end
         for _, action in ipairs(chance_fail_action_order) do
             local amount = weights[action] or 0
             if amount > 0 then
-                running += amount
+                running = running +  amount
                 if rolled <= running then
                     return action
                 end
@@ -21429,7 +21429,7 @@ elseif aztup_options.fallbacks.Value.Block then
                             v224 = l_ForwardRoll_0;
                         elseif v227 > 45 and v227 < 135 then
                             v228 = math.deg((math.acos((math.clamp(l_MoveDirection_1:Dot((Vector3.new(-l_LookVector_0.z, 0, l_LookVector_0.x))), -1, 1)))));
-                            v224 = if v228 <= 45 then l_RightRoll_0 else if v228 > 135 then l_LeftRoll_0 else l_BackRoll_0;
+                            v224 = ( v228 <= 45  and  l_RightRoll_0  or  ( v228 > 135 ) and  l_LeftRoll_0  or  l_BackRoll_0);
                         else
                             v224 = l_BackRoll_0;
                         end;
@@ -21522,7 +21522,7 @@ end;
                 for i = #self.actions_to_play_through, 1, -1 do
                     if self.actions_to_play_through[i].type == "unblock" then
                         has_pending_unblock = true
-                        break
+                        do break end
                     end
                 end
 
@@ -21566,7 +21566,7 @@ end;
             local to_process = {};
             local to_remove = {};
 
-            for i = #self.actions_to_play_through, 1, -1 do 
+            for i = #self.actions_to_play_through, 1, -1 do local __c51b630 = false; repeat  
                 local v = self.actions_to_play_through[i]
 
                 if tick() >= v.when and not self.currently_handling[v] then
@@ -21600,14 +21600,14 @@ end;
                             end
                         end
                         table.remove(self.actions_to_play_through, i)
-                        continue
+                        do break end
                     end
                 
                     local typ = v.type
 
                     if typ == "dodge" and (self._block_count or 0) > 0 then
                         table.remove(self.actions_to_play_through, i)
-                        continue
+                        do break end
                     end
 
                     if typ == "block" and tick() < self._dodge_until then
@@ -21623,7 +21623,7 @@ end;
                                 end
                             end;
                         end
-                        continue
+                        do break end
                     end
 
                     self.currently_handling[v] = true
@@ -21653,10 +21653,10 @@ end;
                     end)
 
                     if typ == "block" or typ == "dodge" then
-                        break                    
+                        do __c51b630 = true; break end                    
 end;
                 end
-            end
+             until true; if __c51b630 then break end end
         end)();
     end;
 
@@ -21939,29 +21939,29 @@ break_anims = function(track, time, data, action_type, self)
 end;
 
 process = function(timing_data)
-    for index, item in encrypted_timing_data.keys do
-        if timing_data[item] or not timing_data[index] then continue end
+    for index, item in encrypted_timing_data.keys do repeat 
+        if timing_data[item] or not timing_data[index] then do break end end
         timing_data[item] = timing_data[index];
         timing_data[index] = nil;
-    end
+     until true; end
 
     timing_data.actions = table.clone(timing_data.actions);
-    for timing_number, action in timing_data.actions do
-        if not action then continue end
+    for timing_number, action in timing_data.actions do repeat 
+        if not action then do break end end
         
         action = table.clone(action);
-        for index, item in encrypted_timing_data.action_keys do
-            if action[item] or not action[index] then continue end
+        for index, item in encrypted_timing_data.action_keys do repeat 
+            if action[item] or not action[index] then do break end end
             action[item] = action[index];
             action[index] = nil;
-        end
+         until true; end
 
         if action.when then
             action.when = action.when - encrypted_timing_data.key;
         end
 
         timing_data.actions[timing_number] = action;
-    end
+     until true; end
 
     timing_data.enc = false;
     return timing_data 
@@ -21969,7 +21969,7 @@ end
 
 local track_still_active
 
-track_still_active = LPH_JIT_MAX(function(track: AnimationTrack, entity)
+track_still_active = LPH_JIT_MAX(function(track, entity)
     if ap_breaker_tracks[track] then
         return true    
 end;
@@ -21984,10 +21984,10 @@ return LPH_NO_VIRTUALIZE(function()
     local Keybinds = base_require(game:GetService("ReplicatedStorage"):WaitForChild("KeyBinds"..""));
     local data = require("@src/features/auto-parry/data/base");
     local timing_data = {};
-    for index, timing in data do
-        if typeof(timing) ~= "table" then continue end
+    for index, timing in data do repeat 
+        if typeof(timing) ~= "table" then do break end end
         timing_data[timing.name or index] = timing;
-    end; 
+     until true; end; 
 
     local function debug_print(...)
         if not (aztup and aztup.flags and aztup.flags.auto_parry_debug) then return end
@@ -22020,9 +22020,9 @@ return LPH_NO_VIRTUALIZE(function()
 
         local mobIds, nonMobIds = {}, {};
 
-        for _, v in allAnimObjects do
+        for _, v in allAnimObjects do repeat 
             local animationId = match(v.AnimationId, '%d+');
-            if not animationId then continue end;
+            if not animationId then do break end end;
 
             allAnimations[animationId] = format('%s-%s', v.Parent.Name, v.Name);
 
@@ -22031,15 +22031,15 @@ return LPH_NO_VIRTUALIZE(function()
             else
                 nonMobIds[animationId] = true;
             end;
-        end;
+         until true; end;
 
         
         local n = 0;
-        for animationId in mobIds do
-            if nonMobIds[animationId] then continue end;
-            n += 1;
+        for animationId in mobIds do repeat 
+            if nonMobIds[animationId] then do break end end;
+            n = n +  1;
             mobsAnims[animationId] = true;
-        end;
+         until true; end;
 
         mobsAnims["11508725111"] = true;
         mobsAnims["11710290503"] = true;
@@ -22059,12 +22059,12 @@ return LPH_NO_VIRTUALIZE(function()
         
         
         for pass = 1, 2 do
-            for index, timing in timing_data do
-                if not timing.ids or (timing.run ~= nil) ~= (pass == 1) then continue end;
+            for index, timing in timing_data do repeat 
+                if not timing.ids or (timing.run ~= nil) ~= (pass == 1) then do break end end;
                 for _, id in next, timing.ids do
                     fast_timing_lookup_table[id] = index; 
                 end;
-            end;
+             until true; end;
         end;
 
         ap_breaker_tbl = fast_timing_lookup_table;
@@ -22101,24 +22101,24 @@ end;
     getgenv().load_timings = function(b)
         (aztup and aztup.silent_mode and function() end or debug.profilebegin)("reload timings");
         local a = 0;
-        for _, file in ipairs(listfiles("rw_timings")) do
-            if not isfile(file) then continue end 
+        for _, file in ipairs(listfiles("rw_timings")) do repeat 
+            if not isfile(file) then do break end end 
             local src = readfile(file);
             local old_file = file; 
             file = file:gsub("rw_timings", ""):gsub("/",""):gsub("\\", ""):gsub(".lua", ""):gsub(".json", "");
-            if timing_data[file] and timing_data[file].src == src then continue end
+            if timing_data[file] and timing_data[file].src == src then do break end end
     
             if old_file:match(".lua") then
                 local func, reason = loadstring(src, file);
                 if not func then 
                     warn("Failed to load timing file: "..file, reason);
-                    continue                
+                    do break end                
 end
             
                 local success, result = pcall(func);
                 if not success then
                     warn("Failed to run timing file XPCALL: "..file, result);
-                    continue                
+                    do break end                
 end
             
                 timing_data[file] = result
@@ -22127,8 +22127,8 @@ end
             end;
     
             timing_data[file].src = src;
-            a += 1;
-        end
+            a = a +  1;
+         until true; end
         (aztup and aztup.silent_mode and function() end or debug.profileend)();
         create_fast_timing_lookup_table();
     end
@@ -22165,7 +22165,7 @@ end);
     end;
     
     local added = {};
-    function AnimatorHandler.new(entity: Model)
+    function AnimatorHandler.new(entity)
         local self = setmetatable({}, AnimatorHandler);
         if added[entity] then
             
@@ -22316,40 +22316,40 @@ end
     function AnimatorHandler:cancel_feinted_tracks(playing_tracks)
         self.last_feint_at = tick();
 
-        for _, track in playing_tracks do
+        for _, track in playing_tracks do repeat 
             local state = self.running_tracks[track];
-            if not state then continue end
+            if not state then do break end end
 
             local action = state.action;
-            if action and action.ignore_feints then continue end
+            if action and action.ignore_feints then do break end end
 
             if state.action_type == "M1" and aztup.flags.ap_randomization and math.random() * 100 <= aztup.flags.bluff_feint_chance then
                 debug_print("[Auto Feint] Bluffing through a detected feint.");
-                continue            
+                do break end            
 end
 
             self:cancel_running_track(track);
-        end
+         until true; end
     end
 
     
     
     function AnimatorHandler:cancel_gale_feinted_tracks(playing_tracks)
-        for _, track in playing_tracks do
+        for _, track in playing_tracks do repeat 
             local state = self.running_tracks[track];
-            if not state or not state.action or not state.action.detect_gale_feint then continue end
+            if not state or not state.action or not state.action.detect_gale_feint then do break end end
 
             self:cancel_running_track(track);
-        end
+         until true; end
     end
 
-    function AnimatorHandler:in_hitbox_with_pos(root_pos: CFrame, enemy_pos: CFrame, hitbox: Vector3, offset: CFrame, hidden: boolean?)
+    function AnimatorHandler:in_hitbox_with_pos(root_pos, enemy_pos, hitbox, offset, hidden)
         return general:in_hitbox_with_pos(root_pos, enemy_pos, hitbox, offset, hidden, self.ball)
     end
 
 
     local position_prediction_service = require("@src/features/auto-parry/services/position_prediction_service");
-    function AnimatorHandler:in_hitbox(hitbox: Vector3, offset: CFrame, hidden: boolean?, predict, predict_time, predict_rotation, base_predict)  
+    function AnimatorHandler:in_hitbox(hitbox, offset, hidden, predict, predict_time, predict_rotation, base_predict)  
         local predicted_pos_us = position_prediction_service.our_predicted_position(); 
         local predicted_other_pos, dbg = position_prediction_service.predict(self.player, (Latency:get_ping() + (predict_time and typeof(predict_time) == "number" and predict_time or 0)) + 0.5, {
             predict_rotation = predict_rotation
@@ -22776,7 +22776,7 @@ end;
             local Safety = require("@src/utility/safety");
             if #services.Players:GetPlayers() == 1 and type ~= "Legit Jump" then
                 local_player.character.CharacterHandler.Requests.Jump:FireServer()
-                local_player.root_part.CFrame *= CFrame.new(0, 50, 0)
+                local_player.root_part.CFrame = local_player.root_part.CFrame *  CFrame.new(0, 50, 0)
             else
                 local jump_func = nil;
                 local upvalues = getupvalues(base_require(game:GetService("ReplicatedStorage").Modules.CharacterControllers.Human));
@@ -22871,7 +22871,7 @@ end;
             return a_time < b_time
         end)
 
-        for index, action in to_evaluate_actions do
+        for index, action in to_evaluate_actions do local __c51b655 = false; repeat 
             if track_state then
                 track_state.action = action;
             end;
@@ -22889,7 +22889,7 @@ end;
             end
             
             if action.half_size_offset then
-                offset -= Vector3.new(0, 0, hitbox.Z / 2)
+                offset = offset -  Vector3.new(0, 0, hitbox.Z / 2)
             end;
             
             if type == "End Block" and self.blocked then
@@ -22897,7 +22897,7 @@ end;
                 task.wait(wait_time);
                 DefendActionManager:add_action(self.entity, "unblock", tick());
                 self.blocked = false;
-                continue            
+                do break end            
 end;
 
             local function in_hitbox(hide)
@@ -22953,7 +22953,7 @@ end;
 
             if track.Speed > 50 then
                 input_task:remove();
-                break            
+                do __c51b655 = true; break end            
 end;
 
             local chance_entry = chance_store:get_entry(data.name or pot_name or action.name);
@@ -22966,7 +22966,7 @@ end;
             if not continue_with_parry then
                 debug_print("[%s] Action %i chance roll -> %s.", name, index, variation_result);
                 input_task:remove();
-                continue            
+                do break end            
 end;
             
             if math.random() >= (aztup.flags[self.flag .. "parry_chance"] / 100) then
@@ -22975,7 +22975,7 @@ end;
                 end;                
 
                 input_task:remove();
-                continue            
+                do break end            
 end;
 
             local wait_time = (time - alotted) - current_rtt
@@ -23025,7 +23025,7 @@ end;
                     end);
 
                 task.wait(wait_time)
-                alotted += wait_time
+                alotted = alotted +  wait_time
             elseif wait_time ~= wait_time or wait_time > 0 then
                 return debug_print("[%s] Skipping action %i, wait time invalid: %.2f", name, index, wait_time)            
 end;
@@ -23047,7 +23047,7 @@ end
 
             if not action.ignore_early_end and not track_still_active(track, self.entity) and not ignore_anim_early_end then
                 debug_print("[%s] Skipping action %i, animation ended early.", name, index);
-                continue            
+                do break end            
 end
 
             if type == "RPUE Parry" then
@@ -23067,11 +23067,11 @@ end
                     task.wait();
                     DefendActionManager.unblock:FireServer();
                 end;
-                continue            
+                do break end            
 end;
 
             if check_action_preconditions(self, track, action, data, action_type, name, index, in_hitbox) then
-                continue            
+                do break end            
 end;
 
             if aztup.flags[self.flag .. "roll_if_unequipped"] and not EffectReplicator:FindEffect("Equipped") and type == "Parry" then
@@ -23099,14 +23099,14 @@ end;
 
             local situation_skip = check_action_situation_filters(self, track, action, action_type, name, index)
             if situation_skip == "continue" then
-                continue            
+                do break end            
 elseif situation_skip == "break" then
-                break            
+                do __c51b655 = true; break end            
 end;
 
             local chime_gale_skip = check_chime_and_gale(self, track, action, name, index)
             if chime_gale_skip == "continue" then
-                continue            
+                do break end            
 elseif chime_gale_skip == "return" then
                 return            
 end;
@@ -23132,7 +23132,7 @@ end;
 
             if type == "Parry" and (not action.ignore_auto_parry_frames and in_parry_frames) and aztup_options.filters.Value["Dont Parry In AP Frames"] then
                 debug_print("[%s] In parry frames. Skipping action %i", name, index);
-                continue            
+                do break end            
 end;
 
             
@@ -23164,18 +23164,18 @@ end;
 
             if aztup_options.filters.Value["Dont Roll"] and (type == "Dodge" or type == "Forced Full Dodge") then
                 debug_print("[%s] Skipping action %i, Roll is disabled.", name, index);
-                continue            
+                do break end            
 end;
 
             if aztup_options.filters.Value["Dont Parry If Not In Combat"] and not EffectReplicator:FindEffect("Danger") then
                 debug_print("[%s] Skipping action %i, Not in danger.");
-                continue            
+                do break end            
 end;
             
             execute_resolved_action(self, type, action, data);
 
-            if action.no_more_actions then break end
-        end
+            if action.no_more_actions then do __c51b655 = true; break end end
+         until true; if __c51b655 then break end end
     end
     
     
@@ -23201,7 +23201,7 @@ end
             for _, anim in assets.Anims.Movement:GetDescendants() do
                 if anim:IsA("Animation") and anim.AnimationId == track.Animation.AnimationId then
                     disallowed = true;
-                    break                
+                    do break end                
 end;
             end
 
@@ -23214,7 +23214,7 @@ end;
     end
 
     local asset_id = require("@src/utility/asset_id");
-    function AnimatorHandler:run(track: AnimationTrack)
+    function AnimatorHandler:run(track)
         local ap = aztup.flags.auto_parry
         local breaker = aztup.flags.ap_breaker
         local asc = aztup.features.anim_speed_changer
@@ -23314,9 +23314,9 @@ end
         local actions = action_builder.new({ signal = true })
         local to_evaluate_actions
 
-        tasks += 1;
+        tasks = tasks +  1;
         task.delay(1, function()
-            tasks -= 1;
+            tasks = tasks -  1;
         end);
         if data.run then
             
@@ -23518,21 +23518,21 @@ function anti_ap_breaker:handle_priority_hiding(defender, track)
     local hidden_count = 0;
     local highest_priority = 1000;
     
-    for _, other_track in humanoid:GetPlayingAnimationTracks() do
-        if track == other_track then continue end
-        if other_track.Priority.Value == 1000 then continue end
-        if track.Priority.Value >= other_track.Priority.Value then continue end;
-        if other_track.WeightCurrent <= track.WeightCurrent / 2 then continue end
-        if other_track.WeightTarget <= 0.3 then continue end
-        if other_track.Speed == 0 and other_track.TimePosition >= track.Length - 0.01 or other_track.TimePosition <= 0.01 then continue end;
-        if not asset_id.get_id(other_track.Animation.AnimationId) then continue end
-        if self:final_check(defender, other_track, true) then continue end
-        hidden_count += 1;
+    for _, other_track in humanoid:GetPlayingAnimationTracks() do repeat 
+        if track == other_track then do break end end
+        if other_track.Priority.Value == 1000 then do break end end
+        if track.Priority.Value >= other_track.Priority.Value then do break end end;
+        if other_track.WeightCurrent <= track.WeightCurrent / 2 then do break end end
+        if other_track.WeightTarget <= 0.3 then do break end end
+        if other_track.Speed == 0 and other_track.TimePosition >= track.Length - 0.01 or other_track.TimePosition <= 0.01 then do break end end;
+        if not asset_id.get_id(other_track.Animation.AnimationId) then do break end end
+        if self:final_check(defender, other_track, true) then do break end end
+        hidden_count = hidden_count +  1;
         
         if highest_priority > other_track.Priority.Value then
             highest_priority = other_track.Priority.Value;
         end; 
-    end
+     until true; end
 
     return highest_priority ~= 1000 and highest_priority > track.Priority.Value
 end;
@@ -23592,16 +23592,16 @@ local effect_names = {}
 local effect_data_map = {}
 
 task.spawn(function() 
-	for _, module in list_modules("features/auto-parry/data/effects/*") do
+	for _, module in list_modules("features/auto-parry/data/effects/*") do repeat 
 		local success, effect_data = pcall(require, module)
 		if not success or typeof(effect_data) ~= "table" or not effect_data.id then
 			warn(module, "invalid@effect-handler")
-			continue
+			do break end
 		end
 	
 		effect_data_map[effect_data.id] = effect_data
 		table.insert(effect_names, effect_data.name or effect_data.id)
-	end
+	 until true; end
 	
 	getgenv().effect_names = effect_names
 end)
@@ -23893,7 +23893,7 @@ aztup.maid:give_task(thrown.DescendantAdded:Connect(function(part)
 	for _, item in projectile_effect_data_map do
 		if item.is and item.is(part) then
 			data = item
-			break
+			do break end
 		end
 	end
 
@@ -24311,13 +24311,13 @@ objects.predict = function(player, dt, opts)
         angularVelocity = objects.yrate(player)
 
         if angularVelocity then
-            predicted *= latest.position.Rotation *
+            predicted = predicted *  latest.position.Rotation *
                 CFrame.Angles(0, angularVelocity * dt, 0)
         else
-            predicted *= latest.position.Rotation
+            predicted = predicted *  latest.position.Rotation
         end
     else
-        predicted *= latest.position.Rotation
+        predicted = predicted *  latest.position.Rotation
     end
 
     return predicted,{
@@ -24372,7 +24372,7 @@ module_map["src/features/auto-parry/util/target-filter"] = function(require)
 local TargetFilter = {}
 local reputation_system;
 
-function TargetFilter.get_target_kind(entity: Instance?): string
+function TargetFilter.get_target_kind(entity)
 	if not entity then
 		return "Unknown"
 	end
@@ -24389,7 +24389,7 @@ function TargetFilter.get_target_kind(entity: Instance?): string
 	return "Other"
 end
 
-function TargetFilter.is_allowed(entity: Instance?, allowed_targets): boolean
+function TargetFilter.is_allowed(entity, allowed_targets)
 	
 	if not allowed_targets then
 		return true
@@ -24436,7 +24436,7 @@ function TargetFilter.is_allowed(entity: Instance?, allowed_targets): boolean
 						for name in string.gmatch(list, "([^;]+)") do
 							if plr.Name == name:gsub("^%s*(.-)%s*$", "%1") then
 								is_ally = true
-								break
+								do break end
 							end
 						end
 					end
@@ -24453,7 +24453,7 @@ function TargetFilter.is_allowed(entity: Instance?, allowed_targets): boolean
 							for g in string.gmatch(list, "([^;]+)") do
 								if guild == g:gsub("^%s*(.-)%s*$", "%1") then
 									is_ally = true
-									break
+									do break end
 								end
 							end
 						end
@@ -24891,7 +24891,7 @@ local sprint_keys, started_sprint, feature = {
 }, nil, nil;
 
 
-feature = Feature:new("auto_sprint", services.UserInputService.InputBegan, LPH_NO_VIRTUALIZE(function(input: InputObject, gp: boolean)
+feature = Feature:new("auto_sprint", services.UserInputService.InputBegan, LPH_NO_VIRTUALIZE(function(input, gp)
     if gp or not table.find(sprint_keys, input.KeyCode) or started_sprint then return end
 
     started_sprint = true;
@@ -24904,9 +24904,9 @@ feature = Feature:new("auto_sprint", services.UserInputService.InputBegan, LPH_N
         local stop_sprint = requests and requests:FindFirstChild("StopSprint");
         if not stop_sprint then return end
 
-        for _, connection in getconnections(stop_sprint.OnClientEvent) do
+        for _, connection in getconnections(stop_sprint.OnClientEvent) do repeat 
             local func = connection.Function;
-            if not debug.getinfo(func).source:find("InputClient") then continue end
+            if not debug.getinfo(func).source:find("InputClient") then do break end end
         
             local sprint_func = getfenv(func).Sprint;
             while local_player.humanoid.MoveDirection.Magnitude >= 0.1 do
@@ -24917,7 +24917,7 @@ feature = Feature:new("auto_sprint", services.UserInputService.InputBegan, LPH_N
 
                 task.wait();
             end;
-        end;
+         until true; end;
     end);
 
     local move_direction_conn;
@@ -24939,18 +24939,18 @@ module_map["src/features/automation/auto_train_agility"] = function(require)
 local locked = false
 
 local function playerCheck(mag, custom)
-    for _, player in services.Players:GetPlayers() do
-        if not player.Character then continue end
-        if player == local_player.instance then continue end
+    for _, player in services.Players:GetPlayers() do repeat 
+        if not player.Character then do break end end
+        if player == local_player.instance then do break end end
 
         local hrp = player.Character:FindFirstChild("HumanoidRootPart");
-        if not hrp then continue end
+        if not hrp then do break end end
 
         local dist = ((custom or local_player.root_part.Position) - hrp.Position).Magnitude;
         if dist <= mag then
             return true        
 end
-    end
+     until true; end
     return false
 end
 
@@ -25164,7 +25164,7 @@ function feature:enable()
             for _, tool in pairs(backpack:GetChildren()) do
                 if tool:IsA("Tool") and tool:GetAttribute("DefaultName") == decided_mantra then
                     mantra_tool = tool;
-                    break                
+                    do break end                
 end
             end
             
@@ -25265,7 +25265,7 @@ local feature = Feature:new("auto_math_book", local_player.instance.PlayerGui.Ch
                 if v:IsA('TextButton') then
                     if tonumber(v.Name) and (math.abs(tonumber(v.Name)-Solved)<=1) then
                         ChoiceEvent:FireServer(v.Name)
-                        break
+                        do break end
                     end
                 end
             end
@@ -25443,7 +25443,7 @@ function HandleTrial()
         {Name = "Megalodaunt_Alpha", Offset = CombatOffset.Megalodaunt_Alpha}, 
     }
 
-    for _, Boss in ipairs(Bosses) do
+    for _, Boss in ipairs(Bosses) do repeat 
         repeat task.wait() until FindMob(Boss.Name)
         if Boss.Name == "Nomad" then
                 Tween.new(CFrame.new(76, 1257, 255), true, 200).wait();
@@ -25460,7 +25460,7 @@ function HandleTrial()
             game:GetService("Players").LocalPlayer.Character:WaitForChild("CharacterHandler"):WaitForChild("Requests"):WaitForChild("Carry"):FireServer()
             task.wait(1);
             local_player.root_part.CFrame = old_cf + Vector3.new(0, 10, 0);
-            continue        
+            do break end        
 end;
         InitiateCombat(Boss.Name, Boss.Offset)
 
@@ -25471,7 +25471,7 @@ end;
         end
         Tween.new(SpawnPosition, true, 150).wait();
         local_player.root_part.CFrame = SpawnPosition
-    end 
+     until true; end 
 end
 
 
@@ -25588,10 +25588,10 @@ return function()
         task.delay(1, function()
             if local_player.humanoid.Health <= 1 then return end
 
-            local_player.root_part.CFrame *= CFrame.new(0,9e9,0);
+            local_player.root_part.CFrame = local_player.root_part.CFrame *  CFrame.new(0,9e9,0);
         end);
     else
-        local_player.root_part.CFrame *= CFrame.new(0,9e9,0);
+        local_player.root_part.CFrame = local_player.root_part.CFrame *  CFrame.new(0,9e9,0);
     end
 end
 
@@ -25624,14 +25624,14 @@ return game.PlaceId == 86761619761103 and function()
     whirlpool:WaitForChild("Part", 9e9);
 
     local whirlpool_part = whirlpool:WaitForChild("Part", 9e9);
-    while task.wait() do
-        if not local_player.root_part then continue end
+    while task.wait() do repeat 
+        if not local_player.root_part then do break end end
         local_player.root_part.AssemblyLinearVelocity = Vector3.one * math.random();
         local_player.root_part.CFrame = whirlpool_part.CFrame * CFrame.new(math.random(1, 10), 0, math.random(1, 10));
 
         firetouchinterest(whirlpool.Part, local_player.root_part, 1)
         firetouchinterest(whirlpool.Part, local_player.root_part, 0)
-    end;
+     until true; end;
 end or function()
     require("@src/features/buttons/generic_teleport").new(CFrame.new(39911.3672, 39980.9375, 39708.3203), function()
         local mod_office = workspace:FindFirstChild("ModOffice");
@@ -25729,7 +25729,7 @@ end
         for _, door in workspace:GetChildren() do
             if door.Name:match("GuildDoor_") and (door:GetAttribute("GuildName") or door.Name) == target then
                 guild_door = door
-                break
+                do break end
             end
         end
     end;
@@ -25831,7 +25831,7 @@ return function()
         for _, live_entity in live:GetChildren() do
             if live_entity.Name:match(".chaser") then
                 has_chaser = true;
-                break            
+                do break end            
 end;
         end;
     end;
@@ -25888,13 +25888,13 @@ end;
     elseif not local_player.character:FindFirstChild("BoneSpear") and workspace:FindFirstChild("Layer2Floor2") then
         local closest = nil
         
-        for _, object in workspace.Thrown:GetChildren() do
-            if not object.Name:match('BoneSpear') then continue end
-            if not object:FindFirstChild('InteractPrompt') then continue end
+        for _, object in workspace.Thrown:GetChildren() do repeat 
+            if not object.Name:match('BoneSpear') then do break end end
+            if not object:FindFirstChild('InteractPrompt') then do break end end
             
             if closest == nil then
                 closest = object
-                continue
+                do break end
             end
             
             if closest then
@@ -25905,7 +25905,7 @@ end;
                     closest = object
                 end
             end
-        end 
+         until true; end 
         
         if closest then
             safe_tween(Tween.new(closest.CFrame, true, 200))
@@ -25921,15 +25921,15 @@ end;
         
         local closest = nil
         
-        for _, altar in workspace.TrueAvatarBossRoom.Floor1Stuff:GetChildren() do
-            if not altar.Name:match('Altar') or not altar:IsA("Model") then continue end
-            if altar:FindFirstChild('BoneSpear', true) then continue end
+        for _, altar in workspace.TrueAvatarBossRoom.Floor1Stuff:GetChildren() do repeat 
+            if not altar.Name:match('Altar') or not altar:IsA("Model") then do break end end
+            if altar:FindFirstChild('BoneSpear', true) then do break end end
             
             floor_one_done = false
             
             if closest == nil then
                 closest = altar
-                continue
+                do break end
             end
             
             if closest then
@@ -25940,18 +25940,18 @@ end;
                     closest = altar
                 end
             end
-        end
+         until true; end
         
         if floor_one_done then
-            for _, altar in workspace.TrueAvatarBossRoom.Floor2Stuff:GetChildren() do
-                if not altar.Name:match('Altar') or not altar:IsA("Model") then continue end
-                if altar:FindFirstChild('BoneSpear', true) then continue end
+            for _, altar in workspace.TrueAvatarBossRoom.Floor2Stuff:GetChildren() do repeat 
+                if not altar.Name:match('Altar') or not altar:IsA("Model") then do break end end
+                if altar:FindFirstChild('BoneSpear', true) then do break end end
                 
                 floor_two_done = false
                 
                 if closest == nil then
                     closest = altar
-                    continue
+                    do break end
                 end
                 
                 if closest then
@@ -25962,19 +25962,19 @@ end;
                         closest = altar
                     end
                 end
-            end
+             until true; end
         end
         
         if floor_two_done then
-            for _, altar in workspace.TrueAvatarBossRoom.Floor3Stuff:GetChildren() do
-                if not altar.Name:match('Altar') then continue end
-                if altar:FindFirstChild('BoneSpear', true) then continue end
+            for _, altar in workspace.TrueAvatarBossRoom.Floor3Stuff:GetChildren() do repeat 
+                if not altar.Name:match('Altar') then do break end end
+                if altar:FindFirstChild('BoneSpear', true) then do break end end
                 
                 floor_three_done = false
                 
                 if closest == nil then
                     closest = altar
-                    continue
+                    do break end
                 end
                 
                 if closest then
@@ -25985,7 +25985,7 @@ end;
                         closest = altar
                     end
                 end
-            end
+             until true; end
         end
 
         if closest:FindFirstChild("BoneSpear") then return end
@@ -26056,7 +26056,7 @@ feature.slider_conversion_map = {
 feature.last_seen_at = {};
 feature.stepping = {};
 
-function feature:handle(track: AnimationTrack, data: any)
+function feature:handle(track, data)
     if not aztup.flags.anim_speed_changer then 
         return    
 end;
@@ -26087,20 +26087,20 @@ end;
 
 function feature.update()
     local self = feature;
-    for index, item in self.stepping do
+    for index, item in self.stepping do repeat 
         local track = item.track;
         local speed = item.speed;
 
         if not track.IsPlaying then
             table.remove(self.stepping, index);
-            continue        
+            do break end        
 end
 
-        if self.last_seen_at[track] == track.Speed then continue end
+        if self.last_seen_at[track] == track.Speed then do break end end
 
         track:AdjustSpeed(track.Speed * speed);
         self.last_seen_at[track] = track.Speed;
-    end
+     until true; end
 end
 
 feature.func = feature.update; 
@@ -26122,29 +26122,29 @@ function self:get_target()
     local mouse_x = mouse.X;
     local mouse_y = mouse.Y + services.GuiService:GetGuiInset().Y;
 
-    for _, entity in live:GetChildren() do
+    for _, entity in live:GetChildren() do repeat 
         local is_mob = entity.Name:sub(1, 1) == ".";
         local is_plr = not is_mob;
         if is_mob and not targets.Mobs then
-            continue        
+            do break end        
 end;
 
         if is_plr and not targets.Players then
-            continue        
+            do break end        
 end;
 
         local plr = is_plr and services.Players:GetPlayerFromCharacter(entity);
         local is_gld = is_plr and general:is_teammate(plr);
         if is_gld and not targets.Guildmates then
-            continue        
+            do break end        
 end;
 
         if not entity.PrimaryPart then
-            continue        
+            do break end        
 end;
 
         if entity == local_player.character then
-            continue        
+            do break end        
 end;
 
         local size = Vector3.new(4, 5, 6)
@@ -26174,7 +26174,7 @@ end
                 end
             end
         end
-    end;
+     until true; end;
 
     return nil
 end;
@@ -26339,14 +26339,14 @@ return Feature:new("auto_air_counter", scheduler:add_task(0.1), function()
 end
     
     local in_range = {};
-    for _, item in live:GetChildren() do
-        if item.Name:sub(1,1) == "." or not item:FindFirstChild("HumanoidRootPart") then continue end
+    for _, item in live:GetChildren() do repeat 
+        if item.Name:sub(1,1) == "." or not item:FindFirstChild("HumanoidRootPart") then do break end end
 
         if aztup.flags.air_counter_ally_check then
             if target_filter.is_allowed(item, {
                 PVP = true
             }) then
-                continue            
+                do break end            
 end
         end
 
@@ -26356,7 +26356,7 @@ end
         if distance <= aztup.flags.air_counter_range then
             table.insert(in_range, item);
         end
-    end
+     until true; end
 
     for _, target in next, in_range do
         anti_air:FireServer(target);
@@ -27073,20 +27073,20 @@ function self:get_character_bounding_box(character, orientation)
 
 	
 	
-	for _, obj in next, character:GetChildren() do
+	for _, obj in next, character:GetChildren() do repeat 
 		
 		if not obj:IsA("Part") and not obj:IsA("MeshPart") then
-			continue
+			do break end
 		end
 
 		
 		if obj.Name == "HumanoidRootPart" then
-			continue
+			do break end
 		end
 
 		
 		if #obj:GetJoints() <= 0 then
-			continue
+			do break end
 		end
 
 		
@@ -27121,7 +27121,7 @@ function self:get_character_bounding_box(character, orientation)
 		maxx = maxx < pos_relative_x and pos_relative_x or maxx
 		maxy = maxy < pos_relative_y and pos_relative_y or maxy
 		maxz = maxz < pos_relative_z and pos_relative_z or maxz
-	end
+	 until true; end
 
 	
 	local omin, omax = Vector3.new(minx, miny, minz), Vector3.new(maxx, maxy, maxz)
@@ -27151,29 +27151,29 @@ end;
     local mouse_x = mouse.X;
     local mouse_y = mouse.Y + services.GuiService:GetGuiInset().Y;
 
-    for _, entity in live:GetChildren() do
+    for _, entity in live:GetChildren() do repeat 
         local is_mob = entity.Name:sub(1, 1) == ".";
         local is_plr = not is_mob;
         if is_mob and not targets.Mobs then
-            continue        
+            do break end        
 end;
 
         if is_plr and not targets.Players then
-            continue        
+            do break end        
 end;
 
         local plr = is_plr and services.Players:GetPlayerFromCharacter(entity);
         local is_gld = is_plr and general:is_teammate(plr);
         if is_gld and not targets.Guildmates then
-            continue        
+            do break end        
 end;
 
         if not entity.PrimaryPart then
-            continue        
+            do break end        
 end;
 
         if entity == local_player.character then
-            continue        
+            do break end        
 end;
 
         local size = Vector3.new(4, 5, 6)
@@ -27203,7 +27203,7 @@ end
                 end
             end
         end
-    end;
+     until true; end;
     return nil
 end;
 
@@ -27325,11 +27325,11 @@ function feature:enable()
 
 	self.added_hook = EffectReplicatorHandler:hook("added", function(effect)
 		local has_poser = local_player.instance.Backpack:FindFirstChild("Weapon") and local_player.instance.Backpack:FindFirstChild("Weapon"):GetAttribute("PrimaryWeapon") == "Moppet";
-		for _, item in local_player.character:GetChildren() do
-			if item.Name ~= "RingEquipment" or item:GetAttribute("DisplayName") ~= "Poser's Ring" then continue end
+		for _, item in local_player.character:GetChildren() do repeat 
+			if item.Name ~= "RingEquipment" or item:GetAttribute("DisplayName") ~= "Poser's Ring" then do break end end
 
 			has_poser = true;
-		end;
+		 until true; end;
 
 		if not has_poser then return end
 
@@ -27375,34 +27375,34 @@ function feature:enable()
 		if not scaling then return end
 
 		local damage_done = 0;
-		damage_done += weapon_stats.Damage.Value;
+		damage_done = damage_done +  weapon_stats.Damage.Value;
 
 		local weapon_item = local_player.instance.Backpack:FindFirstChild("Weapon");
 		local stars = weapon_item and weapon_item:GetAttribute("Quality") or 0;
-		damage_done *= 1 + (0.02 * stars);
+		damage_done = damage_done *  1 + (0.02 * stars);
 
 		local is_pve = target.Name:sub(1, 1) == "." and (target.Name:find("training_dummy") and target.Name:find("pve") or not target.Name:find("training_dummy"));
 
 		local applied = {};
-		for _, scale in scaling:GetChildren() do
-			if not local_player.character:GetAttribute("Stat_" .. scale.Name) or applied[scale.Name] then continue end
+		for _, scale in scaling:GetChildren() do repeat 
+			if not local_player.character:GetAttribute("Stat_" .. scale.Name) or applied[scale.Name] then do break end end
 
 			applied[scale.Name] = true;
 			local scaling_value_pvp = scale.Value < 1 and scale.Value or scale.Value / 100;
 
 			local scaling_amount = local_player.character:GetAttribute("Stat_" .. scale.Name) * scaling_value_pvp;
-			damage_done += scaling_amount;
-		end;
+			damage_done = damage_done +  scaling_amount;
+		 until true; end;
 
 		if is_pve then
-			damage_done *= 1 + (DataReplication.GetData().Level * 0.26);
+			damage_done = damage_done *  1 + (DataReplication.GetData().Level * 0.26);
 		end;
 
 		local humanoid = target:FindFirstChildOfClass("Humanoid");
 		if not humanoid then return end
 
 		stored_damage_registry[target] = stored_damage_registry[target] or 0;
-		stored_damage_registry[target] += damage_done * (target.Name:sub(1, 1) == "." and 1.08 or 1);
+		stored_damage_registry[target] = stored_damage_registry[target] +  damage_done * (target.Name:sub(1, 1) == "." and 1.08 or 1);
 		stored_damage_registry[target] = math.clamp(stored_damage_registry[target], 0, humanoid.MaxHealth * 0.7);
 	end);
 end;
@@ -27587,7 +27587,7 @@ feature = Feature:new("ap_breaker", game:GetService("RunService").RenderStepped,
     if not humanoid then return end;
 
     local plays_this_frame = 0;
-    while animation_budget >= 1 and plays_this_frame < 30 do
+    while animation_budget >= 1 and plays_this_frame < 30 do repeat 
         animation_budget = animation_budget - 1;
         plays_this_frame = plays_this_frame + 1;
 
@@ -27630,7 +27630,7 @@ feature = Feature:new("ap_breaker", game:GetService("RunService").RenderStepped,
             end;
             should_proc_aggressive = true;
             
-            continue        
+            do break end        
 elseif should_proc_aggressive then
             last_added_track:Play(0.3, 0.6, rand:NextNumber() + 1);
         elseif aztup_options.ap_breaker_type.Value == "Aggressive 2 (Blatant)" then
@@ -27671,7 +27671,7 @@ elseif should_proc_aggressive then
             animation_instance:Destroy();
             
         end);
-    end
+     until true; end
 end)) do
     function feature:disable()
         if last_added_track then
@@ -27755,12 +27755,12 @@ self = Feature:new("boat_teleport", services.UserInputService.InputBegan, functi
 
     local last_non_owner = tick();
     repeat
-        if not EffectReplicator:FindEffect("Steering") then break end
+        if not EffectReplicator:FindEffect("Steering") then do break end end
 
         equip_weapon:FireServer(true);
         
         local steering_effect = EffectReplicator:FindEffect("Steering");
-        if not steering_effect then break end
+        if not steering_effect then do break end end
 
         if steering_effect.Tags.WheelSteer then
             local controls = ship:FindFirstChild("ShipControls");
@@ -27841,20 +27841,20 @@ self = Feature:new("kamui_teleport", services.UserInputService.InputBegan, funct
         local spawn = Vector3.new(50000, 150, 50000);
         
         local targ = map_cf.Position;
-        targ /= kamuiScale;
-        targ += spawn;
+        targ = targ /  kamuiScale;
+        targ = targ +  spawn;
 
      
         
         
         for i = 1, 100 do 
-            if (local_player.root_part.Position - targ).Magnitude < 100 then break end;
+            if (local_player.root_part.Position - targ).Magnitude < 100 then do break end end;
             local_player.root_part.CFrame = CFrame.new(targ.X, 100, targ.Z);
 
-            for _, descendant in local_player.character:GetDescendants() do
-                if not descendant:IsA("BodyMover") then continue end
+            for _, descendant in local_player.character:GetDescendants() do repeat 
+                if not descendant:IsA("BodyMover") then do break end end
                 descendant:Destroy();
-            end;
+             until true; end;
             
             services.RunService.PreSimulation:Wait();
         end;
@@ -27890,13 +27890,13 @@ elseif aztup_options.breaker_type.Value == "Circular" then
 else
         local vel = Vector3.zero;
 
-        for _, mob in workspace.Live:GetChildren() do
-            if not mob:FindFirstChild("HumanoidRootPart") then continue end;
-            if not mob:FindFirstChild("Target") then continue end
-            if mob.Target ~= local_player.character then continue end;
+        for _, mob in workspace.Live:GetChildren() do repeat 
+            if not mob:FindFirstChild("HumanoidRootPart") then do break end end;
+            if not mob:FindFirstChild("Target") then do break end end
+            if mob.Target ~= local_player.character then do break end end;
 
             vel = (mob.HumanoidRootPart.Position - local_player.root_part.Position);
-        end;
+         until true; end;
 
         local_player.root_part.Velocity = Vector3.new(0, -9e9, 0) - vel;
     end;
@@ -28017,7 +28017,7 @@ function buffer_reader:varint()
 		result = result + bit32.lshift(bit32.band(byte, 0x7F), shift)
 
 		if bit32.band(byte, 0x80) == 0 then
-			break
+			do break end
 		end
 
 		shift = shift + 7
@@ -28248,13 +28248,13 @@ end)
 
 function self:goto(map_cf)
     local boundarys = {};
-    for _, child in workspace:GetChildren() do
-        if not child.Name:match("Boundary") then continue end
-        if not child:IsA("BasePart") then continue end
-        if not child:FindFirstChild("TouchInterest") then continue end
+    for _, child in workspace:GetChildren() do repeat 
+        if not child.Name:match("Boundary") then do break end end
+        if not child:IsA("BasePart") then do break end end
+        if not child:FindFirstChild("TouchInterest") then do break end end
 
         table.insert(boundarys, child);
-    end;      
+     until true; end;      
 
     if #boundarys == 0 then
         
@@ -28270,7 +28270,7 @@ function self:goto(map_cf)
     for _, boundary_part in pairs(boundarys) do
         if (boundary_part.Position - local_player.root_part.Position).Magnitude > 50 then
             boundary = boundary_part;
-            break        
+            do break end        
 end;
     end;
 
@@ -28473,8 +28473,8 @@ local KeyHandlerClass = {} do
         local attempts = 0;
         repeat
             resolved = bypass.resolve_keyhandler();
-            if resolved then break end
-            attempts += 1;
+            if resolved then do break end end
+            attempts = attempts +  1;
             task.wait(attempts / 20);
         until resolved or attempts > 40;
 
@@ -28554,11 +28554,11 @@ end;
             }
         end)
 
-        for _, tbl in getgc(true) do
-            if typeof(tbl) ~= "table" then continue end
-            if getrawmetatable(tbl) then continue end
-            if #tbl ~= 2 then continue end
-            if typeof(tbl[1]) ~= "function" or typeof(tbl[2]) ~= "function" then continue end
+        for _, tbl in getgc(true) do local __c51b741 = false; repeat 
+            if typeof(tbl) ~= "table" then do break end end
+            if getrawmetatable(tbl) then do break end end
+            if #tbl ~= 2 then do break end end
+            if typeof(tbl[1]) ~= "function" or typeof(tbl[2]) ~= "function" then do break end end
 
             local create = tbl[2];
             local get = tbl[1];
@@ -28568,9 +28568,9 @@ end;
                 hookfunction(create, create_key);
                 tbl[1] = get_key;
                 tbl[2] = create_key; 
-                break            
+                do __c51b741 = true; break end            
 end 
-        end
+         until true; if __c51b741 then break end end
 
         
         shared.b = true;
@@ -28629,15 +28629,15 @@ local bans = {};
 
 Logger.log_for_devs("[hooking] grabbing ban_remotes");
 
-for _, remote in requests:GetChildren() do
+for _, remote in requests:GetChildren() do repeat 
     local changed_connections = #getconnections(remote.Changed)
     if changed_connections <= 0 then
-        continue
+        do break end
     end
 
     ban_remotes = ban_remotes + 1
     bans[remote] = true
-end
+ until true; end
 
 
 
@@ -28832,17 +28832,17 @@ end;
         if aztup.flags.fall_multiplier and self == aztup.features.fall_multiplier.fall_remote then
             if aztup.flags.only_near_players then
                 local players_are_near = false;
-                for _, player in services.Players.GetPlayers(services.Players) do
-                    if player == local_player.instance then continue end
-                    if not player.Character then continue end
+                for _, player in services.Players.GetPlayers(services.Players) do repeat 
+                    if player == local_player.instance then do break end end
+                    if not player.Character then do break end end
                     local pivot = player.Character.GetPivot(player.Character);
-                    if not pivot then continue end
+                    if not pivot then do break end end
 
                     local dist = (local_player.root_part.Position - pivot.Position).Magnitude
                     if dist <= 550 then
                         players_are_near = true;
                     end
-                end
+                 until true; end
 
                 if not players_are_near then return end
             end
@@ -28911,8 +28911,8 @@ end
         then
             local mult = aztup.features.multiply_s;
             mult = mult and mult.speed_mult or 0;
-            mult /= 100;
-            mult += 1;
+            mult = mult /  100;
+            mult = mult +  1;
             return old_newindex(self, key, mult and value and value * mult or value)        
 end
         
@@ -28973,13 +28973,13 @@ return {
             bad_modules["features/auto-parry/handlers/animator-handler"] = true;
         end;
 
-        for _, module in list_modules("features/*/*") do
-            if bad_modules[module] then continue end;
+        for _, module in list_modules("features/*/*") do repeat 
+            if bad_modules[module] then do break end end;
             local ok, feature = pcall(require, module);
             if ok and feature and typeof(feature) == "table" and feature.id then
                 aztup.features[feature.id] = feature;
             end;
-        end;
+         until true; end;
     end);
 }
 end
@@ -29103,7 +29103,7 @@ local function onBuildStealPlayer(player, clipboard)
     end
     for i = 1, 20 do
         if AttributePoints <= 15 then
-            break        
+            do break end        
 end
         AttributePoints = AttributePoints - 15
         Power = Power + 1
@@ -29335,7 +29335,7 @@ function feature:enable()
             if player ~= services.Players.LocalPlayer then
                 onBuildStealPlayer(player)
                 stolen = true;
-                break            
+                do break end            
 end
         end
 
@@ -29460,12 +29460,12 @@ aztup.maid:give_task(scheduler:add_task(0.5):Connect(function()
     );
 
     if memory_val and show_mem_data then
-        watermark ..= (' %.2f<font color="#%s">gb</font>'):format(
+        watermark = watermark ..  (' %.2f<font color="#%s">gb</font>'):format(
             memory_val:GetValue() / 1000,
             color_in_hex
         )
 
-        raw_watermark ..= (' %.2fgb'):format(
+        raw_watermark = raw_watermark ..  (' %.2fgb'):format(
             memory_val:GetValue() / 1000
         )
     end
@@ -29761,20 +29761,20 @@ local ui_list_layout = Instance.new("UIListLayout", character_holder);
 ui_list_layout.FillDirection = Enum.FillDirection.Vertical;
 ui_list_layout.SortOrder = Enum.SortOrder.LayoutOrder;
 
-for _, item in Converted do
-    if not item:IsA("Frame") and not item:IsA("TextLabel") then continue end
+for _, item in Converted do repeat 
+    if not item:IsA("Frame") and not item:IsA("TextLabel") then do break end end
     
     item.InputChanged:Connect(function(input, t)
         if t or input.UserInputType ~= Enum.UserInputType.MouseWheel then return end
 
         local direction = input.Position.Z > 0 and 1 or -1
         
-        for _, item in Converted do
-            if not item:IsA("Frame") and not item:IsA("TextLabel") and not item:IsA("UIStroke") then continue end
+        for _, item in Converted do repeat 
+            if not item:IsA("Frame") and not item:IsA("TextLabel") and not item:IsA("UIStroke") then do break end end
 
             if item:IsA("UIStroke") then
                 item.Transparency = math.clamp(item.Transparency - (direction * 0.1), 0, 0.9)
-                continue            
+                do break end            
 end
 
             if item.BackgroundTransparency <= 0.7 then
@@ -29788,13 +29788,13 @@ end
             if item:IsA("TextLabel") then
                 item.TextTransparency = math.clamp(item.TextTransparency - (direction * 0.1), 0, 0.7)
             end
-        end; 
+         until true; end; 
 
         if stroke.Transparency <= 0.7 then
             stroke.Transparency = math.clamp(stroke.Transparency - (direction * 0.1), 0, 0.7)
         end
     end)
-end
+ until true; end
 
 function clear_objects()
     for _, object in pairs(character_holder:GetChildren()) do
@@ -29806,8 +29806,8 @@ end;
 
 function get_in_range()
     local in_range = {};
-    for _, player in pairs(services.Players:GetPlayers()) do
-        if player == local_player.instance then continue end
+    for _, player in pairs(services.Players:GetPlayers()) do repeat 
+        if player == local_player.instance then do break end end
 
         if player.Character and player.Character:FindFirstChild("HumanoidRootPart") and player.Character:FindFirstChild("Humanoid") and player.Character.Humanoid.Health > 0 then
             local distance = (local_player.root_part.Position - player.Character.HumanoidRootPart.Position).Magnitude;
@@ -29815,7 +29815,7 @@ function get_in_range()
                 table.insert(in_range, {player = player, distance = distance});
             end;
         end;
-    end;
+     until true; end;
 
     return in_range
 end;
@@ -29823,11 +29823,11 @@ end;
 function update_size()
     
     local size = Vector2.new(130, 22);
-    for _, label in character_holder:GetChildren() do
-        if label:IsA("UIListLayout") then continue end
+    for _, label in character_holder:GetChildren() do repeat 
+        if label:IsA("UIListLayout") then do break end end
         if not label.Visible then
             label:Destroy();
-            continue        
+            do break end        
 end;
         local text_size = label.TextBounds / Library:GetUIScale()
 
@@ -29835,8 +29835,8 @@ end;
             size = Vector2.new(text_size.X, size.Y)
         end
 
-        size += Vector2.new(0, 20)
-    end;
+        size = size +  Vector2.new(0, 20)
+     until true; end;
 
     if size.Y <= 23 then
         Converted._ScreenGui.Enabled = false;
@@ -29938,7 +29938,7 @@ end)
 
         
         label.LayoutOrder = order
-        order += 1
+        order = order +  1
     end
 
     for key, label in pairs(labelMap) do
@@ -30004,12 +30004,12 @@ function feature:disable()
 end;
 
 function feature:set_transparency(trans)
-    for _, item in Converted do
-        if not item:IsA("Frame") and not item:IsA("TextLabel") and not item:IsA("UIStroke") then continue end
+    for _, item in Converted do repeat 
+        if not item:IsA("Frame") and not item:IsA("TextLabel") and not item:IsA("UIStroke") then do break end end
 
         if item:IsA("UIStroke") then
             item.Transparency = math.clamp(trans, 0, 0.9)
-            continue        
+            do break end        
 end
 
         if item.BackgroundTransparency <= 0.7 then
@@ -30023,7 +30023,7 @@ end
         if item:IsA("TextLabel") then
             item.TextTransparency = math.clamp(trans, 0, 0.7)
         end
-    end; 
+     until true; end; 
 
     if stroke.Transparency <= 0.7 then
         stroke.Transparency = math.clamp(trans, 0, 0.7)
@@ -30078,7 +30078,7 @@ function feat:get_name(str)
 	end
 
 	if hash >= 0x80000000 then
-		hash -= 0x100000000
+		hash = hash -  0x100000000
 	end
 
 	return string.format("%08x", hash)
@@ -30271,7 +30271,7 @@ local function refreshMissingTalents()
         if (child:IsA("Frame") or child:IsA("TextButton")) and not child.Name:find("Missing_") then
             if child:FindFirstChild("Title") and child:FindFirstChild("Icon") then
                 template = child
-                break
+                do break end
             end
         end
     end
@@ -30282,7 +30282,7 @@ local function refreshMissingTalents()
     for _, item in ipairs(talentScroll:GetDescendants()) do
         if item.Name == "Outfit" or item.Name == "Quest" or item.Name == "Race" then
             par = item
-            break
+            do break end
         end
     end
     
@@ -30340,7 +30340,7 @@ local function applyHighlight(item, talentScroll)
         for _, child in ipairs(item:GetChildren()) do
             if child:IsA("ImageLabel") and child.Name ~= "Icon" then
                 border = child
-                break
+                do break end
             end
         end
     end
@@ -30357,7 +30357,7 @@ local function applyHighlight(item, talentScroll)
         for _, mantraName in ipairs(TalentPickerData.mantras or {}) do
             if cleanName(mantraName):match(cleanedLabel) then
                 targetColor = Color3.fromRGB(0, 255, 120)
-                break
+                do break end
             end
         end
         
@@ -30494,7 +30494,7 @@ feat = Feature:new("talent_highlighter", RunService.Heartbeat, function()
                 for _, plannedName in ipairs(TalentPickerData.talents or {}) do
                     if cleanName(plannedName) == cleanedLabel then
                         inBuild = true
-                        break
+                        do break end
                     end
                 end
                 local color = inBuild and Color3.fromRGB(0,255,120) or Color3.fromRGB(255,0,100)
@@ -30988,8 +30988,8 @@ end;
     if not services.UserInputService:IsKeyDown(Enum.KeyCode.Space) then return end
     if services.UserInputService:GetFocusedTextBox() then return end
 
-    local_player.root_part.AssemblyLinearVelocity *= Vector3.new(1, 0, 1);
-    local_player.root_part.AssemblyLinearVelocity += Vector3.new(0, aztup.flags.jump_power, 0);
+    local_player.root_part.AssemblyLinearVelocity = local_player.root_part.AssemblyLinearVelocity *  Vector3.new(1, 0, 1);
+    local_player.root_part.AssemblyLinearVelocity = local_player.root_part.AssemblyLinearVelocity +  Vector3.new(0, aztup.flags.jump_power, 0);
 
     return
 end));
@@ -31006,14 +31006,14 @@ local picked_tool;
 function self:pick()
     local parts = {};
 
-    for _, handle in local_player.instance.Backpack:QueryDescendants("Tool > BasePart") do
-        if handle.Name ~= "Handle" then continue end
+    for _, handle in local_player.instance.Backpack:QueryDescendants("Tool > BasePart") do repeat 
+        if handle.Name ~= "Handle" then do break end end
      
         local tool = handle.Parent;
-        if tool:FindFirstChildWhichIsA("LuaSourceContainer") and not tool:FindFirstChild("Training") or tool.Name == "Weapon Manual" then continue end
+        if tool:FindFirstChildWhichIsA("LuaSourceContainer") and not tool:FindFirstChild("Training") or tool.Name == "Weapon Manual" then do break end end
      
         table.insert(parts, handle);
-    end;
+     until true; end;
 
     table.sort(parts, function(a, b)
         return a.Size.Magnitude < b.Size.Magnitude    
@@ -31082,7 +31082,7 @@ self = Feature:new("multiply_s", RunService.RenderStepped, LPH_NO_VIRTUALIZE(fun
             return        
 end;
 
-        local_player.root_part.CFrame += (local_player.humanoid.MoveDirection.Unit * dt) * (speed_mult / 10);
+        local_player.root_part.CFrame = local_player.root_part.CFrame +  (local_player.humanoid.MoveDirection.Unit * dt) * (speed_mult / 10);
         self.speed_mult = 0;
     end;
 end));
@@ -31157,8 +31157,8 @@ end;
         direction = local_player.humanoid.MoveDirection.Unit;
     end
 
-    local_player.root_part.AssemblyLinearVelocity *= Vector3.new(0,1,0);
-    local_player.root_part.AssemblyLinearVelocity += direction * aztup.flags.walk_speed
+    local_player.root_part.AssemblyLinearVelocity = local_player.root_part.AssemblyLinearVelocity *  Vector3.new(0,1,0);
+    local_player.root_part.AssemblyLinearVelocity = local_player.root_part.AssemblyLinearVelocity +  direction * aztup.flags.walk_speed
 
     local sensor = local_player.root_part:FindFirstChild("GroundSensor");
     if sensor and sensor.SensedPart then
@@ -31167,7 +31167,7 @@ end;
             local ship_model = sensed_part:FindFirstAncestorOfClass("Model");
             if ship_model and ship_model:FindFirstChild("BodyVelocity", true) then
                 local velocity = ship_model:FindFirstChild("BodyVelocity", true).Velocity;
-                local_player.root_part.AssemblyLinearVelocity += Vector3.new(velocity.X, 0, velocity.Z);
+                local_player.root_part.AssemblyLinearVelocity = local_player.root_part.AssemblyLinearVelocity +  Vector3.new(velocity.X, 0, velocity.Z);
             end
         end
     end
@@ -31253,10 +31253,10 @@ function self:opti_world_client()
         local cns = getconnections(services.RunService.PreRender);
         return LPH_NO_VIRTUALIZE(function() 
             local conn;
-            for _, object in cns do
+            for _, object in cns do repeat 
                 local func = object.Function;
                 if not func or not getinfo(func).source:find(hi) then
-                    continue                
+                    do break end                
 end
             
                 if last_world_client_func == func then
@@ -31266,7 +31266,7 @@ end
                 last_world_client_func = func;
                 object:Disable();
                 conn = object;
-            end
+             until true; end
         
             local last_update = tick();
         
@@ -31637,7 +31637,7 @@ local function catch_up(elapsed)
     
     while remaining > 0 do
         local step = math.min(remaining, 5);
-        remaining -= step;
+        remaining = remaining -  step;
         tick_needs(step);
 
         if asleep and stats.energy >= 100 then
@@ -31645,7 +31645,7 @@ local function catch_up(elapsed)
         end;
 
         if not asleep and not problem then
-            problem_timer += step;
+            problem_timer = problem_timer +  step;
         end;
     end;
 end;
@@ -31718,7 +31718,7 @@ local function refresh_ui()
 end;
 
 local function level_up()
-    save.level += 1;
+    save.level = save.level +  1;
     save.xp = 0;
     save.catchphrase = CATCHPHRASES[math.random(1, #CATCHPHRASES)];
     play_anim("jump");
@@ -31727,7 +31727,7 @@ local function level_up()
 end;
 
 local function add_xp(amount)
-    save.xp += amount;
+    save.xp = save.xp +  amount;
     if save.xp >= xp_needed() then
         level_up();
     end;
@@ -31879,14 +31879,14 @@ end;
 local food_buttons = {};
 
 local function refresh_food_row()
-    for index, button in food_buttons do
+    for index, button in food_buttons do repeat 
         local food = FOODS[food_page * (FOOD_ROW_SIZE - 1) + index];
         button.Visible = food ~= nil;
-        if not food then continue end;
+        if not food then do break end end;
 
         local found = save.discovered[food];
         button.Text = found == "favorite" and ("*" .. food) or found == "worst" and ("x" .. food) or food;
-    end;
+     until true; end;
 end;
 
 for index = 1, FOOD_ROW_SIZE - 1 do
@@ -31940,11 +31940,11 @@ end);
 
 
 local feature = Feature:new("brayden", services.RunService.Heartbeat, function(dt)
-    clock += dt;
+    clock = clock +  dt;
 
     tick_needs(dt);
 
-    autosave_timer += dt;
+    autosave_timer = autosave_timer +  dt;
     if autosave_timer >= AUTOSAVE_INTERVAL then
         write_save();
     end;
@@ -31957,21 +31957,21 @@ local feature = Feature:new("brayden", services.RunService.Heartbeat, function(d
     end;
 
     if bubble_timer > 0 then
-        bubble_timer -= dt;
+        bubble_timer = bubble_timer -  dt;
         if bubble_timer <= 0 then
             Converted["_Bubble"].Visible = false;
         end;
     end;
 
     if not asleep and not problem then
-        problem_timer += dt;
+        problem_timer = problem_timer +  dt;
         if problem_timer >= 45 then
             problem_timer = math.random(0, 20); 
             problem = roll_problem();
         end;
     end;
 
-    idle_timer += dt;
+    idle_timer = idle_timer +  dt;
     if idle_timer >= 12 and bubble_timer <= 0 and not asleep then
         idle_timer = 0;
         if stats.fullness < 25 then
@@ -31989,13 +31989,13 @@ local feature = Feature:new("brayden", services.RunService.Heartbeat, function(d
     local rotation = asleep and 12 or math.sin(clock * 1.3) * 2;
 
     if anim.kind then
-        anim.t += dt;
+        anim.t = anim.t +  dt;
 
         if anim.kind == "jump" then
-            offset_y -= math.abs(math.sin(anim.t * 10)) * 18;
+            offset_y = offset_y -  math.abs(math.sin(anim.t * 10)) * 18;
             if anim.t > 0.95 then anim.kind = nil; end;
         elseif anim.kind == "bounce" then
-            offset_y -= math.abs(math.sin(anim.t * 9)) * 7;
+            offset_y = offset_y -  math.abs(math.sin(anim.t * 9)) * 7;
             if anim.t > 0.35 then anim.kind = nil; end;
         elseif anim.kind == "shake" then
             offset_x = math.sin(anim.t * 50) * 5;
@@ -32113,11 +32113,11 @@ function feature:run()
 	sethiddenproperty(local_player.instance, "MaxSimulationRadius", 3000);
 	sethiddenproperty(local_player.instance, "SimulationRadius", 3000);
 
-    for _, mob in pairs(workspace.Live:GetChildren()) do
-        if mob.Name:sub(1,1) ~= "." then continue end
+    for _, mob in pairs(workspace.Live:GetChildren()) do repeat 
+        if mob.Name:sub(1,1) ~= "." then do break end end
 
         local root = mob:FindFirstChild("HumanoidRootPart");
-        if not root then continue end
+        if not root then do break end end
 
         for _, part in pairs(mob:GetChildren()) do
             if part:IsA("BasePart") and (self:owner(part)) then
@@ -32125,7 +32125,7 @@ function feature:run()
                 part.Velocity = Vector3.new(0, -12500, 0)
             end 
         end
-    end
+     until true; end
 end
 
 local feat = Feature:new("bring_mobs", game:GetService("RunService").Heartbeat, function()
@@ -32195,7 +32195,7 @@ end;
             for _, asset in assets do
                 if name_mentions_combosser(asset.name) then
                     Logger:long_notify_sound(string.format("%s' might be a combosser due to their avatar.", player.Name));
-                    break                
+                    do break end                
 end;
             end;
         end);
@@ -32268,7 +32268,7 @@ end
 -- BEGIN MODULE: src/features/qol/extend_prompts
 module_map["src/features/qol/extend_prompts"] = function(require)
 local self = Feature:new("extend_prompts", services.CollectionService:GetInstanceAddedSignal('InteractProxPrompt'));
-function self:extend(prompt: ProximityPrompt)
+function self:extend(prompt)
     if not prompt or not prompt:IsA("ProximityPrompt") or prompt:GetAttribute("OriginalMax") then
         return    
 end
@@ -32290,15 +32290,15 @@ end;
 function self:disable()
     if not self.modified_prompts then return end
 
-    for _, modified_prompt in self.modified_prompts do
-        if not modified_prompt:GetAttribute("OriginalMax") then continue end
+    for _, modified_prompt in self.modified_prompts do repeat 
+        if not modified_prompt:GetAttribute("OriginalMax") then do break end end
         
         modified_prompt.MaxActivationDistance = modified_prompt:GetAttribute("OriginalMax");
         modified_prompt:SetAttribute("OriginalMax", nil);
-    end
+     until true; end
 end;
 
-self.func = function(prompt: ProximityPrompt)
+self.func = function(prompt)
     self:extend(prompt);
 end;
 
@@ -32371,11 +32371,11 @@ function feature:update()
     local trys = 0;
 
     repeat 
-        trys += 1;
+        trys = trys +  1;
         script_env = getsenv(world_client);
         fall_func = script_env and script_env.fall;
         if fall_func then
-            break        
+            do break end        
 end
         task.wait(1);
         if trys >= 10 then
@@ -32876,16 +32876,16 @@ end;
 local function place_mines(safe_x, safe_y)
     local placed = 0;
 
-    while placed < MINE_COUNT do
+    while placed < MINE_COUNT do repeat 
         local x = math.random(0, GRID_WIDTH - 1);
         local y = math.random(0, GRID_HEIGHT - 1);
 
-        if math.abs(x - safe_x) <= 1 and math.abs(y - safe_y) <= 1 then continue end;
-        if board[x][y].is_mine then continue end;
+        if math.abs(x - safe_x) <= 1 and math.abs(y - safe_y) <= 1 then do break end end;
+        if board[x][y].is_mine then do break end end;
 
         board[x][y].is_mine = true;
-        placed += 1;
-    end;
+        placed = placed +  1;
+     until true; end;
 
     for x = 0, GRID_WIDTH - 1 do
         for y = 0, GRID_HEIGHT - 1 do
@@ -32897,7 +32897,7 @@ local function place_mines(safe_x, safe_y)
                         if not (dx == 0 and dy == 0) then
                             local nx, ny = x + dx, y + dy;
                             if nx >= 0 and nx < GRID_WIDTH and ny >= 0 and ny < GRID_HEIGHT and board[nx][ny].is_mine then
-                                count += 1;
+                                count = count +  1;
                             end;
                         end;
                     end;
@@ -32913,15 +32913,15 @@ local function reveal_cell(start_x, start_y)
     local queue = { { start_x, start_y } };
     local head = 1;
 
-    while queue[head] do
+    while queue[head] do repeat 
         local cx, cy = queue[head][1], queue[head][2];
-        head += 1;
+        head = head +  1;
 
         local state = board[cx][cy];
-        if state.revealed or state.flagged then continue end;
+        if state.revealed or state.flagged then do break end end;
 
         state.revealed = true;
-        revealed_count += 1;
+        revealed_count = revealed_count +  1;
         update_cell_visual(cx, cy);
 
         if state.adjacent == 0 then
@@ -32937,7 +32937,7 @@ local function reveal_cell(start_x, start_y)
                 end;
             end;
         end;
-    end;
+     until true; end;
 end;
 
 local function reveal_all_mines(exploded_x, exploded_y)
@@ -32959,7 +32959,7 @@ local function flag_all_mines()
             local state = board[x][y];
             if state.is_mine and not state.flagged then
                 state.flagged = true;
-                flags_placed += 1;
+                flags_placed = flags_placed +  1;
                 update_cell_visual(x, y);
             end;
         end;
@@ -33014,7 +33014,7 @@ on_flag_click = function(x, y)
     if state.revealed then return end;
 
     state.flagged = not state.flagged;
-    flags_placed += state.flagged and 1 or -1;
+    flags_placed = flags_placed +  state.flagged and 1 or -1;
 
     Converted["_MineLabel"].Text = tostring(MINE_COUNT - flags_placed);
     update_cell_visual(x, y);
@@ -33148,15 +33148,15 @@ end
 self.opti_sea = LPH_NO_VIRTUALIZE(function()
     local sea_client_func;
     local function do_loop(objects)
-        for _, object in objects do
-            if typeof(object) ~= "function" or not getinfo(object).source:find("SeaClient") then continue end
-            if not table.find(getconstants(object), "stitched_bones") then continue end
-            if not table.find(getconstants(object), "meshID") then continue end
-            if not table.find(getconstants(object), "Color") then continue end
+        for _, object in objects do local __c51b850 = false; repeat 
+            if typeof(object) ~= "function" or not getinfo(object).source:find("SeaClient") then do break end end
+            if not table.find(getconstants(object), "stitched_bones") then do break end end
+            if not table.find(getconstants(object), "meshID") then do break end end
+            if not table.find(getconstants(object), "Color") then do break end end
 
             sea_client_func = object;
-            break        
-end
+            do __c51b850 = true; break end        
+ until true; if __c51b850 then break end end
     end;
     
     if filtergc then
@@ -33204,13 +33204,13 @@ end);
 
 function self:opti_clouds()
     local rep_func;
-    for _, conn in getconnections(services.RunService.RenderStepped) do
-        if not conn.Function then continue end
-        if not debug.getinfo(conn.Function).source:find("PlayerScripts.Replication") then continue end
+    for _, conn in getconnections(services.RunService.RenderStepped) do repeat 
+        if not conn.Function then do break end end
+        if not debug.getinfo(conn.Function).source:find("PlayerScripts.Replication") then do break end end
             
         conn:Disable()
         rep_func = conn.Function;
-    end
+     until true; end
 
     local last_update = tick();
     services.RunService.RenderStepped:Connect(function()
@@ -33230,10 +33230,10 @@ function self:opti_world_client()
         local cns = getconnections(services.RunService.PreRender);
         return LPH_NO_VIRTUALIZE(function() 
             local conn;
-            for _, object in cns do
+            for _, object in cns do repeat 
                 local func = object.Function;
                 if not func or not getinfo(func).source:find(hi) then
-                    continue                
+                    do break end                
 end
             
                 if last_world_client_func == func then
@@ -33243,7 +33243,7 @@ end
                 last_world_client_func = func;
                 object:Disable();
                 conn = object;
-            end
+             until true; end
         
             local last_update = tick();
         
@@ -33558,10 +33558,10 @@ end;
 
 local function point_in_snake(x, y, exclude_tail)
     local count = #snake;
-    for i, seg in ipairs(snake) do
-        if exclude_tail and i == count then continue end;
+    for i, seg in ipairs(snake) do repeat 
+        if exclude_tail and i == count then do break end end;
         if seg.x == x and seg.y == y then return true end;
-    end;
+     until true; end;
     return false
 end;
 
@@ -33672,7 +33672,7 @@ end;
         head_frame = make_cell(Library.AccentColor);
         table.insert(snake_frames, 1, head_frame);
 
-        score += 10;
+        score = score +  10;
         Converted["_ScoreLabel"].Text = tostring(score);
 
         if #snake >= GRID_WIDTH * GRID_HEIGHT then
@@ -33732,8 +33732,8 @@ local function build_hamilton_cycle()
         local ch = sequence:sub(i, i);
         if ch == "F" then
             local dir = step_dirs[heading + 1];
-            x += dir.X;
-            y += dir.Y;
+            x = x +  dir.X;
+            y = y +  dir.Y;
             table.insert(cells, Vector2.new(x, y));
         elseif ch == "+" then
             heading = (heading + 1) % 4;
@@ -33802,10 +33802,10 @@ local feature = Feature:new("snake_game", services.RunService.Heartbeat, functio
 
     if game_over then return end;
 
-    move_accum += dt;
+    move_accum = move_accum +  dt;
     local move_interval = get_move_interval();
     if move_accum < move_interval then return end;
-    move_accum -= move_interval;
+    move_accum = move_accum -  move_interval;
 
     if bot_enabled then
         local move = get_bot_move();
@@ -34301,11 +34301,11 @@ local function clear_lines()
     while y >= 0 do
         local full = true;
         for x = 0, GRID_WIDTH - 1 do
-            if not board[x][y] then full = false; break end;
+            if not board[x][y] then full = false; do break end end;
         end;
 
         if full then
-            cleared += 1;
+            cleared = cleared +  1;
 
             for yy = y, 1, -1 do
                 for x = 0, GRID_WIDTH - 1 do
@@ -34317,7 +34317,7 @@ local function clear_lines()
                 board[x][0] = nil;
             end;
         else
-            y -= 1;
+            y = y -  1;
         end;
     end;
 
@@ -34350,8 +34350,8 @@ local function lock_current()
     redraw_board();
 
     if cleared > 0 then
-        score += (LINE_SCORES[cleared] or 0) * level;
-        total_lines += cleared;
+        score = score +  (LINE_SCORES[cleared] or 0) * level;
+        total_lines = total_lines +  cleared;
         level = math.floor(total_lines / 10) + 1;
         Converted["_ScoreLabel"].Text = tostring(score);
         Converted["_LevelLabel"].Text = "Lv " .. tostring(level);
@@ -34398,9 +34398,9 @@ local feature = Feature:new("tetris", services.RunService.Heartbeat, function(dt
     if game_over then return end;
 
     local interval = soft_drop_held and SOFT_DROP_INTERVAL or get_drop_interval();
-    drop_accum += dt;
+    drop_accum = drop_accum +  dt;
     if drop_accum < interval then return end;
-    drop_accum -= interval;
+    drop_accum = drop_accum -  interval;
 
     if not try_move(0, 1) then
         lock_current();
@@ -34568,12 +34568,12 @@ function feature:run()
 	sethiddenproperty(local_player.instance, "MaxSimulationRadius", 3000);
 	sethiddenproperty(local_player.instance, "SimulationRadius", 3000);
 
-    for _, mob in pairs(workspace.Live:GetChildren()) do
-        if mob.Name:sub(1,1) ~= "." then continue end
-        if mob.Name:find("chaser") and aztup.automation:has_any() and not aztup.features.void_mobs.let_me_void_chaser then continue end
+    for _, mob in pairs(workspace.Live:GetChildren()) do repeat 
+        if mob.Name:sub(1,1) ~= "." then do break end end
+        if mob.Name:find("chaser") and aztup.automation:has_any() and not aztup.features.void_mobs.let_me_void_chaser then do break end end
 
         local root = mob:FindFirstChild("HumanoidRootPart");
-        if not root then continue end
+        if not root then do break end end
 
         for _, part in pairs(mob:GetChildren()) do
             if part:IsA("BasePart") and (self:owner(part)) then
@@ -34581,7 +34581,7 @@ function feature:run()
                 part.Velocity = Vector3.new(0, -12500, 0)
             end 
         end
-    end
+     until true; end
 end
 
 local feat = Feature:new("void_mobs", game:GetService("RunService").Heartbeat, function()
@@ -34687,7 +34687,7 @@ local function dynamic_get_mystery_mantra()
         for _, obj in ipairs(TalentChoice.Selection) do
             if obj.Mystery then
                 MantraName = obj.MantraName
-                break
+                do break end
             end
         end
     end
@@ -34706,14 +34706,14 @@ return Feature:new("mantra_revealer", scheduler:add_task(2.5), function()
     if not choice_frame then return end
 
 
-    for _, choice in choice_frame:GetChildren() do
+    for _, choice in choice_frame:GetChildren() do repeat 
         local card_frame = choice:FindFirstChild("CardFrame");
-        if not card_frame then continue end
+        if not card_frame then do break end end
         local title = card_frame:FindFirstChild("Title"); 
-        if not title or title.Text ~= "Mystery Mantra" then continue end
+        if not title or title.Text ~= "Mystery Mantra" then do break end end
         local mantra_name = mantras[choice.Name];
         title.Text = mantra_name or dynamic_get_mystery_mantra() or choice.Name;
-    end;
+     until true; end;
 end)
 end
 -- END MODULE: src/features/removals/mantra_revealer/mantra_revealer
@@ -34756,11 +34756,11 @@ end
 -- BEGIN MODULE: src/features/removals/no_blur
 module_map["src/features/removals/no_blur"] = function(require)
 local feature = Feature:new("no_blur", services.RunService.PreRender, LPH_NO_VIRTUALIZE(function()
-    for _, object in services.Lighting:GetChildren() do
-        if not object:IsA("BlurEffect") then continue end
+    for _, object in services.Lighting:GetChildren() do repeat 
+        if not object:IsA("BlurEffect") then do break end end
 
         object.Size = 0;
-    end;
+     until true; end;
 end));
 
 return feature
@@ -34770,12 +34770,12 @@ end
 module_map["src/features/removals/no_cl_gate"] = function(require)
 local saved = {};
 local feature = Feature:new("no_castle_light_gate", not is_depths and Instance.new("BindableEvent").Event or scheduler:add_task(3.5), LPH_NO_VIRTUALIZE(function()
-    for _, gate in workspace:GetChildren() do
-        if gate.Name ~= "LifeField" then continue end;
+    for _, gate in workspace:GetChildren() do repeat 
+        if gate.Name ~= "LifeField" then do break end end;
 
         table.insert(saved, gate);
         gate.Parent = nil;
-    end;
+     until true; end;
 end));
 
 function feature:disable()
@@ -34925,12 +34925,12 @@ end
 module_map["src/features/removals/no_hive_gate"] = function(require)
 local saved = {};
 local feature = Feature:new("no_hive_gate", not is_eastern and Instance.new("BindableEvent").Event or scheduler:add_task(3.5), LPH_NO_VIRTUALIZE(function()
-    for _, gate in workspace:GetChildren() do
-        if gate.Name ~= "HiveGate" then continue end;
+    for _, gate in workspace:GetChildren() do repeat 
+        if gate.Name ~= "HiveGate" then do break end end;
 
         table.insert(saved, gate);
         gate.Parent = nil;
-    end;
+     until true; end;
 end));
 
 function feature:disable()
@@ -35164,12 +35164,12 @@ end
 module_map["src/features/removals/no_sanity_vfx"] = function(require)
 local self; do
     self = Feature:new("no_sanity_vfx", scheduler:add_task(2.5), LPH_NO_VIRTUALIZE(function()
-        for _, object in services.CollectionService:GetTagged("StatVFX") do
-            if table.find(self.gone, object) then continue end
+        for _, object in services.CollectionService:GetTagged("StatVFX") do repeat 
+            if table.find(self.gone, object) then do break end end
 
             object.Parent = services.ReplicatedStorage; 
             table.insert(self.gone, object);
-        end; 
+         until true; end; 
 
         local player_gui = local_player.instance:FindFirstChild("PlayerGui");
         if not player_gui then return end
@@ -35330,12 +35330,12 @@ local feature = Feature:new("no_yun_shul_gate", not is_depths and Instance.new("
     local mechanisms = workspace:FindFirstChild("Mechanisms");
     if not mechanisms then return end;
     
-    for _, gate in mechanisms:GetChildren() do
-        if gate.Name ~= "ResonanceDoor" then continue end;
+    for _, gate in mechanisms:GetChildren() do repeat 
+        if gate.Name ~= "ResonanceDoor" then do break end end;
 
         table.insert(saved, gate);
         gate.Parent = nil;
-    end;
+     until true; end;
 end));
 
 function feature:disable()
@@ -35363,11 +35363,11 @@ return Feature:new("roll2_revealer", scheduler:add_task(2.75), function()
     if not choice_frame then return end
 
 
-    for _, choice in choice_frame:GetChildren() do
+    for _, choice in choice_frame:GetChildren() do repeat 
         local card_frame = choice:FindFirstChild("CardFrame");
-        if not card_frame then continue end
+        if not card_frame then do break end end
         local title = card_frame:FindFirstChild("Title"); 
-        if not title or title.Text ~= "Roll 2" then continue end 
+        if not title or title.Text ~= "Roll 2" then do break end end 
 
         for _, item in game:GetService("ReplicatedStorage").Requests.Get:InvokeServer().TalentChoice.Selection do
             if item.Name == "Roll 2" then
@@ -35375,7 +35375,7 @@ return Feature:new("roll2_revealer", scheduler:add_task(2.75), function()
                 card_frame.Details.Desc.Text = "\nwill be a mix of these:\n" .. item.Selection[1].Name .. ", " .. item.Selection[2].Name.. ", " .. item.Selection[3].Name.. ", " .. item.Selection[4].Name;
             end
         end;
-    end;
+     until true; end;
 end)
 end
 -- END MODULE: src/features/removals/roll2_revealer
@@ -35406,7 +35406,7 @@ feature = Feature:new("agility_spoofer", game:GetService("RunService").Heartbeat
 
             local target_agility = 8 + (aztup.flags.agility_spoof_amount / 10) * 2;
             if aztup.flags.agility_spoof_health then
-                target_agility *= 1 + math.clamp((local_player.humanoid.Health / local_player.humanoid.MaxHealth) * aztup.flags.disallow_scaling_multiplier, 0, aztup.flags.disallow_scaling_multiplier);
+                target_agility = target_agility *  1 + math.clamp((local_player.humanoid.Health / local_player.humanoid.MaxHealth) * aztup.flags.disallow_scaling_multiplier, 0, aztup.flags.disallow_scaling_multiplier);
             end
             
 
@@ -35970,7 +35970,7 @@ end;
 			local banner_name = "Banner"
 
 			if owner and #owner > 0 then
-				banner_name ..= " | Owner: " .. owner
+				banner_name = banner_name ..  " | Owner: " .. owner
 			end
 
 			return ("[%s] %s"):format(format_distance(self), banner_name)
@@ -36117,7 +36117,7 @@ end;
 			self.tag = tag
 			self.vis_check = vis_check
 
-			billboard_esp.__spawn_counter += 1
+			billboard_esp.__spawn_counter = billboard_esp.__spawn_counter +  1
 			local phase = (billboard_esp.__spawn_counter % ESP_UPDATE_SPREAD_BUCKETS) / ESP_UPDATE_SPREAD_BUCKETS
 			self.last_update = tick() - phase * (1 / aztup.flags.esp_update_rate)
 
@@ -36225,7 +36225,7 @@ end;
 					for i, obj in ipairs(objects) do
 						if obj == self then
 							table.remove(objects, i)
-							break
+							do break end
 						end
 					end
 				end
@@ -36369,7 +36369,7 @@ end;
 			self.tag = tag
 			self.vis_check = vis_check
 
-			dynamic_esp.__spawn_counter += 1
+			dynamic_esp.__spawn_counter = dynamic_esp.__spawn_counter +  1
 			local phase = (dynamic_esp.__spawn_counter % ESP_UPDATE_SPREAD_BUCKETS) / ESP_UPDATE_SPREAD_BUCKETS
 			self.last_update = tick() - phase * (1 / aztup.flags.esp_update_rate)
 
@@ -36471,7 +36471,7 @@ end;
 					for i, obj in ipairs(objects) do
 						if obj == self then
 							table.remove(objects, i)
-							break
+							do break end
 						end
 					end
 				end
@@ -36727,12 +36727,12 @@ end;
 
 	for _, v in
 		pairs(services.ReplicatedStorage:WaitForChild("MarkerWorkspace"):WaitForChild("AreaMarkers"):GetChildren())
-	do
+	do repeat 
 		if v.Name:match("'s Base") or not v:FindFirstChild("AreaMarker") then
-			continue
+			do break end
 		end
 		esp.new(v:FindFirstChild("AreaMarker"), "area_esp")
-	end
+	 until true; end
 
 
 	local profiler = require("@src/utility/profiler");
@@ -37167,18 +37167,18 @@ function feature:enable()
 		elseif effect.Class == "PerfectionCool" then
 			feature.stacks = math.min(feature.stacks + 1, 20);
 
-			for _, frame in pairs(feature.current:GetChildren()) do
+			for _, frame in pairs(feature.current:GetChildren()) do repeat 
 				if tonumber(frame.Name) > feature.stacks then
 					services.TweenService:Create(frame, TweenInfo.new(1), {
 						BackgroundTransparency = 1
 					}):Play();
-					continue				
+					do break end				
 end;
 
 				services.TweenService:Create(frame, TweenInfo.new(0.25), {
 					BackgroundTransparency = 0.65
 				}):Play();
-			end;
+			 until true; end;
 		end
 	end);
 	
@@ -37316,7 +37316,7 @@ feature.conns = {};
 feature.unique_id = services.HttpService:GenerateGUID(); 
 
 
-local function is_player_frame_map(map): boolean
+local function is_player_frame_map(map)
     if type(map) ~= "table" then return false end
 
     for key, value in pairs(map) do
@@ -37342,7 +37342,7 @@ local function get_player_frame_map()
         
         for i = 1, 20 do
             local ok_uv, value = pcall(getupvalue, fn, i)
-            if not ok_uv or value == nil then break end
+            if not ok_uv or value == nil then do break end end
             if is_player_frame_map(value) then
                 return value
             end
@@ -37363,7 +37363,7 @@ local function get_player_frame_map()
     return nil
 end
 
-local function get_player_from_frame(frame: Instance): Player?
+local function get_player_from_frame(frame)
     local map = get_player_frame_map()
     if not map then return nil end
 
@@ -37375,13 +37375,13 @@ local function get_player_from_frame(frame: Instance): Player?
     return nil
 end
 
-local function get_frame_from_player(plr: Player): Instance?
+local function get_frame_from_player(plr)
     local map = get_player_frame_map()
     return map and map[plr]
 end
 
 
-local function wait_for_player_frame_map(): { [Player]: Instance }
+local function wait_for_player_frame_map()
     while true do
         local map = get_player_frame_map()
         if map then return map end
@@ -37389,7 +37389,7 @@ local function wait_for_player_frame_map(): { [Player]: Instance }
     end
 end
 
-function feature:handle(frame: Frame)
+function feature:handle(frame)
     if frame.Name ~= "PlayerFrame" then return end
 
     local mouse_enter, mouse_leave, input_began, inside;
@@ -37512,7 +37512,7 @@ function feature:stop_spectate()
     camera.CameraSubject = local_player.humanoid;
 end;
 
-function feature:force_spectate(query: string | Player)
+function feature:force_spectate(query)
     local target_player
 
     if typeof(query) == "Instance" and query:IsA("Player") then
@@ -37521,7 +37521,7 @@ function feature:force_spectate(query: string | Player)
         for _, player in services.Players:GetPlayers() do
             if player:GetAttribute("CharacterName") == query or player.Name == query then
                 target_player = player;
-                break            
+                do break end            
 end;
         end;
     end
@@ -37917,9 +37917,9 @@ end;
                 )
             end        
 
-            for _, tag in ipairs(top_tags_sorted) do 
+            for _, tag in ipairs(top_tags_sorted) do repeat  
                 if not tag_value[tag] then
-                    continue
+                    do break end
                 end
         
                 local appended = false
@@ -37985,13 +37985,13 @@ elseif tag == "Danger Time"
                 end
         
                 if appended then
-                    tag_count += 1
+                    tag_count = tag_count +  1
         
                     
                     
                     
                 end
-            end
+             until true; end
         
             return table.concat(text_parts)
         end
@@ -38002,9 +38002,9 @@ elseif tag == "Danger Time"
 
             local tag_value = aztup_options.ESP_TAGS.Value;
 
-            for _, tag in ipairs(bottom_tags_sorted) do 
+            for _, tag in ipairs(bottom_tags_sorted) do repeat  
                 if not tag_value[tag] then
-                    continue
+                    do break end
                 end
         
                 local appended = false
@@ -38021,7 +38021,7 @@ elseif tag == "Danger Time"
                         end
                         for i = 1, 20 do
                             if AttributePoints <= 15 then
-                                break                            
+                                do break end                            
 end
                             AttributePoints = AttributePoints - 15
                             Power = Power + 1
@@ -38050,7 +38050,7 @@ end
                     local format = ping > 1000 and "s" or "ms";
 
                     if ping > 1000 then
-                        ping /= 1000;
+                        ping = ping /  1000;
                     end;
 
                     text_parts[#text_parts + 1] = string.format(
@@ -38061,13 +38061,13 @@ end
                 end;
         
                 if appended then
-                    tag_count += 1
+                    tag_count = tag_count +  1
         
                     
                     
                     
                 end
-            end
+             until true; end
         
             return table.concat(text_parts)
         end
@@ -38161,7 +38161,7 @@ end;
             end
             for _, value in ipairs(bottom_bar_names) do
                 if bar_value[value] and dist_under_500 then
-                    bottom_bar_count += 1;
+                    bottom_bar_count = bottom_bar_count +  1;
                 end;
             end
 
@@ -38427,14 +38427,14 @@ end
         last_update = now;
         camera = workspace.CurrentCamera;
         
-        for player, esp_object in PlayerESPRegistry do
+        for player, esp_object in PlayerESPRegistry do repeat 
             if not player.Parent then
                 esp_object:destroy();
-                continue            
+                do break end            
 end;
     
             esp_object:update();
-        end;
+         until true; end;
         
 
     end)));
@@ -38823,7 +38823,7 @@ local function ConnectWings(RootPart)
 	Connection = task.spawn(function()
 		repeat
 			if Items.PlayingLoop == true then
-				Sine+=1
+				Sine= Sine + 1
 				task.wait()
 				if Items.CurrentAnimation == "Fly" then
 					for i = 1,8 do 
@@ -38924,7 +38924,7 @@ local function TheSwordTilter(Root)
 				NewChange = Vector3.new(NewChange.X,NewChange.Y,.1)
 			end
 
-			Sine+=1
+			Sine= Sine + 1
 
 			apl.C0 = apl.C0:Lerp(aplc0 * CFrame.new(0,0 + .3 * math.sin(Sine/30), 0 + .4 * math.cos(Sine/120)) * CFrame.Angles(math.rad(0 - (30 * (NewChange.Y/.2)) + 5 * math.sin(Sine/30) ),math.rad(RotVelocityChange.Y*5),0),.1)
 			apr.C0 = apr.C0:Lerp(aprc0 * CFrame.new(0,0 + .3 * math.cos(Sine/30), 0 + .4 * math.sin(Sine/120))  * CFrame.Angles(math.rad(0 - (30 * (NewChange.Y/.2)) + 5 * math.cos(Sine/30) ),math.rad(RotVelocityChange.Y*5), 0),.1)
@@ -38955,7 +38955,7 @@ local function TheTailWiggler(Object,Head)
 
 		repeat
 			RunService.Stepped:Wait()
-			Sine+=1
+			Sine= Sine + 1
 
 			if not Head.Parent.Parent then
 
@@ -39101,7 +39101,7 @@ local function addAccoutrement(character, accoutrement)
 	end
 end
 
-local function GetHair(Descriptor:HumanoidDescription)
+local function GetHair(Descriptor)
 	local Accessories = {}
 
 	if Descriptor.HairAccessory then
@@ -39536,7 +39536,7 @@ local function ApplyDeepwokenAccourtment(Accourtment,Head,CurrentRace,NoBad)
 								local currdiff = Character["HumanoidRootPart"].RotVelocity
 								local CurrentRV = RotDiff - currdiff
 
-								HoverSine+=1
+								HoverSine= HoverSine + 1
 
 								NeckWeld.C1 = NeckWeld.C1:Lerp(CFrame.new(0, -0.717, 0) * CFrame.Angles(math.rad(18.094  -  2 * math.cos(HoverSine/20) ), math.rad(180), 0),.1)
 								RootJointWeld.C1 = RootJointWeld.C1:Lerp(CFrame.new(0,0,0 + .1 * math.cos(HoverSine/40)) * CFrame.Angles(math.rad(-7.625 +  2 * math.sin(HoverSine/	20)),math.rad(0 - (5 * CurrentRV.Y*15)), math.rad(180 - (2 * CurrentRV.Y*10) )),.1)
@@ -39933,7 +39933,7 @@ local function LoadRace(Type,Data)
 					for _,Ornament in pairs(OurOrnaments) do 
 						if Ornament.Name == i then
 							PortedOrnaments[Ornament] = true
-							break
+							do break end
 						end
 					end
 
@@ -39948,7 +39948,7 @@ local function LoadRace(Type,Data)
 					for i,v in pairs(OurFaces.Decals) do
 						if v.Name == OurChoices[Data].Face then
 							OurChoices[Data].Face = v 
-							break
+							do break end
 						end
 					end
 				end
@@ -39959,7 +39959,7 @@ local function LoadRace(Type,Data)
 					for i,v in pairs(FacialMarkings) do
 						if v.Name == OurChoices[Data].FacialMarkings then
 							OurChoices[Data].FacialMarkings = v
-							break
+							do break end
 						end
 					end
 				end
@@ -39970,7 +39970,7 @@ local function LoadRace(Type,Data)
 					for i,v in pairs(Eyebrows) do
 						if v.Name == OurChoices[Data].Eyebrow then
 							OurChoices[Data].Eyebrow = v
-							break
+							do break end
 						end
 					end
 				end
@@ -40106,7 +40106,7 @@ local function LoadRace(Type,Data)
 					if Ornament.Name == i then
 
 						PortedOrnaments[Ornament] = true
-						break
+						do break end
 					end
 				end
 
@@ -40119,7 +40119,7 @@ local function LoadRace(Type,Data)
 				for i,v in pairs(OurFaces.Decals) do
 					if v.Name == OurChoices[LoadedFile.Name].Face then
 						OurChoices[LoadedFile.Name].Face = v 
-						break
+						do break end
 					end
 				end
 			end
@@ -40128,7 +40128,7 @@ local function LoadRace(Type,Data)
 				for i,v in pairs(FacialMarkings) do
 					if v.Name == OurChoices[LoadedFile.Name].FacialMarkings then
 						OurChoices[LoadedFile.Name].FacialMarkings = v
-						break
+						do break end
 					end
 				end
 			end
@@ -40137,7 +40137,7 @@ local function LoadRace(Type,Data)
 				for i,v in pairs(Eyebrows) do
 					if v.Name == OurChoices[LoadedFile.Name].Eyebrow then
 						OurChoices[LoadedFile.Name].Eyebrow = v
-						break
+						do break end
 					end
 				end
 			end
@@ -41291,7 +41291,7 @@ local function ApplyToCharacter(cr,plr,skip,OrnamentsOnly)
 
 					repeat
 						RunService.Stepped:Wait()
-						SpinSine+=2
+						SpinSine= SpinSine + 2
 						speen.C0 = speen.C0:Lerp(CFrame.new(0,1.100,0) * CFrame.Angles(math.rad(-14.9),math.rad(-SpinSine),math.rad(0)),.1) 
 					until not NewOathFX.Parent
 				end)
@@ -41541,7 +41541,7 @@ local DragHue,DragSat = false,false
 
 local LpS,LpH = {Vector2.new(0,0),UDim2.fromOffset(0,0)},{0,0}
 
-local function SetColorPickerPosition(Color:Color3)
+local function SetColorPickerPosition(Color)
 	Hue,Sat,Value = Color:ToHSV()
 
 	ColorPicker.Hue.Button.BackgroundColor3 = Color3.fromHSV(Hue,1,1)
@@ -42438,7 +42438,7 @@ ConfigButtons.GlobalOrnaments.MouseButton1Click:Connect(function()
 					for _, Name in pairs(DeezNutsAreVisibleLMA) do
 						if Name == v.Name then
 							IsSelected = true
-							break
+							do break end
 						end
 					end
 					v.Selected.Visible = IsSelected
@@ -43064,15 +43064,15 @@ self.draw = LPH_NO_VIRTUALIZE(function()
     local centroid_healthbar = camera_cframe:VectorToWorldSpace(Vector3.new(-3.4, 3, 0));
     local color = aztup_options.stream_proof_esp_color.Value;
 
-    for _, object in live:GetChildren() do
-        if object.Name:sub(1,1) == "." then continue end
-        if object == local_player.character then continue end
+    for _, object in live:GetChildren() do repeat 
+        if object.Name:sub(1,1) == "." then do break end end
+        if object == local_player.character then do break end end
 
         local torso = object:FindFirstChild("Torso");
-        if not torso then continue end
+        if not torso then do break end end
 
         local humanoid = object:FindFirstChild("Humanoid");
-        if not humanoid then continue end
+        if not humanoid then do break end end
 
         local left_healthbar_pos = torso.Position + left_healthbar;
         local right_healthbar_pos = torso.Position + right_healthbar;
@@ -43103,7 +43103,7 @@ self.draw = LPH_NO_VIRTUALIZE(function()
                 DrawingImmediate.FilledQuad(filled_p1, filled_p2, p3, p4, healthbar_color, 0.5)
             end;
         end;
-    end
+     until true; end
 end);
 
 function self:enable()
@@ -43683,7 +43683,7 @@ local function upvalues_of(f)
         for i = 1, 256 do
             local ok, name, value = pcall(debug.getupvalue, f, i);
             if not ok or name == nil then
-                break;
+                do break end;
             end;
             ups[i] = value;
         end;
@@ -43921,9 +43921,9 @@ local function collect_by_connections(blocked)
         return blocked;
     end;
 
-    for _, remote in next, requests:GetChildren() do
+    for _, remote in next, requests:GetChildren() do repeat 
         if not is_game_remote(remote) then
-            continue;
+            do break end;
         end;
 
         local ok, count = pcall(function()
@@ -43933,7 +43933,7 @@ local function collect_by_connections(blocked)
         if ok and count and count > 0 then
             blocked[remote] = "changed_listener";
         end;
-    end;
+     until true; end;
 
     return blocked;
 end;
@@ -43996,18 +43996,18 @@ local function collect_by_name(blocked)
     -- swallowed. Only tokens that cannot appear in normal traffic belong here.
     local needles = { "report", "analytics", "telemetry", "anticheat", "suspicious" };
 
-    for _, remote in next, requests:GetChildren() do
+    for _, remote in next, requests:GetChildren() do repeat 
         if not is_game_remote(remote) then
-            continue;
+            do break end;
         end;
         local lowered = remote.Name:lower();
         for _, needle in next, needles do
             if lowered:find(needle, 1, true) then
                 blocked[remote] = blocked[remote] or ("name:" .. needle);
-                break;
+                do break end;
             end;
         end;
-    end;
+     until true; end;
 
     return blocked;
 end;
@@ -44354,12 +44354,12 @@ else
     end;
 
     if isfolder("ProjectRainRewrite") and isfolder("ProjectRainRewrite/settings") then
-        for _, file in listfiles("ProjectRainRewrite/settings") do
-            if file:match("autoload.txt") then continue end
+        for _, file in listfiles("ProjectRainRewrite/settings") do repeat 
+            if file:match("autoload.txt") then do break end end
             if not pcall(function()
                 return game:GetService("HttpService"):JSONDecode(readfile(file))            
 end) then
-                continue            
+                do break end            
 end;
 
             local config_decoded = game:GetService("HttpService"):JSONDecode(readfile(file));
@@ -44417,10 +44417,10 @@ end;
             end;
 
             local name = file:gsub("/", "\\"):split("ProjectRainRewrite\\settings\\")[2]:gsub(".json", "");
-            if isfile("Seraphim\\Deepwoken-Config\\settings\\PRLegacyConvert-" .. name .. ".json") then continue end
+            if isfile("Seraphim\\Deepwoken-Config\\settings\\PRLegacyConvert-" .. name .. ".json") then do break end end
             Logger:long_notify("Converted config: " .. name);
             writefile("Seraphim\\Deepwoken-Config\\settings\\PRLegacyConvert-" .. name .. ".json", game:GetService("HttpService"):JSONEncode(converted_config));
-        end;
+         until true; end;
     end;
 end
 end
@@ -44946,7 +44946,7 @@ function automation:make_farms()
                 skipped = skipped or services.UserInputService:IsKeyDown(Enum.KeyCode.Y)
                 
                 if skipped then
-                    break
+                    do break end
                 end
             end
             
@@ -44965,7 +44965,7 @@ function automation:make_farms()
                 skipped = skipped or services.UserInputService:IsKeyDown(Enum.KeyCode.Y)
 
                 if skipped then
-                    break
+                    do break end
                 end
             end
 
@@ -45704,11 +45704,11 @@ local silent_aim = tab:newGroupBox("Silent Aim", true);
     mantra_sliding_dependency_box:newDropdown('mantra_slidecasting_mantras', 'Trigger Mantras', {}, {}, true, "Mantras that trigger action sliding.");
     mantra_sliding_dependency_box:newButton("Load Mantras", function()
         local mantras = {};
-        for _, mantra in local_player.instance.Backpack:GetChildren() do
-            if not mantra.Name:find("Mantra:") or mantra.Name:find("RecalledMantra:") then continue end        
+        for _, mantra in local_player.instance.Backpack:GetChildren() do repeat 
+            if not mantra.Name:find("Mantra:") or mantra.Name:find("RecalledMantra:") then do break end end        
 
             table.insert(mantras, mantra:GetAttribute("DefaultName"));
-        end
+         until true; end
 
         aztup_options.mantra_slidecasting_mantras:SetValues(mantras);
     end);
@@ -45720,11 +45720,11 @@ local silent_aim = tab:newGroupBox("Silent Aim", true);
     action_rolling_dependency_box:newDropdown('action_rolling_mantras', 'Trigger Mantras', {}, {}, true, "Mantras that trigger action rolling.");
     action_rolling_dependency_box:newButton("Load Mantras", function()
         local mantras = {};
-        for _, mantra in local_player.instance.Backpack:GetChildren() do
-            if not mantra.Name:find("Mantra:") or mantra.Name:find("RecalledMantra:") then continue end        
+        for _, mantra in local_player.instance.Backpack:GetChildren() do repeat 
+            if not mantra.Name:find("Mantra:") or mantra.Name:find("RecalledMantra:") then do break end end        
 
             table.insert(mantras, mantra:GetAttribute("DefaultName"));
-        end
+         until true; end
 
         aztup_options.action_rolling_mantras:SetValues(mantras);
     end);
@@ -45735,11 +45735,11 @@ local silent_aim = tab:newGroupBox("Silent Aim", true);
     backstab_movestacker_dependency_box:newDropdown('backstab_movestacker_mantras', 'Trigger Mantras', {}, {}, true, "Mantras that will trigger during a backstab.");
     backstab_movestacker_dependency_box:newButton("Load Mantras", function()
         local mantras = {};
-        for _, mantra in local_player.instance.Backpack:GetChildren() do
-            if not mantra.Name:find("Mantra:") or mantra.Name:find("RecalledMantra:") then continue end        
+        for _, mantra in local_player.instance.Backpack:GetChildren() do repeat 
+            if not mantra.Name:find("Mantra:") or mantra.Name:find("RecalledMantra:") then do break end end        
             
             table.insert(mantras, mantra:GetAttribute("DefaultName"));
-        end
+         until true; end
 
         aztup_options.backstab_movestacker_mantras:SetValues(mantras);
     end);
@@ -45805,7 +45805,7 @@ end;
         local total = 0;
         for _, bucket in ipairs(buckets) do
             bucket.value = math.max(0, tonumber(bucket.option.Value) or 0);
-            total += bucket.value;
+            total = total +  bucket.value;
         end;
 
         if total <= 0 then
@@ -45821,7 +45821,7 @@ end;
             local exact = (bucket.value / total) * 100;
             bucket.normalized = math.floor(exact);
             bucket.frac = exact - bucket.normalized;
-            used += bucket.normalized;
+            used = used +  bucket.normalized;
         end;
 
         local remaining = 100 - used;
@@ -45834,7 +45834,7 @@ end;
 end);
 
         for i = 1, remaining do
-            buckets[i].normalized += 1;
+            buckets[i].normalized = buckets[i].normalized +  1;
         end;
 
         for _, bucket in ipairs(buckets) do
@@ -45881,7 +45881,7 @@ end;
             local outcome_weights = entry and (entry.outcome_weights or entry.fail_weights) or { Parry = 100 };
             local total_weight = 0;
             for _, amount in pairs(outcome_weights) do
-                total_weight += typeof(amount) == "number" and math.max(0, amount) or 0;
+                total_weight = total_weight +  typeof(amount) == "number" and math.max(0, amount) or 0;
             end;
 
             if total_weight <= 0 then
@@ -45895,9 +45895,9 @@ end;
                 "Parry",
                 "Dodge",
                 "Skip"
-            } do
+            } do repeat 
                 local amount = outcome_weights[action_name] or 0;
-                if amount == 0 then continue end
+                if amount == 0 then do break end end
                 local pct = math.floor((amount / total_weight) * 100 + 0.5);
                 local fmt_action_name = ({
                     ["Parry"] = "Parry",
@@ -45908,7 +45908,7 @@ end;
 
                 table.insert(chance_parts, string.format('%s %d%%', fmt_action_name, pct));
                 table.insert(colored_parts, string.format('<font color="#%s">%s %d%%</font>', color, fmt_action_name, pct));
-            end;
+             until true; end;
 
             local chance_text = #chance_parts > 0 and table.concat(chance_parts, ", ") or "Skip 100%";
             local chance_text_colored = #colored_parts > 0 and table.concat(colored_parts, ", ") or '<font color="#FF5558">Skip 100%</font>';
@@ -45988,7 +45988,7 @@ end;
             elseif type == "Jump" or type == "Legit Jump" then
                 if #services.Players:GetPlayers() == 1 and type ~= "Legit Jump" then
                     local_player.character.CharacterHandler.Requests.Jump:FireServer();
-                    local_player.root_part.CFrame *= CFrame.new(0, 50, 0);
+                    local_player.root_part.CFrame = local_player.root_part.CFrame *  CFrame.new(0, 50, 0);
                 else
                     local jump_func = nil;
                     local upvalues = getupvalues(base_require(game:GetService("ReplicatedStorage").Modules.CharacterControllers.Human));
@@ -46752,11 +46752,11 @@ esp_groupbox:newToggleWithKeybind("esp_healthbar", "Player Healthbars", false, "
 	if fflags:get("faster_limited_esp") then
 		local syn_z_fonts = {};
 
-		for i, v in Drawing.Fonts do
-			if i == "new" then continue end
+		for i, v in Drawing.Fonts do repeat 
+			if i == "new" then do break end end
 			
 			table.insert(syn_z_fonts, i);
-		end	
+		 until true; end	
 
 		main_esp_groupbox:newDropdown('SynZ_Font', 'Fast ESP Font', syn_z_fonts, "UI", false, 'Font for ESP', function() end, true);
 	end
@@ -47179,7 +47179,7 @@ end)
 task.spawn(function()
     while secondsLeft > 0 and not accepted do
         task.wait(1);
-        secondsLeft -= 1;
+        secondsLeft = secondsLeft -  1;
         refreshAcceptButton();
     end
 end)
@@ -47280,15 +47280,15 @@ return {
             aztup.tabs[tab_name] = tab.new(tab_name); 
         end
 
-        for _, module in list_modules("ui/tabs/*") do
+        for _, module in list_modules("ui/tabs/*") do repeat 
             local func, data = require(module);
             
             if not aztup.tabs[data.name] then 
-                continue            
+                do break end            
 end;
             
             xpcall(func, warn, aztup.tabs[data.name]);   
-        end
+         until true; end
 
         local ThemeManager = require("@src/utility/librarys/managers/ThemeManager");
         local SaveManager = require("@src/utility/librarys/managers/SaveManager");
@@ -47441,13 +47441,13 @@ AssetId.PROTOCOL = PROTOCOL
 
 
 
-local function compare_eq(str: string, pos: number, len: number, s: string): boolean
+local function compare_eq(str, pos, len, s)
     return string.sub(str, pos + 1, pos + len) == s
 end
 
 
 
-function AssetId.classify(str: string): number
+function AssetId.classify(str)
     local len = #str
 
     if len == 0 then
@@ -47518,7 +47518,7 @@ end
 
 
 
-local function parse_id_at(str: string, offset: number): (string?, string?)
+local function parse_id_at(str, offset)
     if #str < offset + 1 then
         return nil, "<error:  missing assetid>"
     end
@@ -47536,14 +47536,14 @@ local function parse_id_at(str: string, offset: number): (string?, string?)
 end
 
 
-local function ascii_lower(str: string): string
-    return (string.gsub(str, "[A-Z]", function(c: string)
+local function ascii_lower(str)
+    return (string.gsub(str, "[A-Z]", function(c)
         return string.char(string.byte(c) + 32)
     end))
 end
 
 
-function AssetId.get_id(str: string): (string?, string?)
+function AssetId.get_id(str)
     local protocol = AssetId.classify(str)
 
     if protocol == PROTOCOL.RBXASSETID then
@@ -47576,7 +47576,7 @@ function AssetId.get_id(str: string): (string?, string?)
 end
 
 
-function AssetId.normalize(str: string): string
+function AssetId.normalize(str)
     local id, err = AssetId.get_id(str)
     return id and ("rbxassetid://" .. id) or (err)
 end
@@ -47591,21 +47591,14 @@ module_map["src/utility/bindablefunction"] = function(require)
 
 
 
-export type Callback = (...any) -> ...any
+ 
 
-export type BindableFunction = {
-    _connect: RBXScriptConnection?,
-    _target: any?,
-    _method: Callback?,
-    __call: (BindableFunction,...any) -> ...any,
-    bind: (BindableFunction, target: any, method: Callback?) -> Callback,
-    disconnect: (BindableFunction) -> (),
-}
+ 
 
 local BindableFunction = {}
 BindableFunction.__index = BindableFunction
 
-function BindableFunction.new(callback: Callback?)
+function BindableFunction.new(callback)
     local self = setmetatable({
         _connect = nil,
         _target = nil,
@@ -47619,13 +47612,13 @@ end
 
 
 
-function BindableFunction:bind(target: any, method: Callback?): Callback
+function BindableFunction:bind(target, method)
     self._target = target
     if method then
         self._method = method
     end
 
-    local function boundCallback(...: any)
+    local function boundCallback(...)
         if not self._method then
             return
         end
@@ -47635,7 +47628,7 @@ function BindableFunction:bind(target: any, method: Callback?): Callback
     return boundCallback
 end
 
-function BindableFunction:__call(...: any): ...any
+function BindableFunction:__call(...)
     if not self._method then
         return
     end
@@ -47711,7 +47704,7 @@ function custom_font.make_lexend_font()
             params.Size = 16
             game:GetService("TextService"):GetTextBoundsAsync(params)
             params:Destroy()
-            done += 1;
+            done = done +  1;
         end)
     end
 
@@ -47769,7 +47762,7 @@ module_map["src/utility/deepwoken/autofarm_utilitys"] = function(require)
 
 local autofarm_utilities = {}
 
-function autofarm_utilities:ReadyWeapon(toggle: boolean)
+function autofarm_utilities:ReadyWeapon(toggle)
     if not local_player.character then return end
     if local_player.character and local_player.character:FindFirstChild('Weapon') then return end
     
@@ -47794,7 +47787,7 @@ function autofarm_utilities:Auto_M1(toggle)
     aztup.maid.AU_AutoM1_Toggle = toggle
 end
 
-function autofarm_utilities:Tween(location: CFrame | Vector3 | BasePart, speed: number?, ping_based: boolean?)
+function autofarm_utilities:Tween(location, speed, ping_based)
     local loc_type = type(location)
     if loc_type == 'Vector3' then
         location = CFrame.new(location)
@@ -47805,7 +47798,7 @@ function autofarm_utilities:Tween(location: CFrame | Vector3 | BasePart, speed: 
     Tween.new(location, ping_based or true, speed or 250).wait()
 end
 
-function autofarm_utilities:NeedFood(percent): boolean
+function autofarm_utilities:NeedFood(percent)
     if not percent then percent = 0.25; end
     
     local water = local_player.character:FindFirstChild('Water')
@@ -47821,23 +47814,23 @@ function autofarm_utilities:RefillFood()
     end
 end
 
-function autofarm_utilities:HealthCheck(percent): boolean
+function autofarm_utilities:HealthCheck(percent)
     return local_player.humanoid and local_player.humanoid.Health <= (local_player.humanoid.MaxHealth * percent)
 end
 
-function autofarm_utilities:GetClosestMob(name, max_magnitude): Model
+function autofarm_utilities:GetClosestMob(name, max_magnitude)
     local closest = nil
     
-    for _, mob: Model in workspace.Live:GetChildren() do
-        if not mob:IsA('Model') then continue end
-        if name and not mob.Name:find(name) then continue end
-        if services.Players:GetPlayerFromCharacter(mob) then continue end
+    for _, mob in workspace.Live:GetChildren() do repeat 
+        if not mob:IsA('Model') then do break end end
+        if name and not mob.Name:find(name) then do break end end
+        if services.Players:GetPlayerFromCharacter(mob) then do break end end
         
         if not closest then
             local dist = (local_player.root_part.Position - mob:GetPivot().Position).Magnitude
-            if max_magnitude and dist > max_magnitude then continue end
+            if max_magnitude and dist > max_magnitude then do break end end
             closest = mob
-            continue
+            do break end
         end
         
         if closest then
@@ -47848,21 +47841,21 @@ function autofarm_utilities:GetClosestMob(name, max_magnitude): Model
                 closest = mob
             end
         end
-    end
+     until true; end
     
     return nil
 end
 
-function autofarm_utilities:GetClosestNPC(name: string, wait: boolean): Model
+function autofarm_utilities:GetClosestNPC(name, wait)
     local function closest_npc()
         local closest = nil
         
-        for _, npc: Model in workspace.NPCs:GetChildren() do
-            if not npc.Name:match(name) then continue end
+        for _, npc in workspace.NPCs:GetChildren() do repeat 
+            if not npc.Name:match(name) then do break end end
             
             if not closest then
                 closest = npc
-                continue
+                do break end
             end
             
             if closest then
@@ -47873,7 +47866,7 @@ function autofarm_utilities:GetClosestNPC(name: string, wait: boolean): Model
                     closest = npc
                 end
             end
-        end
+         until true; end
         
         return closest
     end
@@ -47887,16 +47880,16 @@ function autofarm_utilities:GetClosestNPC(name: string, wait: boolean): Model
     return closest
 end 
 
-function autofarm_utilities:GetClosestCampfire(backup_location: CFrame, wait: boolean): Model
-    local function closest_campfire(): Model
+function autofarm_utilities:GetClosestCampfire(backup_location, wait)
+    local function closest_campfire()
         local closest = nil
         
-        for _, campfire: Model in workspace.Thrown:GetChildren() do
-            if not campfire.Name:match('Campfire') then continue end
+        for _, campfire in workspace.Thrown:GetChildren() do repeat 
+            if not campfire.Name:match('Campfire') then do break end end
             
             if not closest then
                 closest = campfire
-                continue
+                do break end
             end
             
             if closest then
@@ -47907,7 +47900,7 @@ function autofarm_utilities:GetClosestCampfire(backup_location: CFrame, wait: bo
                     closest = campfire
                 end
             end
-        end
+         until true; end
         
         return closest
     end
@@ -47926,16 +47919,16 @@ function autofarm_utilities:GetClosestCampfire(backup_location: CFrame, wait: bo
     return closest
 end
 
-function autofarm_utilities:GetClosestWell(backup_location: CFrame, wait: boolean): Model
-    local function closest_well(): Model
+function autofarm_utilities:GetClosestWell(backup_location, wait)
+    local function closest_well()
         local closest = nil
         
-        for _, well: Model in workspace.Map:GetChildren() do
-            if not well.Name:match('Well') then continue end
+        for _, well in workspace.Map:GetChildren() do repeat 
+            if not well.Name:match('Well') then do break end end
             
             if closest == nil then
                 closest = well
-                continue
+                do break end
             end
             
             local closestdist = (local_player.root_part.Position - closest:GetPivot().Position).Magnitude
@@ -47944,7 +47937,7 @@ function autofarm_utilities:GetClosestWell(backup_location: CFrame, wait: boolea
             if dist < closestdist then
                 closest = well
             end
-        end
+         until true; end
         
         return closest
     end
@@ -47963,19 +47956,19 @@ function autofarm_utilities:GetClosestWell(backup_location: CFrame, wait: boolea
     return closest
 end
 
-function autofarm_utilities:GetClosestChest(wait: boolean, max_distance: number): Model    
+function autofarm_utilities:GetClosestChest(wait, max_distance)    
     local function search()
         local closest = nil
         
-        for _, chest: Model in workspace.Thrown:GetChildren() do
-            if chest:HasTag('looted') then continue end
-            if not chest:FindFirstChild('Lid') then continue end
+        for _, chest in workspace.Thrown:GetChildren() do repeat 
+            if chest:HasTag('looted') then do break end end
+            if not chest:FindFirstChild('Lid') then do break end end
             
             if not closest then
                 local dist = (local_player.root_part.Position - chest:GetPivot().Position).Magnitude
-                if max_distance and dist > max_distance then continue end
+                if max_distance and dist > max_distance then do break end end
                 closest = chest
-                continue
+                do break end
             end
             
             if closest then
@@ -47986,7 +47979,7 @@ function autofarm_utilities:GetClosestChest(wait: boolean, max_distance: number)
                     closest = chest
                 end
             end
-        end
+         until true; end
         
         return closest
     end
@@ -48001,7 +47994,7 @@ function autofarm_utilities:GetClosestChest(wait: boolean, max_distance: number)
 end
 
 
-function autofarm_utilities:GrabChest(struct, using_mob_breaker: boolean, wait_time: number, max_distance: number)
+function autofarm_utilities:GrabChest(struct, using_mob_breaker, wait_time, max_distance)
     local closest = self:GetClosestChest(true, max_distance or nil)
     if not closest then return end
     
@@ -48041,11 +48034,11 @@ function autofarm_utilities:GrabChest(struct, using_mob_breaker: boolean, wait_t
 end
 
 
-function autofarm_utilities:GrabChests(struct, using_mod_breaker: boolean, wait_time: number, max_distance: number)
+function autofarm_utilities:GrabChests(struct, using_mod_breaker, wait_time, max_distance)
     local chest = self:GetClosestChest(false, max_distance or nil)
-    repeat
+    repeat repeat 
         local dist = (local_player.root_part.Position - chest:GetPivot().Position).Magnitude
-        if max_distance and dist > max_distance then continue end
+        if max_distance and dist > max_distance then do break end end
         
         local time_waited = tick()
         
@@ -48074,7 +48067,7 @@ function autofarm_utilities:GrabChests(struct, using_mod_breaker: boolean, wait_
         
         chest = self:GetClosestChest(false, max_distance or nil)
         task.wait()
-    until not chest
+     until true; until not chest
 end
 
 return autofarm_utilities
@@ -48193,7 +48186,7 @@ end
     return false
 end;
 
-function general:get_highest_point(x: number, z: number)
+function general:get_highest_point(x, z)
     local filter = {};
     local live = workspace:FindFirstChild("Live");
     local npcs = workspace:FindFirstChild("NPCs");
@@ -48241,7 +48234,7 @@ local function trim_boxes()
         end
     end
 end
-local function draw_hitbox(hitbox: Vector3, root_pos: CFrame, enemy_pos: CFrame, offset: CFrame, is_ball: boolean?, ok: boolean, too_far: boolean, hidden: boolean?, hit_color: Color3?, miss_color: Color3?)
+local function draw_hitbox(hitbox, root_pos, enemy_pos, offset, is_ball, ok, too_far, hidden, hit_color, miss_color)
     local camera = workspace.CurrentCamera or {Position = Vector3.zero};
     if (enemy_pos.Position - camera.CFrame.Position).Magnitude > 300 then
         return
@@ -48310,7 +48303,7 @@ local function draw_hitbox(hitbox: Vector3, root_pos: CFrame, enemy_pos: CFrame,
     end
 end
 
-function general:in_hitbox_with_pos(root_pos: CFrame, enemy_pos: CFrame, hitbox: Vector3, offset: CFrame, hidden: boolean?, is_ball: boolean?, hit_color: Color3?, miss_color: Color3?)  
+function general:in_hitbox_with_pos(root_pos, enemy_pos, hitbox, offset, hidden, is_ball, hit_color, miss_color)  
     local too_far = false
     if local_player and local_player.root_part then
         too_far = (root_pos.Position - local_player.root_part.Position).Magnitude > 200
@@ -48385,12 +48378,12 @@ function general:in_hitbox_with_pos(root_pos: CFrame, enemy_pos: CFrame, hitbox:
     return ok
 end
 function general:in_hitbox(
-    a: any,
-    b: any,
-    c: any,
-    d: any,
-    e: any?,
-    f: any?
+    a,
+    b,
+    c,
+    d,
+    e,
+    f
 )
     
     
@@ -48442,10 +48435,10 @@ function general:is_ap_anim(id)
 end;
 
 function general:playing_ap_anims(entity, ids)
-    for _, track in entity.Humanoid:GetPlayingAnimationTracks() do
+    for _, track in entity.Humanoid:GetPlayingAnimationTracks() do repeat 
         if ids then
             if table.find(ids, track.Animation.AnimationId) then
-                continue            
+                do break end            
 end;
         end
 
@@ -48459,13 +48452,13 @@ end;
         if data then
             return true        
 end;
-    end;
+     until true; end;
 
     return false
 end;
 
 local Keybinds = base_require(game:GetService("ReplicatedStorage"):WaitForChild("KeyBinds"..""));
-function general:generic_parry_ap_task(entity: Model)
+function general:generic_parry_ap_task(entity)
     if aztup_options.filters.Value["Dont Parry If Holding Block"] and Keybinds.IsActionHeld("Block") then
         return pcall(function()
             setthreadidentity(8);
@@ -49092,7 +49085,7 @@ module_map["src/utility/instancewatcher"] = function(require)
 local InstanceWatcher = {} do 
     InstanceWatcher.__index = InstanceWatcher;
 
-    function InstanceWatcher.new(parent_instance, match_function, callback_function, should_wait): InstanceWatcher
+    function InstanceWatcher.new(parent_instance, match_function, callback_function, should_wait)
         local self = setmetatable({}, InstanceWatcher);
 
         self.parent_instance = parent_instance;
@@ -50041,8 +50034,8 @@ return function(Library, context)
 	end
 
 	function Component.AddDropdown(self, Idx, Info)
-		Info.Searchable = if typeof(Info.Searchable) == 'boolean' then Info.Searchable else false
-		if Info.SpecialType == 'Player' then
+		Info.Searchable = ( typeof(Info.Searchable) == 'boolean'  and  Info.Searchable  or  false
+		)if Info.SpecialType == 'Player' then
 			Info.Values = getPlayersString()
 			Info.AllowNull = true
 		elseif Info.SpecialType == 'Team' then
@@ -50355,11 +50348,11 @@ return function(Library, context)
 			local Count = 0
 			local searchTerm = DropdownInnerSearch and string.lower(DropdownInnerSearch.Text)
 
-			for _, Value in next, Values do
+			for _, Value in next, Values do repeat 
 				if Info.Searchable and #searchTerm > 0 then
 					local StringValue = typeof(Value) == 'Instance' and Value.Name or Value
 					if not string.lower(StringValue):find(searchTerm, 1, true) then
-						continue
+						do break end
 					end
 				end
 
@@ -50453,7 +50446,7 @@ return function(Library, context)
 
 				ButtonState:UpdateButton()
 				Buttons[Button] = ButtonState
-			end
+			 until true; end
 
 			Scrolling.CanvasSize = UDim2.fromOffset(0, (Count * 20) + 1)
 			ListContentHeight = math.clamp(Count * 20, 0, MAX_DROPDOWN_ITEMS * 20) + 8
@@ -50615,7 +50608,7 @@ return function(Library, context)
 				end
 
 				if not Info.Multi then
-					break
+					do break end
 				end
 			end
 
@@ -52908,7 +52901,7 @@ local SaveManager = {} do
 			}
 		end
 
-		local function udim2NoOffset(udim2: UDim2)
+		local function udim2NoOffset(udim2)
 			return {
 				["X"] = udimToTable(udim2.X),
 				["Y"] = udimToTable(udim2.Y),
@@ -52935,24 +52928,24 @@ local SaveManager = {} do
 			end;
 		end);
 
-		for idx, toggle in next, aztup_toggles do
+		for idx, toggle in next, aztup_toggles do repeat 
 			if self.Ignore[idx] then
-				continue
+				do break end
 			end
 
 			table.insert(data.objects, self.Parser[toggle.Type].Save(idx, toggle))
-		end
+		 until true; end
 
-		for idx, option in next, aztup_options do
+		for idx, option in next, aztup_options do repeat 
 			if not self.Parser[option.Type] then
-				continue
+				do break end
 			end
 			if self.Ignore[idx] then
-				continue
+				do break end
 			end
 
 			table.insert(data.objects, self.Parser[option.Type].Save(idx, option))
-		end
+		 until true; end
 
 		local success, encoded = pcall(httpService.JSONEncode, httpService, data)
 		if not success then
@@ -53482,7 +53475,7 @@ local ThemeManager = {} do
 		["Red"] = "ed8796",
 		["Sky"] = "91d7e3",
 	} do
-		count += 1;
+		count = count +  1;
 		ThemeManager.BuiltInThemes[name] = { 	
 			23 + count, 
 			{
@@ -54086,10 +54079,10 @@ function Library:MakeDraggableScale(Instance, Cutoff, O)
 				local newX = (Mouse.X - ObjPos.X + (absSize.X * Instance.AnchorPoint.X)) / viewportSize.X
 				local newY = (Mouse.Y - ObjPos.Y + (absSize.Y * Instance.AnchorPoint.Y))
 				if O then
-					newY -= Instance.Position.Y.Offset;
+					newY = newY -  Instance.Position.Y.Offset;
 				end;
 
-				newY /= viewportSize.Y;
+				newY = newY /  viewportSize.Y;
 				Instance.Position = UDim2.new(
 					newX,
 					O and Instance.Position.X.Offset or 0,
@@ -54199,7 +54192,7 @@ function Library:AddToolTip(InfoStr, HoverInstance)
 			return
 		end
 
-		HoverToken += 1
+		HoverToken = HoverToken +  1
 		local CurrentToken = HoverToken
 		IsHovering = true
 
@@ -54222,7 +54215,7 @@ function Library:AddToolTip(InfoStr, HoverInstance)
 
 	ml = HoverInstance.MouseLeave:Connect(function()
 		IsHovering = false
-		HoverToken += 1
+		HoverToken = HoverToken +  1
 		TweenTooltipTransparency(1)
 		task.delay(0.12, function()
 			if not IsHovering then
@@ -54627,10 +54620,10 @@ end;
 		end)
 
 		function Depbox:Update()
-			for _, dep in next, Depbox.Dependencies do
+			for _, dep in next, Depbox.Dependencies do repeat 
 				local Elem, Expected = dep[1], dep[2]
 
-				if not Elem then continue end
+				if not Elem then do break end end
 
 				local matches
 				if Elem.Multi then
@@ -54644,7 +54637,7 @@ end;
 					Depbox:Resize()
 					return
 				end
-			end
+			 until true; end
 
 			Holder.Visible = true
 			Depbox:Resize()
@@ -54744,7 +54737,7 @@ end;
 			local y = 0
 			for _, c in next, DepGroupbox.Container:GetChildren() do
 				if not c:IsA('UIListLayout') and c.Visible then
-					y += c.Size.Y.Offset
+					y = y +  c.Size.Y.Offset
 				end
 			end
 			local scaleValue = rawget(_G, 'DPIScale')
@@ -54753,9 +54746,9 @@ end;
 		end
 
 		function DepGroupbox:Update()
-			for _, dep in next, DepGroupbox.Dependencies do
+			for _, dep in next, DepGroupbox.Dependencies do repeat 
 				local Elem, Expected = dep[1], dep[2]
-				if not Elem then continue end
+				if not Elem then do break end end
 
 				local matches
 				if Elem.Multi then
@@ -54769,7 +54762,7 @@ end;
 					DepGroupbox:Resize()
 					return
 				end
-			end
+			 until true; end
 
 			BoxOuter.Visible = true
 			DepGroupbox:Resize()
@@ -54865,12 +54858,12 @@ end
 
 		for _, Label in next, InfoLogger.Container:GetChildren() do
 			if Label:IsA('TextLabel') and Label.Visible then
-				YSize += 18;
+				YSize = YSize +  18;
 				local LabelWidth = Label.TextBounds.X / Library:GetUIScale();
 				if LabelWidth > XSize then
 					XSize = LabelWidth;
 				end
-				items += 1;
+				items = items +  1;
 			end;
 		end;
 
@@ -56086,17 +56079,17 @@ end;
 					TransparencyCache[Desc] = Cache;
 				end;
 
-				for _, Prop in next, Properties do
+				for _, Prop in next, Properties do repeat 
 					if not Cache[Prop] then
 						Cache[Prop] = Desc[Prop];
 					end;
 
 					if Cache[Prop] == 1 then
-						continue					
+						do break end					
 end;
 
 					TweenService:Create(Desc, TweenInfo.new(FadeTime, Enum.EasingStyle.Linear), { [Prop] = Toggled and Cache[Prop] or 1 }):Play();
-				end;
+				 until true; end;
 			end;
 		end;
 
@@ -56161,7 +56154,7 @@ function Library:UpdateInfoLoggerSize()
 					XSize = LabelWidth
 				end
 
-				items += 1;
+				items = items +  1;
 			end;
 		end;
 		
@@ -57118,7 +57111,7 @@ module_map["src/utility/profiler"] = function(require)
 
 local profiler = {};
 
-function profiler.wrap_no_xpcall(label, func): (...any)
+function profiler.wrap_no_xpcall(label, func)
     return function(...) 
         
         func(...);
@@ -57126,7 +57119,7 @@ function profiler.wrap_no_xpcall(label, func): (...any)
     end
 end
 
-function profiler.wrap(label, func): (...any)
+function profiler.wrap(label, func)
     return function(...) 
         
         xpcall(func, warn, ...);
@@ -57142,51 +57135,51 @@ module_map["src/utility/safety"] = function(require)
 
 local Safety = {};
 
-function Safety:MobsNear(part : BasePart | CFrame, distance): number
+function Safety:MobsNear(part , distance)
     if not distance then distance = 200; end
 
     local players_near = 0;
-    for _, mob in workspace.Live:GetChildren() do
-        if not mob:FindFirstChild("HumanoidRootPart") then continue end;
+    for _, mob in workspace.Live:GetChildren() do repeat 
+        if not mob:FindFirstChild("HumanoidRootPart") then do break end end;
         
         local mob_distance = (part.Position - mob:GetPivot().Position).Magnitude;
         if mob_distance <= distance then
             players_near = players_near + 1;
         end;
-    end;
+     until true; end;
     
     return players_near
 end;
 
-function Safety:PlayersNear(part : BasePart | CFrame, distance): number
+function Safety:PlayersNear(part , distance)
     if not distance then distance = 200; end
 
     local players_near = 0;
-    for _, player in services.Players:GetPlayers() do
-        if player == local_player.instance then continue end;
-        if not player.Character then continue end;
+    for _, player in services.Players:GetPlayers() do repeat 
+        if player == local_player.instance then do break end end;
+        if not player.Character then do break end end;
         
         local player_distance = (part.Position - player.Character:GetPivot().Position).Magnitude;
         if player_distance <= distance then
             players_near = players_near + 1;
         end;
-    end;
+     until true; end;
     
     return players_near
 end;
 
-function Safety:PlayerNear(magnitude): boolean
+function Safety:PlayerNear(magnitude)
     if not magnitude then magnitude = 300; end
     
-    for _, player in services.Players:GetPlayers() do
-        if player == local_player.instance then continue end
-        if not player.Character then continue end
+    for _, player in services.Players:GetPlayers() do repeat 
+        if player == local_player.instance then do break end end
+        if not player.Character then do break end end
         
         local dist = (local_player.root_part.Position - player.Character:GetPivot().Position).Magnitude
         if dist <= magnitude then
             return true
         end
-    end
+     until true; end
     
     return false
 end
@@ -57222,7 +57215,7 @@ function Safety:PlayerSafeTween(cf, speed, ylevel)
     local_player.root_part.CFrame = cf
 end
 
-function Safety:InDanger(): boolean
+function Safety:InDanger()
     return (local_player.humanoid:GetAttribute("DangerExpiration") and local_player.humanoid:GetAttribute("DangerExpiration") > 0)
 end
 
