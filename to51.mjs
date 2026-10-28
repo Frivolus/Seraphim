@@ -230,6 +230,45 @@ for(const i of sig){
   if(e>0) delR(toks[i].a, toks[prevS.get(e)].b);
 }
 for(const i of sig){ const p=prevS.get(i); if(toks[i].v==="export" && !(p>=0&&toks[p].t==="o"&&(toks[p].v==="."||toks[p].v===":"))) rep(toks[i],""); }
+const MACROS=new Set(["LPH_NO_VIRTUALIZE","LPH_JIT","LPH_JIT_MAX","LPH_NO_UPVALUES","LPH_ENCFUNC"]);
+const ATTR={LPH_NO_VIRTUALIZE:"LPH_ATTRIBUTES(VM(NONE))",LPH_JIT:"LPH_ATTRIBUTES(PRESET(FAST))",LPH_JIT_MAX:"LPH_ATTRIBUTES(PRESET(FAST))",LPH_NO_UPVALUES:"LPH_ATTRIBUTES(NO_UPVALUES)"};
+let nMac=0;
+for(const i of sig){
+  const attr=ATTR[toks[i].v];
+  if(!attr) continue;
+  const op=nextS.get(i);
+  if(op===undefined||op<0||toks[op].v!=="("){ continue; }
+  const fn=nextS.get(op);
+  if(fn===undefined||fn<0||toks[fn].v!=="function"){ rep(toks[i],""); nMac++; continue; }
+  let k=nextS.get(fn), guard=0;
+  while(k!==undefined&&k>=0&&guard++<6&&!(toks[k].t==="o"&&toks[k].v==="(")) k=nextS.get(k);
+  if(k===undefined||k<0){ rep(toks[i],""); nMac++; continue; }
+  let d=0, close=-1, m=k;
+  for(;;){ const u=toks[m]; if(u.t==="o"&&u.v==="(")d++; else if(u.t==="o"&&u.v===")"){d--; if(d===0){close=m;break;}} m=nextS.get(m); if(m===undefined||m<0)break; }
+  if(close<0){ rep(toks[i],""); nMac++; continue; }
+  rep(toks[i],"");
+  ins(toks[close].b," "+attr+" ");
+  nMac++;
+}
+console.log("macros v14 converties en attributs v15 :", nMac);
+function isFuncHeaderClose(closeIdx){
+  let d=0,m=closeIdx;
+  for(;;){ const u=toks[m]; if(u.t==="o"&&u.v===")")d++; else if(u.t==="o"&&u.v==="("){d--; if(d===0)break;} m=prevS.get(m); if(m<0) return false; }
+  let k=prevS.get(m);
+  for(;;){ if(k<0) return false; const u=toks[k];
+    if(u.t==="k"&&u.v==="function") return true;
+    if(u.t==="n"||(u.t==="o"&&(u.v==="."||u.v===":"))){ k=prevS.get(k); continue; }
+    return false; }
+}
+let nAmb=0;
+for(const i of sig){
+  if(!(toks[i].t==="o"&&toks[i].v==="(")) continue;
+  let p=prevS.get(i);
+  while(p>=0 && MACROS.has(toks[p].v)) p=prevS.get(p);
+  if(p<0) continue;
+  if(toks[p].t==="o"&&toks[p].v===")"&&/\n/.test(src.slice(toks[p].b,toks[i].a))&&!isFuncHeaderClose(p)){ ins(toks[p].b,";"); nAmb++; }
+}
+console.log("points-virgules anti-ambiguite :", nAmb);
 delSpans.sort((x,y)=>x.a-y.a);
 for(const d of delSpans) edits.push(d);
 const inType = new Uint8Array(toks.length);

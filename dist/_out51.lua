@@ -5979,7 +5979,8 @@ function layertwo:floorone()
         self.send_dialogue(nil, true)
     end
     
-    local function handle_spawn_chaser()self.temp_tween(CFrame.new(-5361, 5000, -4801), 250); -- so we dont get ragdolled and hit our head (ow) or get snow
+    local function handle_spawn_chaser()
+        self.temp_tween(CFrame.new(-5361, 5000, -4801), 250); -- so we dont get ragdolled and hit our head (ow) or get snow
         local foundchaser = nil;
         repeat
             self.temp_tween(CFrame.new(-5361, 285, -4801), 250);
@@ -6016,7 +6017,8 @@ function layertwo:floorone()
         self.send_dialogue('The City?')
     end
     
-    local function handle_chaser_fight(foundchaser)local initchaserlocation = foundchaser.HumanoidRootPart.CFrame
+    local function handle_chaser_fight(foundchaser)
+        local initchaserlocation = foundchaser.HumanoidRootPart.CFrame
         
         local atb;
         local time = tick()
@@ -12282,7 +12284,7 @@ automation_struct.construct = function(self, opts)
     return obj;
 end;
 
-automation_struct.run = LPH_NO_VIRTUALIZE(function(self)
+automation_struct.run = (function(self)
 	self.threads = {};
 	self.toggled_for_user = {};
     for _, feature in pairs(self.features) do repeat 
@@ -14155,7 +14157,7 @@ local last_parry_at = tick()
 
 local thrown = workspace:FindFirstChild("Thrown") or workspace:WaitForChild("Thrown", 10)
 if thrown then
-	aztup.maid:give_task(thrown.ChildAdded:Connect(LPH_NO_VIRTUALIZE(function(part)
+	aztup.maid:give_task(thrown.ChildAdded:Connect((function(part)
 		if not (aztup and aztup.flags and aztup.flags.auto_parry) then
 			return
 		end
@@ -14456,7 +14458,7 @@ end;
 end;
 
 
-aztup.maid:give_task(workspace.DescendantAdded:Connect(LPH_NO_VIRTUALIZE(function(projectile)
+aztup.maid:give_task(workspace.DescendantAdded:Connect((function(projectile)
 	if not (aztup and aztup.flags and aztup.flags.auto_parry) then
 		return
 	end
@@ -14666,7 +14668,7 @@ end;
         }
     end
 
-    LPH_NO_VIRTUALIZE(function()
+    (function()
         function self:should_block_input()
             local should_block = false;
             for index, task in self.tasks do repeat 
@@ -14795,7 +14797,7 @@ end
 -- BEGIN MODULE: src/features/auto-parry/data/base
 module_map["src/features/auto-parry/data/base"] = function(require)
 local ht = services.HttpService; local jd = ht.JSONDecode; local tbl;
-local extra_data = LPH_NO_VIRTUALIZE(function() 
+local extra_data = (function() 
     function decode_asset(asset)
          local decoded = services.EncodingService:Base64Decode(buffer.fromstring(asset));
          local decompress = services.EncodingService:DecompressBuffer(decoded, Enum.CompressionAlgorithm.Zstd);
@@ -14803,8 +14805,8 @@ local extra_data = LPH_NO_VIRTUALIZE(function()
 end;
     tbl = jd(ht, decode_asset(inline_asset_b96("@assets/base.json")));
     return jd(ht, decode_asset(inline_asset_b96("@assets/extra_data.json")))
-end)()
-LPH_NO_VIRTUALIZE(function() for k,v in extra_data do tbl[k] = v end; end)();
+end)();
+(function() for k,v in extra_data do tbl[k] = v end; end)();
 tbl['AbyssalRidge'] = (function() 
 return {
     ids = {
@@ -19871,7 +19873,7 @@ end
 -- END MODULE: src/features/auto-parry/data/base
 -- BEGIN MODULE: src/features/auto-parry/data/chance_store
 module_map["src/features/auto-parry/data/chance_store"] = function(require)
-return LPH_NO_VIRTUALIZE(function()
+return (function()
     local chance_store = {} do
         chance_store.__index = chance_store;
 
@@ -20124,7 +20126,8 @@ return LPH_NO_VIRTUALIZE(function()
             return normalized
         end
 
-        function chance_store:get_chance(id)local entry = self:get_entry(id)
+        function chance_store:get_chance(id)
+            local entry = self:get_entry(id)
             return entry and entry.chance or nil
         end
 
@@ -21348,7 +21351,7 @@ end
         return chosen or "Skip"
     end
 
-    LPH_NO_VIRTUALIZE(function()
+    (function()
         function DefendActionManager:defend_action_block(action, dont_pass)
         
             if aztup.flags.ap_randomization then
@@ -21504,8 +21507,8 @@ end;
         end;
     end)();
 
-    function DefendActionManager:update() 
-        LPH_NO_VIRTUALIZE(function()
+    function DefendActionManager:update(); 
+        (function()
             self._block_count = self._block_count or 0
             self._dodge_until = self._dodge_until or 0
             self._block_started_at = self._block_started_at or 0
@@ -21658,7 +21661,7 @@ end;
     end;
 
     local last = tick();
-    LPH_NO_VIRTUALIZE(function()
+    (function()
         
         
         
@@ -21966,7 +21969,7 @@ end
 
 local track_still_active
 
-track_still_active = LPH_JIT_MAX(function(track, entity)
+track_still_active = (function(track, entity)
     if ap_breaker_tracks[track] then
         return true    
 end;
@@ -21974,7 +21977,7 @@ end;
     return track.IsPlaying or anti_ap_breaker:is_fully_dead(track, entity) == false
 end)
 
-return LPH_NO_VIRTUALIZE(function()
+return (function()
     local last_mid_attack_delay = 0;
     local AnimatorHandler = {};
     AnimatorHandler.__index = AnimatorHandler;
@@ -22095,7 +22098,7 @@ return LPH_NO_VIRTUALIZE(function()
         return list    
 end;
     
-    getgenv().load_timings = function(b)
+    getgenv().load_timings = function(b);
         (aztup and aztup.silent_mode and function() end or debug.profilebegin)("reload timings");
         local a = 0;
         for _, file in ipairs(listfiles("rw_timings")) do repeat 
@@ -24369,7 +24372,8 @@ module_map["src/features/auto-parry/util/target-filter"] = function(require)
 local TargetFilter = {}
 local reputation_system;
 
-function TargetFilter.get_target_kind(entity)if not entity then
+function TargetFilter.get_target_kind(entity)
+	if not entity then
 		return "Unknown"
 	end
 
@@ -24385,7 +24389,9 @@ function TargetFilter.get_target_kind(entity)if not entity then
 	return "Other"
 end
 
-function TargetFilter.is_allowed(entity, allowed_targets)if not allowed_targets then
+function TargetFilter.is_allowed(entity, allowed_targets)
+	
+	if not allowed_targets then
 		return true
 	end
 
@@ -24510,7 +24516,7 @@ end
 module_map["src/features/automation/auto_brutus"] = function(require)
 
 
-local feature = Feature:new("auto_brutus", services.RunService.RenderStepped, LPH_JIT(function(choice_prompt)
+local feature = Feature:new("auto_brutus", services.RunService.RenderStepped, (function(choice_prompt)
     if not workspace.NPCs:FindFirstChild("Brutus") then return end
     local brutus = workspace.NPCs.Brutus
     if not brutus:FindFirstChild("InteractPrompt") or not brutus:FindFirstChild("HumanoidRootPart") then return end
@@ -24552,7 +24558,7 @@ end
 -- END MODULE: src/features/automation/auto_chime_requeue
 -- BEGIN MODULE: src/features/automation/auto_decline_guild_invites
 module_map["src/features/automation/auto_decline_guild_invites"] = function(require)
-local feature = Feature:new("auto_decline_guild_invites", local_player.instance.PlayerGui.ChildAdded, LPH_NO_VIRTUALIZE(function(item)
+local feature = Feature:new("auto_decline_guild_invites", local_player.instance.PlayerGui.ChildAdded, (function(item)
     if item.Name == "ChoicePrompt" then
         local title = item:FindFirstChild("Title", true);
 
@@ -24569,7 +24575,7 @@ end
 -- END MODULE: src/features/automation/auto_decline_guild_invites
 -- BEGIN MODULE: src/features/automation/auto_decline_squad_invites
 module_map["src/features/automation/auto_decline_squad_invites"] = function(require)
-local feature = Feature:new("auto_decline_squad_invites", local_player.instance.PlayerGui.ChildAdded, LPH_NO_VIRTUALIZE(function(item)
+local feature = Feature:new("auto_decline_squad_invites", local_player.instance.PlayerGui.ChildAdded, (function(item)
     if item.Name == "ChoicePrompt" then
         local title = item:FindFirstChild("Title", true);
         local desc = item:FindFirstChild("Desc", true);
@@ -24885,7 +24891,7 @@ local sprint_keys, started_sprint, feature = {
 }, nil, nil;
 
 
-feature = Feature:new("auto_sprint", services.UserInputService.InputBegan, LPH_NO_VIRTUALIZE(function(input, gp)
+feature = Feature:new("auto_sprint", services.UserInputService.InputBegan, (function(input, gp)
     if gp or not table.find(sprint_keys, input.KeyCode) or started_sprint then return end
 
     started_sprint = true;
@@ -24958,7 +24964,7 @@ local function has_ankle_weights_equipped()
     return leg:FindFirstChild("AnkleWeight") ~= nil
 end
 
-local feature = Feature:new("auto_train_agility", services.RunService.Heartbeat, LPH_NO_VIRTUALIZE(function()
+local feature = Feature:new("auto_train_agility", services.RunService.Heartbeat, (function()
     if not local_player.character or not local_player.root_part or not local_player.humanoid then return end
     if locked then return end
     if EffectReplicator:HasEffect("Knocked") then return end
@@ -25188,7 +25194,7 @@ end
 -- END MODULE: src/features/automation/backstab_movestacker
 -- BEGIN MODULE: src/features/automation/charisma_farm
 module_map["src/features/automation/charisma_farm"] = function(require)
-local feature = Feature:new("auto_charisma", local_player.instance.PlayerGui.ChildAdded, LPH_NO_VIRTUALIZE(function(choice_prompt)
+local feature = Feature:new("auto_charisma", local_player.instance.PlayerGui.ChildAdded, (function(choice_prompt)
     if choice_prompt.Name ~= "ChoicePrompt" or not choice_prompt:FindFirstChild("ChoiceFrame") then
         return
     end
@@ -25212,7 +25218,7 @@ end
 module_map["src/features/automation/intelligence_farm"] = function(require)
 
 
-local feature = Feature:new("auto_math_book", local_player.instance.PlayerGui.ChildAdded, LPH_NO_VIRTUALIZE(function(Child)
+local feature = Feature:new("auto_math_book", local_player.instance.PlayerGui.ChildAdded, (function(Child)
     if Child.Name ~= "ChoicePrompt" or not Child:FindFirstChild("ChoiceFrame") then
         return
     end
@@ -26784,7 +26790,7 @@ end
 -- BEGIN MODULE: src/features/combat/m1_hold
 module_map["src/features/combat/m1_hold"] = function(require)
 local self;
-self = Feature:new("m1_hold", services.RunService.RenderStepped, LPH_NO_VIRTUALIZE(function()
+self = Feature:new("m1_hold", services.RunService.RenderStepped, (function()
     if not self.held then return end
     if not EffectReplicator:FindEffect("Equipped") then return end
     if aztup.flags.block_input and BlockInputManager:should_block_input() and aztup_options.blocked_safe_input_user_moves.Value.M1s then return end
@@ -26969,7 +26975,7 @@ end
 -- END MODULE: src/features/combat/mantra_slidecasting
 -- BEGIN MODULE: src/features/combat/safe_input
 module_map["src/features/combat/safe_input"] = function(require)
-local self = Feature:new("block_input", scheduler:add_task(5), LPH_NO_VIRTUALIZE(function()
+local self = Feature:new("block_input", scheduler:add_task(5), (function()
     local cached_offhand = KeyHandler:get_cache("OffhandAttack");
     local cached_critical = KeyHandler:get_cache("CriticalClick");
 
@@ -27561,7 +27567,7 @@ local subtle_anims = {
 local last_notif_warn = 0;
 
 local feature;
-feature = Feature:new("ap_breaker", game:GetService("RunService").RenderStepped, LPH_JIT(function(delta_time)
+feature = Feature:new("ap_breaker", game:GetService("RunService").RenderStepped, (function(delta_time)
     if aztup_options.ap_breaker_type.Value == "Aggressive 4 (Blatant)" or aztup_options.ap_breaker_type.Value == "Aggressive 3 (Blatant)" or aztup_options.ap_breaker_type.Value == "Spoof" then return end
     local intensity = aztup.flags.ap_breaker_intensity or 5;
     animation_budget = animation_budget + ((delta_time or 0) * intensity);
@@ -28954,7 +28960,7 @@ end
 -- BEGIN MODULE: src/features/loader
 module_map["src/features/loader"] = function(require)
 return {
-    initialize = LPH_NO_VIRTUALIZE(function()
+    initialize = (function()
         getgenv().Feature = require("@src/features/generic_feature");
 
         local bad_modules = {} do
@@ -30726,7 +30732,7 @@ local function do_knocked_bypass()
     end;    
 end;
 
-feature = Feature:new("fly", game:GetService("RunService").PreSimulation, LPH_NO_VIRTUALIZE(function(dt)
+feature = Feature:new("fly", game:GetService("RunService").PreSimulation, (function(dt)
     if is_chime and aztup.flags.chime_safety then
         return aztup_toggles.fly:SetValue(false)    
 end;
@@ -30972,7 +30978,7 @@ end
 -- END MODULE: src/features/movement/fly
 -- BEGIN MODULE: src/features/movement/infinite_jump
 module_map["src/features/movement/infinite_jump"] = function(require)
-local feature = Feature:new("infinite_jump", game:GetService("RunService").PreSimulation, LPH_NO_VIRTUALIZE(function()
+local feature = Feature:new("infinite_jump", game:GetService("RunService").PreSimulation, (function()
     if is_chime and aztup.flags.chime_safety then
         return aztup_toggles.infinite_jump:SetValue(false)    
 end;
@@ -31061,7 +31067,7 @@ local random = Random.new();
 local speed_mult = 1;
 
 local self;
-self = Feature:new("multiply_s", RunService.RenderStepped, LPH_NO_VIRTUALIZE(function(dt)
+self = Feature:new("multiply_s", RunService.RenderStepped, (function(dt)
     local min = math.min(aztup.flags.min_speed_mult, aztup.flags.max_speed_mult);
     local max = math.max(aztup.flags.min_speed_mult, aztup.flags.max_speed_mult);
 
@@ -31091,7 +31097,7 @@ end
 -- BEGIN MODULE: src/features/movement/noclip
 module_map["src/features/movement/noclip"] = function(require)
 local modified_parts = {};
-local feature = Feature:new("noclip", game:GetService("RunService").Stepped, LPH_NO_VIRTUALIZE(function()
+local feature = Feature:new("noclip", game:GetService("RunService").Stepped, (function()
     if is_chime and aztup.flags.chime_safety then
         return aztup_toggles.noclip:SetValue(false)    
 end;
@@ -31137,7 +31143,7 @@ end
 -- END MODULE: src/features/movement/noclip
 -- BEGIN MODULE: src/features/movement/speed
 module_map["src/features/movement/speed"] = function(require)
-local feature = Feature:new("speed", game:GetService("RunService").PreSimulation, LPH_NO_VIRTUALIZE(function()
+local feature = Feature:new("speed", game:GetService("RunService").PreSimulation, (function()
     if is_chime and aztup.flags.chime_safety then
         return aztup_toggles.speed:SetValue(false)    
 end;
@@ -31191,7 +31197,7 @@ local random = Random.new();
 local last = tick();
 local tick_rate = 1;
 
-local feat = Feature:new("tickrate", RunService.RenderStepped, LPH_NO_VIRTUALIZE(function()
+local feat = Feature:new("tickrate", RunService.RenderStepped, (function()
     if EffectReplicator:FindEffect("Knocked") or EffectReplicator:FindEffect("Ragdoll") then return end
     
     local now = tick()
@@ -31245,7 +31251,7 @@ function self:opti_world_client()
 
         local hi = "WorldClient";
         local cns = getconnections(services.RunService.PreRender);
-        return LPH_NO_VIRTUALIZE(function() 
+        return (function() 
             local conn;
             for _, object in cns do repeat 
                 local func = object.Function;
@@ -32212,7 +32218,7 @@ end
 -- BEGIN MODULE: src/features/qol/experimental_bug_fixes
 module_map["src/features/qol/experimental_bug_fixes"] = function(require)
 local self;
-self = Feature:new("experimental_bug_fixes", services.RunService.RenderStepped, LPH_JIT(function()
+self = Feature:new("experimental_bug_fixes", services.RunService.RenderStepped, (function()
     if tick() - (self.last or 0) < 1 then
         return
     end
@@ -32668,7 +32674,7 @@ fake_water.Name = "FakeWater";
 
 aztup.maid:give_task(fake_water);
 
-local feature = Feature:new("jesus", scheduler:add_task(0.2), LPH_NO_VIRTUALIZE(function()
+local feature = Feature:new("jesus", scheduler:add_task(0.2), (function()
     if not is_etrean and not is_eastern then return end
     if not local_player.character then return end
 
@@ -33139,7 +33145,7 @@ local function is_on()
     return aztup.flags.optimize_game
 end
 
-self.opti_sea = LPH_NO_VIRTUALIZE(function()
+self.opti_sea = (function()
     local sea_client_func;
     local function do_loop(objects)
         for _, object in objects do local __c51b850 = false; repeat 
@@ -33222,7 +33228,7 @@ function self:opti_world_client()
 
         local hi = "WorldClient";
         local cns = getconnections(services.RunService.PreRender);
-        return LPH_NO_VIRTUALIZE(function() 
+        return (function() 
             local conn;
             for _, object in cns do repeat 
                 local func = object.Function;
@@ -34592,7 +34598,7 @@ local toggled = false
 local vim = Instance.new('VirtualInputManager')
 aztup.maid:give_task(vim)
 
-local feature = Feature:new('anti_afk', game:GetService('RunService').Heartbeat, LPH_NO_VIRTUALIZE(function(...)  
+local feature = Feature:new('anti_afk', game:GetService('RunService').Heartbeat, (function(...)  
     if (tick() - time_waited) >= 120 and toggled then
         vim:SendKeyEvent(true, Enum.KeyCode.Unknown, false, game)
         vim:SendKeyEvent(false, Enum.KeyCode.Unknown, false, game)
@@ -34722,7 +34728,7 @@ module_map["src/features/removals/no_blind"] = function(require)
 local parser = require("@src/utility/deepwoken/ssv_parser");
 local feature;
 
-feature = Feature:new("no_blind", scheduler:add_task(0.5), LPH_NO_VIRTUALIZE(function()
+feature = Feature:new("no_blind", scheduler:add_task(0.5), (function()
     if not local_player.character then return end
     last_update = tick();
     
@@ -34749,7 +34755,7 @@ end
 -- END MODULE: src/features/removals/no_blind
 -- BEGIN MODULE: src/features/removals/no_blur
 module_map["src/features/removals/no_blur"] = function(require)
-local feature = Feature:new("no_blur", services.RunService.PreRender, LPH_NO_VIRTUALIZE(function()
+local feature = Feature:new("no_blur", services.RunService.PreRender, (function()
     for _, object in services.Lighting:GetChildren() do repeat 
         if not object:IsA("BlurEffect") then do break end end
 
@@ -34763,7 +34769,7 @@ end
 -- BEGIN MODULE: src/features/removals/no_cl_gate
 module_map["src/features/removals/no_cl_gate"] = function(require)
 local saved = {};
-local feature = Feature:new("no_castle_light_gate", not is_depths and Instance.new("BindableEvent").Event or scheduler:add_task(3.5), LPH_NO_VIRTUALIZE(function()
+local feature = Feature:new("no_castle_light_gate", not is_depths and Instance.new("BindableEvent").Event or scheduler:add_task(3.5), (function()
     for _, gate in workspace:GetChildren() do repeat 
         if gate.Name ~= "LifeField" then do break end end;
 
@@ -34837,7 +34843,7 @@ end
 -- BEGIN MODULE: src/features/removals/no_fall
 module_map["src/features/removals/no_fall"] = function(require)
 local last = tick();
-local feature = Feature:new("no_fall", scheduler:add_task(0.1), LPH_NO_VIRTUALIZE(function()
+local feature = Feature:new("no_fall", scheduler:add_task(0.1), (function()
     if not EffectReplicator then return end
     if not local_player.character then return end
 
@@ -34890,7 +34896,7 @@ local feature = Feature:new("no_flame_blind");
 
 function feature:enable()
     local m = base_require(game:GetService("ReplicatedStorage").ClientEffectModules.Attacks.Blade);
-    old_f = hookfunction(m.BigFlash, LPH_NO_VIRTUALIZE(function() end));
+    old_f = hookfunction(m.BigFlash, (function() end));
 end
 
 function feature:disable()
@@ -34905,7 +34911,7 @@ end
 -- END MODULE: src/features/removals/no_flame_blind
 -- BEGIN MODULE: src/features/removals/no_fog
 module_map["src/features/removals/no_fog"] = function(require)
-return Feature:new("no_fog", scheduler:add_task(2.5), LPH_NO_VIRTUALIZE(function()
+return Feature:new("no_fog", scheduler:add_task(2.5), (function()
     services.Lighting.FogEnd = 1000000;
 
     local atmosphere = services.Lighting:FindFirstChild('Atmosphere');
@@ -34918,7 +34924,7 @@ end
 -- BEGIN MODULE: src/features/removals/no_hive_gate
 module_map["src/features/removals/no_hive_gate"] = function(require)
 local saved = {};
-local feature = Feature:new("no_hive_gate", not is_eastern and Instance.new("BindableEvent").Event or scheduler:add_task(3.5), LPH_NO_VIRTUALIZE(function()
+local feature = Feature:new("no_hive_gate", not is_eastern and Instance.new("BindableEvent").Event or scheduler:add_task(3.5), (function()
     for _, gate in workspace:GetChildren() do repeat 
         if gate.Name ~= "HiveGate" then do break end end;
 
@@ -35083,7 +35089,7 @@ module_map["src/features/removals/no_one_bit"] = function(require)
 local parser = require("@src/utility/deepwoken/ssv_parser");
 local last_update = 0;
 local feature;
-feature = Feature:new("no_one_bit", scheduler:add_task(1), LPH_NO_VIRTUALIZE(function()
+feature = Feature:new("no_one_bit", scheduler:add_task(1), (function()
     if not local_player.character then return end
     last_update = tick();
     
@@ -35157,7 +35163,7 @@ end
 -- BEGIN MODULE: src/features/removals/no_sanity_vfx
 module_map["src/features/removals/no_sanity_vfx"] = function(require)
 local self; do
-    self = Feature:new("no_sanity_vfx", scheduler:add_task(2.5), LPH_NO_VIRTUALIZE(function()
+    self = Feature:new("no_sanity_vfx", scheduler:add_task(2.5), (function()
         for _, object in services.CollectionService:GetTagged("StatVFX") do repeat 
             if table.find(self.gone, object) then do break end end
 
@@ -35295,7 +35301,7 @@ end
 -- END MODULE: src/features/removals/no_stun
 -- BEGIN MODULE: src/features/removals/no_wind
 module_map["src/features/removals/no_wind"] = function(require)
-return Feature:new("no_wind", game:GetService("RunService").PreSimulation, LPH_NO_VIRTUALIZE(function()
+return Feature:new("no_wind", game:GetService("RunService").PreSimulation, (function()
     if not local_player.character and not local_player.root_part or is_chime then return end
 
     if local_player.root_part:FindFirstChild("WindPusher") then
@@ -35320,7 +35326,7 @@ end
 -- BEGIN MODULE: src/features/removals/no_yun_shul_gate
 module_map["src/features/removals/no_yun_shul_gate"] = function(require)
 local saved = {};
-local feature = Feature:new("no_yun_shul_gate", not is_depths and Instance.new("BindableEvent").Event or scheduler:add_task(3.5), LPH_NO_VIRTUALIZE(function()
+local feature = Feature:new("no_yun_shul_gate", not is_depths and Instance.new("BindableEvent").Event or scheduler:add_task(3.5), (function()
     local mechanisms = workspace:FindFirstChild("Mechanisms");
     if not mechanisms then return end;
     
@@ -35746,7 +35752,7 @@ end
 -- END MODULE: src/features/visuals/auto_hide_hud
 -- BEGIN MODULE: src/features/visuals/base_esp
 module_map["src/features/visuals/base_esp"] = function(require)
-return LPH_NO_VIRTUALIZE(function()
+return (function()
 	local settings_updated = false
 	local limited_esp_cache_result = false
 	local deepwoken_mesh_ids = require("@src/utility/deepwoken/deepwoken_meshes" .. "")
@@ -37267,7 +37273,7 @@ end
 -- BEGIN MODULE: src/features/visuals/full_bright
 module_map["src/features/visuals/full_bright"] = function(require)
 
-return Feature:new("full_bright", scheduler:add_task(1), LPH_NO_VIRTUALIZE(function()
+return Feature:new("full_bright", scheduler:add_task(1), (function()
     local level = 255 * (aztup.flags.fullbright_intensity / 100);
     services.Lighting.Ambient = Color3.fromRGB(level, level, level);
     
@@ -37310,7 +37316,8 @@ feature.conns = {};
 feature.unique_id = services.HttpService:GenerateGUID(); 
 
 
-local function is_player_frame_map(map)if type(map) ~= "table" then return false end
+local function is_player_frame_map(map)
+    if type(map) ~= "table" then return false end
 
     for key, value in pairs(map) do
         if typeof(key) == "Instance" and key:IsA("Player") and typeof(value) == "Instance" then
@@ -37356,7 +37363,8 @@ local function get_player_frame_map()
     return nil
 end
 
-local function get_player_from_frame(frame)local map = get_player_frame_map()
+local function get_player_from_frame(frame)
+    local map = get_player_frame_map()
     if not map then return nil end
 
     for plr, player_frame in pairs(map) do
@@ -37367,12 +37375,14 @@ local function get_player_from_frame(frame)local map = get_player_frame_map()
     return nil
 end
 
-local function get_frame_from_player(plr)local map = get_player_frame_map()
+local function get_frame_from_player(plr)
+    local map = get_player_frame_map()
     return map and map[plr]
 end
 
 
-local function wait_for_player_frame_map()while true do
+local function wait_for_player_frame_map()
+    while true do
         local map = get_player_frame_map()
         if map then return map end
         task.wait();
@@ -37622,14 +37632,14 @@ end
 -- BEGIN MODULE: src/features/visuals/no_shadows
 module_map["src/features/visuals/no_shadows"] = function(require)
 
-return Feature:new("no_shadows", scheduler:add_task(2.5), LPH_NO_VIRTUALIZE(function()
+return Feature:new("no_shadows", scheduler:add_task(2.5), (function()
     services.Lighting.GlobalShadows = false;
 end))
 end
 -- END MODULE: src/features/visuals/no_shadows
 -- BEGIN MODULE: src/features/visuals/player_esp
 module_map["src/features/visuals/player_esp"] = function(require)
-return LPH_NO_VIRTUALIZE(function()
+return (function()
     local PlayerESPBillboard = require("@src/utility/player_esp_inst");
     local maid = require("@src/utility/maid");
     local stored_damage_registry = require("@src/utility/stored_damage_registry");
@@ -42887,7 +42897,7 @@ local last_update = 0;
 local feature;
 local last_spawn = 0;
 
-feature = Feature:new("sanity_indicator", services.RunService.RenderStepped, LPH_NO_VIRTUALIZE(function()
+feature = Feature:new("sanity_indicator", services.RunService.RenderStepped, (function()
     if not feature.current then
         return tick() - last_spawn > 5 and feature:spawn() or nil    
 end
@@ -43047,7 +43057,7 @@ self.font = DrawFont.Register(readfile("Seraphim/Fonts/Lexend.ttf"), {
 });
 
 local live = workspace:WaitForChild("Live");
-self.draw = LPH_NO_VIRTUALIZE(function()
+self.draw = (function()
     local camera_cframe = workspace.CurrentCamera and workspace.CurrentCamera.CFrame or CFrame.new();
     local left_healthbar = camera_cframe:VectorToWorldSpace(Vector3.new(-4, 3, 0)) 
     local right_healthbar = camera_cframe:VectorToWorldSpace(Vector3.new(-3.5, -3, 0));
@@ -43179,7 +43189,7 @@ env["AUTH_GET_CONSTANT"] = function(...)
 end 
 
 local services;
-LPH_NO_VIRTUALIZE(function()
+(function()
     local service_cache = {}
     local gs = game.GetService;
 
@@ -43373,7 +43383,7 @@ if not success or not result then
 end;
 
 do
-    LPH_NO_VIRTUALIZE(function()
+    (function()
         function decode_asset(asset)
             local decoded = services.EncodingService:Base64Decode(buffer.fromstring(asset));
             local decompress = services.EncodingService:DecompressBuffer(decoded, Enum.CompressionAlgorithm.Zstd);
@@ -47431,12 +47441,14 @@ AssetId.PROTOCOL = PROTOCOL
 
 
 
-local function compare_eq(str, pos, len, s)return string.sub(str, pos + 1, pos + len) == s
+local function compare_eq(str, pos, len, s)
+    return string.sub(str, pos + 1, pos + len) == s
 end
 
 
 
-function AssetId.classify(str)local len = #str
+function AssetId.classify(str)
+    local len = #str
 
     if len == 0 then
         return PROTOCOL.NULL
@@ -47506,7 +47518,8 @@ end
 
 
 
-local function parse_id_at(str, offset)if #str < offset + 1 then
+local function parse_id_at(str, offset)
+    if #str < offset + 1 then
         return nil, "<error:  missing assetid>"
     end
 
@@ -47523,13 +47536,15 @@ local function parse_id_at(str, offset)if #str < offset + 1 then
 end
 
 
-local function ascii_lower(str)return (string.gsub(str, "[A-Z]", function(c)
+local function ascii_lower(str)
+    return (string.gsub(str, "[A-Z]", function(c)
         return string.char(string.byte(c) + 32)
     end))
 end
 
 
-function AssetId.get_id(str)local protocol = AssetId.classify(str)
+function AssetId.get_id(str)
+    local protocol = AssetId.classify(str)
 
     if protocol == PROTOCOL.RBXASSETID then
         return parse_id_at(str, 13)
@@ -47561,7 +47576,8 @@ function AssetId.get_id(str)local protocol = AssetId.classify(str)
 end
 
 
-function AssetId.normalize(str)local id, err = AssetId.get_id(str)
+function AssetId.normalize(str)
+    local id, err = AssetId.get_id(str)
     return id and ("rbxassetid://" .. id) or (err)
 end
 
@@ -47575,7 +47591,11 @@ module_map["src/utility/bindablefunction"] = function(require)
 
 
 
-  local BindableFunction = {}
+ 
+
+ 
+
+local BindableFunction = {}
 BindableFunction.__index = BindableFunction
 
 function BindableFunction.new(callback)
@@ -47592,7 +47612,8 @@ end
 
 
 
-function BindableFunction:bind(target, method)self._target = target
+function BindableFunction:bind(target, method)
+    self._target = target
     if method then
         self._method = method
     end
@@ -47607,7 +47628,8 @@ function BindableFunction:bind(target, method)self._target = target
     return boundCallback
 end
 
-function BindableFunction:__call(...)if not self._method then
+function BindableFunction:__call(...)
+    if not self._method then
         return
     end
     return self._method(self._target, ...)
@@ -47776,7 +47798,8 @@ function autofarm_utilities:Tween(location, speed, ping_based)
     Tween.new(location, ping_based or true, speed or 250).wait()
 end
 
-function autofarm_utilities:NeedFood(percent)if not percent then percent = 0.25; end
+function autofarm_utilities:NeedFood(percent)
+    if not percent then percent = 0.25; end
     
     local water = local_player.character:FindFirstChild('Water')
     local stomach = local_player.character:FindFirstChild('Stomach')
@@ -47791,12 +47814,14 @@ function autofarm_utilities:RefillFood()
     end
 end
 
-function autofarm_utilities:HealthCheck(percent)return local_player.humanoid and local_player.humanoid.Health <= (local_player.humanoid.MaxHealth * percent)
+function autofarm_utilities:HealthCheck(percent)
+    return local_player.humanoid and local_player.humanoid.Health <= (local_player.humanoid.MaxHealth * percent)
 end
 
-function autofarm_utilities:GetClosestMob(name, max_magnitude)local closest = nil
+function autofarm_utilities:GetClosestMob(name, max_magnitude)
+    local closest = nil
     
-    for _, mobin workspace.Live:GetChildren() do repeat 
+    for _, mob in workspace.Live:GetChildren() do repeat 
         if not mob:IsA('Model') then do break end end
         if name and not mob.Name:find(name) then do break end end
         if services.Players:GetPlayerFromCharacter(mob) then do break end end
@@ -47821,10 +47846,11 @@ function autofarm_utilities:GetClosestMob(name, max_magnitude)local closest = ni
     return nil
 end
 
-function autofarm_utilities:GetClosestNPC(name, wait)local function closest_npc()
+function autofarm_utilities:GetClosestNPC(name, wait)
+    local function closest_npc()
         local closest = nil
         
-        for _, npcin workspace.NPCs:GetChildren() do repeat 
+        for _, npc in workspace.NPCs:GetChildren() do repeat 
             if not npc.Name:match(name) then do break end end
             
             if not closest then
@@ -47854,9 +47880,11 @@ function autofarm_utilities:GetClosestNPC(name, wait)local function closest_npc(
     return closest
 end 
 
-function autofarm_utilities:GetClosestCampfire(backup_location, wait)local function closest_campfire()local closest = nil
+function autofarm_utilities:GetClosestCampfire(backup_location, wait)
+    local function closest_campfire()
+        local closest = nil
         
-        for _, campfirein workspace.Thrown:GetChildren() do repeat 
+        for _, campfire in workspace.Thrown:GetChildren() do repeat 
             if not campfire.Name:match('Campfire') then do break end end
             
             if not closest then
@@ -47891,9 +47919,11 @@ function autofarm_utilities:GetClosestCampfire(backup_location, wait)local funct
     return closest
 end
 
-function autofarm_utilities:GetClosestWell(backup_location, wait)local function closest_well()local closest = nil
+function autofarm_utilities:GetClosestWell(backup_location, wait)
+    local function closest_well()
+        local closest = nil
         
-        for _, wellin workspace.Map:GetChildren() do repeat 
+        for _, well in workspace.Map:GetChildren() do repeat 
             if not well.Name:match('Well') then do break end end
             
             if closest == nil then
@@ -47926,10 +47956,11 @@ function autofarm_utilities:GetClosestWell(backup_location, wait)local function 
     return closest
 end
 
-function autofarm_utilities:GetClosestChest(wait, max_distance)local function search()
+function autofarm_utilities:GetClosestChest(wait, max_distance)    
+    local function search()
         local closest = nil
         
-        for _, chestin workspace.Thrown:GetChildren() do repeat 
+        for _, chest in workspace.Thrown:GetChildren() do repeat 
             if chest:HasTag('looted') then do break end end
             if not chest:FindFirstChild('Lid') then do break end end
             
@@ -48352,7 +48383,8 @@ function general:in_hitbox(
     c,
     d,
     e,
-    f)
+    f
+)
     
     
     
@@ -49053,7 +49085,8 @@ module_map["src/utility/instancewatcher"] = function(require)
 local InstanceWatcher = {} do 
     InstanceWatcher.__index = InstanceWatcher;
 
-    function InstanceWatcher.new(parent_instance, match_function, callback_function, should_wait)local self = setmetatable({}, InstanceWatcher);
+    function InstanceWatcher.new(parent_instance, match_function, callback_function, should_wait)
+        local self = setmetatable({}, InstanceWatcher);
 
         self.parent_instance = parent_instance;
         self.match_function = match_function;
@@ -57078,14 +57111,16 @@ module_map["src/utility/profiler"] = function(require)
 
 local profiler = {};
 
-function profiler.wrap_no_xpcall(label, func)return function(...) 
+function profiler.wrap_no_xpcall(label, func)
+    return function(...) 
         
         func(...);
         
     end
 end
 
-function profiler.wrap(label, func)return function(...) 
+function profiler.wrap(label, func)
+    return function(...) 
         
         xpcall(func, warn, ...);
         
@@ -57100,7 +57135,8 @@ module_map["src/utility/safety"] = function(require)
 
 local Safety = {};
 
-function Safety:MobsNear(part , distance)if not distance then distance = 200; end
+function Safety:MobsNear(part , distance)
+    if not distance then distance = 200; end
 
     local players_near = 0;
     for _, mob in workspace.Live:GetChildren() do repeat 
@@ -57115,7 +57151,8 @@ function Safety:MobsNear(part , distance)if not distance then distance = 200; en
     return players_near
 end;
 
-function Safety:PlayersNear(part , distance)if not distance then distance = 200; end
+function Safety:PlayersNear(part , distance)
+    if not distance then distance = 200; end
 
     local players_near = 0;
     for _, player in services.Players:GetPlayers() do repeat 
@@ -57131,7 +57168,8 @@ function Safety:PlayersNear(part , distance)if not distance then distance = 200;
     return players_near
 end;
 
-function Safety:PlayerNear(magnitude)if not magnitude then magnitude = 300; end
+function Safety:PlayerNear(magnitude)
+    if not magnitude then magnitude = 300; end
     
     for _, player in services.Players:GetPlayers() do repeat 
         if player == local_player.instance then do break end end
@@ -57177,7 +57215,8 @@ function Safety:PlayerSafeTween(cf, speed, ylevel)
     local_player.root_part.CFrame = cf
 end
 
-function Safety:InDanger()return (local_player.humanoid:GetAttribute("DangerExpiration") and local_player.humanoid:GetAttribute("DangerExpiration") > 0)
+function Safety:InDanger()
+    return (local_player.humanoid:GetAttribute("DangerExpiration") and local_player.humanoid:GetAttribute("DangerExpiration") > 0)
 end
 
 return Safety

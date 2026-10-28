@@ -12284,7 +12284,7 @@ automation_struct.construct = function(self, opts)
     return obj;
 end;
 
-automation_struct.run = LPH_NO_VIRTUALIZE(function(self)
+automation_struct.run = (function(self) LPH_ATTRIBUTES(VM(NONE)) 
 	self.threads = {};
 	self.toggled_for_user = {};
     for _, feature in pairs(self.features) do repeat 
@@ -14157,7 +14157,7 @@ local last_parry_at = tick()
 
 local thrown = workspace:FindFirstChild("Thrown") or workspace:WaitForChild("Thrown", 10)
 if thrown then
-	aztup.maid:give_task(thrown.ChildAdded:Connect(LPH_NO_VIRTUALIZE(function(part)
+	aztup.maid:give_task(thrown.ChildAdded:Connect((function(part) LPH_ATTRIBUTES(VM(NONE)) 
 		if not (aztup and aztup.flags and aztup.flags.auto_parry) then
 			return
 		end
@@ -14458,7 +14458,7 @@ end;
 end;
 
 
-aztup.maid:give_task(workspace.DescendantAdded:Connect(LPH_NO_VIRTUALIZE(function(projectile)
+aztup.maid:give_task(workspace.DescendantAdded:Connect((function(projectile) LPH_ATTRIBUTES(VM(NONE)) 
 	if not (aztup and aztup.flags and aztup.flags.auto_parry) then
 		return
 	end
@@ -14668,7 +14668,7 @@ end;
         }
     end
 
-    LPH_NO_VIRTUALIZE(function()
+    (function() LPH_ATTRIBUTES(VM(NONE)) 
         function self:should_block_input()
             local should_block = false;
             for index, task in self.tasks do repeat 
@@ -14797,7 +14797,7 @@ end
 -- BEGIN MODULE: src/features/auto-parry/data/base
 module_map["src/features/auto-parry/data/base"] = function(require)
 local ht = services.HttpService; local jd = ht.JSONDecode; local tbl;
-local extra_data = LPH_NO_VIRTUALIZE(function() 
+local extra_data = (function() LPH_ATTRIBUTES(VM(NONE))  
     function decode_asset(asset)
          local decoded = services.EncodingService:Base64Decode(buffer.fromstring(asset));
          local decompress = services.EncodingService:DecompressBuffer(decoded, Enum.CompressionAlgorithm.Zstd);
@@ -14805,8 +14805,8 @@ local extra_data = LPH_NO_VIRTUALIZE(function()
 end;
     tbl = jd(ht, decode_asset(inline_asset_b96("@assets/base.json")));
     return jd(ht, decode_asset(inline_asset_b96("@assets/extra_data.json")))
-end)()
-LPH_NO_VIRTUALIZE(function() for k,v in extra_data do tbl[k] = v end; end)();
+end)();
+(function() LPH_ATTRIBUTES(VM(NONE))  for k,v in extra_data do tbl[k] = v end; end)();
 tbl['AbyssalRidge'] = (function() 
 return {
     ids = {
@@ -19873,7 +19873,7 @@ end
 -- END MODULE: src/features/auto-parry/data/base
 -- BEGIN MODULE: src/features/auto-parry/data/chance_store
 module_map["src/features/auto-parry/data/chance_store"] = function(require)
-return LPH_NO_VIRTUALIZE(function()
+return (function() LPH_ATTRIBUTES(VM(NONE)) 
     local chance_store = {} do
         chance_store.__index = chance_store;
 
@@ -21351,7 +21351,7 @@ end
         return chosen or "Skip"
     end
 
-    LPH_NO_VIRTUALIZE(function()
+    (function() LPH_ATTRIBUTES(VM(NONE)) 
         function DefendActionManager:defend_action_block(action, dont_pass)
         
             if aztup.flags.ap_randomization then
@@ -21508,7 +21508,7 @@ end;
     end)();
 
     function DefendActionManager:update() 
-        LPH_NO_VIRTUALIZE(function()
+        (function() LPH_ATTRIBUTES(VM(NONE)) 
             self._block_count = self._block_count or 0
             self._dodge_until = self._dodge_until or 0
             self._block_started_at = self._block_started_at or 0
@@ -21661,7 +21661,7 @@ end;
     end;
 
     local last = tick();
-    LPH_NO_VIRTUALIZE(function()
+    (function() LPH_ATTRIBUTES(VM(NONE)) 
         
         
         
@@ -21969,7 +21969,7 @@ end
 
 local track_still_active
 
-track_still_active = LPH_JIT_MAX(function(track, entity)
+track_still_active = (function(track, entity) LPH_ATTRIBUTES(PRESET(FAST)) 
     if ap_breaker_tracks[track] then
         return true    
 end;
@@ -21977,7 +21977,7 @@ end;
     return track.IsPlaying or anti_ap_breaker:is_fully_dead(track, entity) == false
 end)
 
-return LPH_NO_VIRTUALIZE(function()
+return (function() LPH_ATTRIBUTES(VM(NONE)) 
     local last_mid_attack_delay = 0;
     local AnimatorHandler = {};
     AnimatorHandler.__index = AnimatorHandler;
@@ -24516,7 +24516,7 @@ end
 module_map["src/features/automation/auto_brutus"] = function(require)
 
 
-local feature = Feature:new("auto_brutus", services.RunService.RenderStepped, LPH_JIT(function(choice_prompt)
+local feature = Feature:new("auto_brutus", services.RunService.RenderStepped, (function(choice_prompt) LPH_ATTRIBUTES(PRESET(FAST)) 
     if not workspace.NPCs:FindFirstChild("Brutus") then return end
     local brutus = workspace.NPCs.Brutus
     if not brutus:FindFirstChild("InteractPrompt") or not brutus:FindFirstChild("HumanoidRootPart") then return end
@@ -24558,7 +24558,7 @@ end
 -- END MODULE: src/features/automation/auto_chime_requeue
 -- BEGIN MODULE: src/features/automation/auto_decline_guild_invites
 module_map["src/features/automation/auto_decline_guild_invites"] = function(require)
-local feature = Feature:new("auto_decline_guild_invites", local_player.instance.PlayerGui.ChildAdded, LPH_NO_VIRTUALIZE(function(item)
+local feature = Feature:new("auto_decline_guild_invites", local_player.instance.PlayerGui.ChildAdded, (function(item) LPH_ATTRIBUTES(VM(NONE)) 
     if item.Name == "ChoicePrompt" then
         local title = item:FindFirstChild("Title", true);
 
@@ -24575,7 +24575,7 @@ end
 -- END MODULE: src/features/automation/auto_decline_guild_invites
 -- BEGIN MODULE: src/features/automation/auto_decline_squad_invites
 module_map["src/features/automation/auto_decline_squad_invites"] = function(require)
-local feature = Feature:new("auto_decline_squad_invites", local_player.instance.PlayerGui.ChildAdded, LPH_NO_VIRTUALIZE(function(item)
+local feature = Feature:new("auto_decline_squad_invites", local_player.instance.PlayerGui.ChildAdded, (function(item) LPH_ATTRIBUTES(VM(NONE)) 
     if item.Name == "ChoicePrompt" then
         local title = item:FindFirstChild("Title", true);
         local desc = item:FindFirstChild("Desc", true);
@@ -24891,7 +24891,7 @@ local sprint_keys, started_sprint, feature = {
 }, nil, nil;
 
 
-feature = Feature:new("auto_sprint", services.UserInputService.InputBegan, LPH_NO_VIRTUALIZE(function(input, gp)
+feature = Feature:new("auto_sprint", services.UserInputService.InputBegan, (function(input, gp) LPH_ATTRIBUTES(VM(NONE)) 
     if gp or not table.find(sprint_keys, input.KeyCode) or started_sprint then return end
 
     started_sprint = true;
@@ -24964,7 +24964,7 @@ local function has_ankle_weights_equipped()
     return leg:FindFirstChild("AnkleWeight") ~= nil
 end
 
-local feature = Feature:new("auto_train_agility", services.RunService.Heartbeat, LPH_NO_VIRTUALIZE(function()
+local feature = Feature:new("auto_train_agility", services.RunService.Heartbeat, (function() LPH_ATTRIBUTES(VM(NONE)) 
     if not local_player.character or not local_player.root_part or not local_player.humanoid then return end
     if locked then return end
     if EffectReplicator:HasEffect("Knocked") then return end
@@ -25194,7 +25194,7 @@ end
 -- END MODULE: src/features/automation/backstab_movestacker
 -- BEGIN MODULE: src/features/automation/charisma_farm
 module_map["src/features/automation/charisma_farm"] = function(require)
-local feature = Feature:new("auto_charisma", local_player.instance.PlayerGui.ChildAdded, LPH_NO_VIRTUALIZE(function(choice_prompt)
+local feature = Feature:new("auto_charisma", local_player.instance.PlayerGui.ChildAdded, (function(choice_prompt) LPH_ATTRIBUTES(VM(NONE)) 
     if choice_prompt.Name ~= "ChoicePrompt" or not choice_prompt:FindFirstChild("ChoiceFrame") then
         return
     end
@@ -25218,7 +25218,7 @@ end
 module_map["src/features/automation/intelligence_farm"] = function(require)
 
 
-local feature = Feature:new("auto_math_book", local_player.instance.PlayerGui.ChildAdded, LPH_NO_VIRTUALIZE(function(Child)
+local feature = Feature:new("auto_math_book", local_player.instance.PlayerGui.ChildAdded, (function(Child) LPH_ATTRIBUTES(VM(NONE)) 
     if Child.Name ~= "ChoicePrompt" or not Child:FindFirstChild("ChoiceFrame") then
         return
     end
@@ -26790,7 +26790,7 @@ end
 -- BEGIN MODULE: src/features/combat/m1_hold
 module_map["src/features/combat/m1_hold"] = function(require)
 local self;
-self = Feature:new("m1_hold", services.RunService.RenderStepped, LPH_NO_VIRTUALIZE(function()
+self = Feature:new("m1_hold", services.RunService.RenderStepped, (function() LPH_ATTRIBUTES(VM(NONE)) 
     if not self.held then return end
     if not EffectReplicator:FindEffect("Equipped") then return end
     if aztup.flags.block_input and BlockInputManager:should_block_input() and aztup_options.blocked_safe_input_user_moves.Value.M1s then return end
@@ -26975,7 +26975,7 @@ end
 -- END MODULE: src/features/combat/mantra_slidecasting
 -- BEGIN MODULE: src/features/combat/safe_input
 module_map["src/features/combat/safe_input"] = function(require)
-local self = Feature:new("block_input", scheduler:add_task(5), LPH_NO_VIRTUALIZE(function()
+local self = Feature:new("block_input", scheduler:add_task(5), (function() LPH_ATTRIBUTES(VM(NONE)) 
     local cached_offhand = KeyHandler:get_cache("OffhandAttack");
     local cached_critical = KeyHandler:get_cache("CriticalClick");
 
@@ -27567,7 +27567,7 @@ local subtle_anims = {
 local last_notif_warn = 0;
 
 local feature;
-feature = Feature:new("ap_breaker", game:GetService("RunService").RenderStepped, LPH_JIT(function(delta_time)
+feature = Feature:new("ap_breaker", game:GetService("RunService").RenderStepped, (function(delta_time) LPH_ATTRIBUTES(PRESET(FAST)) 
     if aztup_options.ap_breaker_type.Value == "Aggressive 4 (Blatant)" or aztup_options.ap_breaker_type.Value == "Aggressive 3 (Blatant)" or aztup_options.ap_breaker_type.Value == "Spoof" then return end
     local intensity = aztup.flags.ap_breaker_intensity or 5;
     animation_budget = animation_budget + ((delta_time or 0) * intensity);
@@ -28960,7 +28960,7 @@ end
 -- BEGIN MODULE: src/features/loader
 module_map["src/features/loader"] = function(require)
 return {
-    initialize = LPH_NO_VIRTUALIZE(function()
+    initialize = (function() LPH_ATTRIBUTES(VM(NONE)) 
         getgenv().Feature = require("@src/features/generic_feature");
 
         local bad_modules = {} do
@@ -30732,7 +30732,7 @@ local function do_knocked_bypass()
     end;    
 end;
 
-feature = Feature:new("fly", game:GetService("RunService").PreSimulation, LPH_NO_VIRTUALIZE(function(dt)
+feature = Feature:new("fly", game:GetService("RunService").PreSimulation, (function(dt) LPH_ATTRIBUTES(VM(NONE)) 
     if is_chime and aztup.flags.chime_safety then
         return aztup_toggles.fly:SetValue(false)    
 end;
@@ -30978,7 +30978,7 @@ end
 -- END MODULE: src/features/movement/fly
 -- BEGIN MODULE: src/features/movement/infinite_jump
 module_map["src/features/movement/infinite_jump"] = function(require)
-local feature = Feature:new("infinite_jump", game:GetService("RunService").PreSimulation, LPH_NO_VIRTUALIZE(function()
+local feature = Feature:new("infinite_jump", game:GetService("RunService").PreSimulation, (function() LPH_ATTRIBUTES(VM(NONE)) 
     if is_chime and aztup.flags.chime_safety then
         return aztup_toggles.infinite_jump:SetValue(false)    
 end;
@@ -31067,7 +31067,7 @@ local random = Random.new();
 local speed_mult = 1;
 
 local self;
-self = Feature:new("multiply_s", RunService.RenderStepped, LPH_NO_VIRTUALIZE(function(dt)
+self = Feature:new("multiply_s", RunService.RenderStepped, (function(dt) LPH_ATTRIBUTES(VM(NONE)) 
     local min = math.min(aztup.flags.min_speed_mult, aztup.flags.max_speed_mult);
     local max = math.max(aztup.flags.min_speed_mult, aztup.flags.max_speed_mult);
 
@@ -31097,7 +31097,7 @@ end
 -- BEGIN MODULE: src/features/movement/noclip
 module_map["src/features/movement/noclip"] = function(require)
 local modified_parts = {};
-local feature = Feature:new("noclip", game:GetService("RunService").Stepped, LPH_NO_VIRTUALIZE(function()
+local feature = Feature:new("noclip", game:GetService("RunService").Stepped, (function() LPH_ATTRIBUTES(VM(NONE)) 
     if is_chime and aztup.flags.chime_safety then
         return aztup_toggles.noclip:SetValue(false)    
 end;
@@ -31143,7 +31143,7 @@ end
 -- END MODULE: src/features/movement/noclip
 -- BEGIN MODULE: src/features/movement/speed
 module_map["src/features/movement/speed"] = function(require)
-local feature = Feature:new("speed", game:GetService("RunService").PreSimulation, LPH_NO_VIRTUALIZE(function()
+local feature = Feature:new("speed", game:GetService("RunService").PreSimulation, (function() LPH_ATTRIBUTES(VM(NONE)) 
     if is_chime and aztup.flags.chime_safety then
         return aztup_toggles.speed:SetValue(false)    
 end;
@@ -31197,7 +31197,7 @@ local random = Random.new();
 local last = tick();
 local tick_rate = 1;
 
-local feat = Feature:new("tickrate", RunService.RenderStepped, LPH_NO_VIRTUALIZE(function()
+local feat = Feature:new("tickrate", RunService.RenderStepped, (function() LPH_ATTRIBUTES(VM(NONE)) 
     if EffectReplicator:FindEffect("Knocked") or EffectReplicator:FindEffect("Ragdoll") then return end
     
     local now = tick()
@@ -31251,7 +31251,7 @@ function self:opti_world_client()
 
         local hi = "WorldClient";
         local cns = getconnections(services.RunService.PreRender);
-        return LPH_NO_VIRTUALIZE(function() 
+        return (function() LPH_ATTRIBUTES(VM(NONE))  
             local conn;
             for _, object in cns do repeat 
                 local func = object.Function;
@@ -32218,7 +32218,7 @@ end
 -- BEGIN MODULE: src/features/qol/experimental_bug_fixes
 module_map["src/features/qol/experimental_bug_fixes"] = function(require)
 local self;
-self = Feature:new("experimental_bug_fixes", services.RunService.RenderStepped, LPH_JIT(function()
+self = Feature:new("experimental_bug_fixes", services.RunService.RenderStepped, (function() LPH_ATTRIBUTES(PRESET(FAST)) 
     if tick() - (self.last or 0) < 1 then
         return
     end
@@ -32674,7 +32674,7 @@ fake_water.Name = "FakeWater";
 
 aztup.maid:give_task(fake_water);
 
-local feature = Feature:new("jesus", scheduler:add_task(0.2), LPH_NO_VIRTUALIZE(function()
+local feature = Feature:new("jesus", scheduler:add_task(0.2), (function() LPH_ATTRIBUTES(VM(NONE)) 
     if not is_etrean and not is_eastern then return end
     if not local_player.character then return end
 
@@ -33145,7 +33145,7 @@ local function is_on()
     return aztup.flags.optimize_game
 end
 
-self.opti_sea = LPH_NO_VIRTUALIZE(function()
+self.opti_sea = (function() LPH_ATTRIBUTES(VM(NONE)) 
     local sea_client_func;
     local function do_loop(objects)
         for _, object in objects do local __c51b850 = false; repeat 
@@ -33228,7 +33228,7 @@ function self:opti_world_client()
 
         local hi = "WorldClient";
         local cns = getconnections(services.RunService.PreRender);
-        return LPH_NO_VIRTUALIZE(function() 
+        return (function() LPH_ATTRIBUTES(VM(NONE))  
             local conn;
             for _, object in cns do repeat 
                 local func = object.Function;
@@ -34598,7 +34598,7 @@ local toggled = false
 local vim = Instance.new('VirtualInputManager')
 aztup.maid:give_task(vim)
 
-local feature = Feature:new('anti_afk', game:GetService('RunService').Heartbeat, LPH_NO_VIRTUALIZE(function(...)  
+local feature = Feature:new('anti_afk', game:GetService('RunService').Heartbeat, (function(...) LPH_ATTRIBUTES(VM(NONE))   
     if (tick() - time_waited) >= 120 and toggled then
         vim:SendKeyEvent(true, Enum.KeyCode.Unknown, false, game)
         vim:SendKeyEvent(false, Enum.KeyCode.Unknown, false, game)
@@ -34728,7 +34728,7 @@ module_map["src/features/removals/no_blind"] = function(require)
 local parser = require("@src/utility/deepwoken/ssv_parser");
 local feature;
 
-feature = Feature:new("no_blind", scheduler:add_task(0.5), LPH_NO_VIRTUALIZE(function()
+feature = Feature:new("no_blind", scheduler:add_task(0.5), (function() LPH_ATTRIBUTES(VM(NONE)) 
     if not local_player.character then return end
     last_update = tick();
     
@@ -34755,7 +34755,7 @@ end
 -- END MODULE: src/features/removals/no_blind
 -- BEGIN MODULE: src/features/removals/no_blur
 module_map["src/features/removals/no_blur"] = function(require)
-local feature = Feature:new("no_blur", services.RunService.PreRender, LPH_NO_VIRTUALIZE(function()
+local feature = Feature:new("no_blur", services.RunService.PreRender, (function() LPH_ATTRIBUTES(VM(NONE)) 
     for _, object in services.Lighting:GetChildren() do repeat 
         if not object:IsA("BlurEffect") then do break end end
 
@@ -34769,7 +34769,7 @@ end
 -- BEGIN MODULE: src/features/removals/no_cl_gate
 module_map["src/features/removals/no_cl_gate"] = function(require)
 local saved = {};
-local feature = Feature:new("no_castle_light_gate", not is_depths and Instance.new("BindableEvent").Event or scheduler:add_task(3.5), LPH_NO_VIRTUALIZE(function()
+local feature = Feature:new("no_castle_light_gate", not is_depths and Instance.new("BindableEvent").Event or scheduler:add_task(3.5), (function() LPH_ATTRIBUTES(VM(NONE)) 
     for _, gate in workspace:GetChildren() do repeat 
         if gate.Name ~= "LifeField" then do break end end;
 
@@ -34843,7 +34843,7 @@ end
 -- BEGIN MODULE: src/features/removals/no_fall
 module_map["src/features/removals/no_fall"] = function(require)
 local last = tick();
-local feature = Feature:new("no_fall", scheduler:add_task(0.1), LPH_NO_VIRTUALIZE(function()
+local feature = Feature:new("no_fall", scheduler:add_task(0.1), (function() LPH_ATTRIBUTES(VM(NONE)) 
     if not EffectReplicator then return end
     if not local_player.character then return end
 
@@ -34896,7 +34896,7 @@ local feature = Feature:new("no_flame_blind");
 
 function feature:enable()
     local m = base_require(game:GetService("ReplicatedStorage").ClientEffectModules.Attacks.Blade);
-    old_f = hookfunction(m.BigFlash, LPH_NO_VIRTUALIZE(function() end));
+    old_f = hookfunction(m.BigFlash, (function() LPH_ATTRIBUTES(VM(NONE))  end));
 end
 
 function feature:disable()
@@ -34911,7 +34911,7 @@ end
 -- END MODULE: src/features/removals/no_flame_blind
 -- BEGIN MODULE: src/features/removals/no_fog
 module_map["src/features/removals/no_fog"] = function(require)
-return Feature:new("no_fog", scheduler:add_task(2.5), LPH_NO_VIRTUALIZE(function()
+return Feature:new("no_fog", scheduler:add_task(2.5), (function() LPH_ATTRIBUTES(VM(NONE)) 
     services.Lighting.FogEnd = 1000000;
 
     local atmosphere = services.Lighting:FindFirstChild('Atmosphere');
@@ -34924,7 +34924,7 @@ end
 -- BEGIN MODULE: src/features/removals/no_hive_gate
 module_map["src/features/removals/no_hive_gate"] = function(require)
 local saved = {};
-local feature = Feature:new("no_hive_gate", not is_eastern and Instance.new("BindableEvent").Event or scheduler:add_task(3.5), LPH_NO_VIRTUALIZE(function()
+local feature = Feature:new("no_hive_gate", not is_eastern and Instance.new("BindableEvent").Event or scheduler:add_task(3.5), (function() LPH_ATTRIBUTES(VM(NONE)) 
     for _, gate in workspace:GetChildren() do repeat 
         if gate.Name ~= "HiveGate" then do break end end;
 
@@ -35089,7 +35089,7 @@ module_map["src/features/removals/no_one_bit"] = function(require)
 local parser = require("@src/utility/deepwoken/ssv_parser");
 local last_update = 0;
 local feature;
-feature = Feature:new("no_one_bit", scheduler:add_task(1), LPH_NO_VIRTUALIZE(function()
+feature = Feature:new("no_one_bit", scheduler:add_task(1), (function() LPH_ATTRIBUTES(VM(NONE)) 
     if not local_player.character then return end
     last_update = tick();
     
@@ -35163,7 +35163,7 @@ end
 -- BEGIN MODULE: src/features/removals/no_sanity_vfx
 module_map["src/features/removals/no_sanity_vfx"] = function(require)
 local self; do
-    self = Feature:new("no_sanity_vfx", scheduler:add_task(2.5), LPH_NO_VIRTUALIZE(function()
+    self = Feature:new("no_sanity_vfx", scheduler:add_task(2.5), (function() LPH_ATTRIBUTES(VM(NONE)) 
         for _, object in services.CollectionService:GetTagged("StatVFX") do repeat 
             if table.find(self.gone, object) then do break end end
 
@@ -35301,7 +35301,7 @@ end
 -- END MODULE: src/features/removals/no_stun
 -- BEGIN MODULE: src/features/removals/no_wind
 module_map["src/features/removals/no_wind"] = function(require)
-return Feature:new("no_wind", game:GetService("RunService").PreSimulation, LPH_NO_VIRTUALIZE(function()
+return Feature:new("no_wind", game:GetService("RunService").PreSimulation, (function() LPH_ATTRIBUTES(VM(NONE)) 
     if not local_player.character and not local_player.root_part or is_chime then return end
 
     if local_player.root_part:FindFirstChild("WindPusher") then
@@ -35326,7 +35326,7 @@ end
 -- BEGIN MODULE: src/features/removals/no_yun_shul_gate
 module_map["src/features/removals/no_yun_shul_gate"] = function(require)
 local saved = {};
-local feature = Feature:new("no_yun_shul_gate", not is_depths and Instance.new("BindableEvent").Event or scheduler:add_task(3.5), LPH_NO_VIRTUALIZE(function()
+local feature = Feature:new("no_yun_shul_gate", not is_depths and Instance.new("BindableEvent").Event or scheduler:add_task(3.5), (function() LPH_ATTRIBUTES(VM(NONE)) 
     local mechanisms = workspace:FindFirstChild("Mechanisms");
     if not mechanisms then return end;
     
@@ -35752,7 +35752,7 @@ end
 -- END MODULE: src/features/visuals/auto_hide_hud
 -- BEGIN MODULE: src/features/visuals/base_esp
 module_map["src/features/visuals/base_esp"] = function(require)
-return LPH_NO_VIRTUALIZE(function()
+return (function() LPH_ATTRIBUTES(VM(NONE)) 
 	local settings_updated = false
 	local limited_esp_cache_result = false
 	local deepwoken_mesh_ids = require("@src/utility/deepwoken/deepwoken_meshes" .. "")
@@ -37273,7 +37273,7 @@ end
 -- BEGIN MODULE: src/features/visuals/full_bright
 module_map["src/features/visuals/full_bright"] = function(require)
 
-return Feature:new("full_bright", scheduler:add_task(1), LPH_NO_VIRTUALIZE(function()
+return Feature:new("full_bright", scheduler:add_task(1), (function() LPH_ATTRIBUTES(VM(NONE)) 
     local level = 255 * (aztup.flags.fullbright_intensity / 100);
     services.Lighting.Ambient = Color3.fromRGB(level, level, level);
     
@@ -37632,14 +37632,14 @@ end
 -- BEGIN MODULE: src/features/visuals/no_shadows
 module_map["src/features/visuals/no_shadows"] = function(require)
 
-return Feature:new("no_shadows", scheduler:add_task(2.5), LPH_NO_VIRTUALIZE(function()
+return Feature:new("no_shadows", scheduler:add_task(2.5), (function() LPH_ATTRIBUTES(VM(NONE)) 
     services.Lighting.GlobalShadows = false;
 end))
 end
 -- END MODULE: src/features/visuals/no_shadows
 -- BEGIN MODULE: src/features/visuals/player_esp
 module_map["src/features/visuals/player_esp"] = function(require)
-return LPH_NO_VIRTUALIZE(function()
+return (function() LPH_ATTRIBUTES(VM(NONE)) 
     local PlayerESPBillboard = require("@src/utility/player_esp_inst");
     local maid = require("@src/utility/maid");
     local stored_damage_registry = require("@src/utility/stored_damage_registry");
@@ -42897,7 +42897,7 @@ local last_update = 0;
 local feature;
 local last_spawn = 0;
 
-feature = Feature:new("sanity_indicator", services.RunService.RenderStepped, LPH_NO_VIRTUALIZE(function()
+feature = Feature:new("sanity_indicator", services.RunService.RenderStepped, (function() LPH_ATTRIBUTES(VM(NONE)) 
     if not feature.current then
         return tick() - last_spawn > 5 and feature:spawn() or nil    
 end
@@ -43057,7 +43057,7 @@ self.font = DrawFont.Register(readfile("Seraphim/Fonts/Lexend.ttf"), {
 });
 
 local live = workspace:WaitForChild("Live");
-self.draw = LPH_NO_VIRTUALIZE(function()
+self.draw = (function() LPH_ATTRIBUTES(VM(NONE)) 
     local camera_cframe = workspace.CurrentCamera and workspace.CurrentCamera.CFrame or CFrame.new();
     local left_healthbar = camera_cframe:VectorToWorldSpace(Vector3.new(-4, 3, 0)) 
     local right_healthbar = camera_cframe:VectorToWorldSpace(Vector3.new(-3.5, -3, 0));
@@ -43189,7 +43189,7 @@ env["AUTH_GET_CONSTANT"] = function(...)
 end 
 
 local services;
-LPH_NO_VIRTUALIZE(function()
+(function() LPH_ATTRIBUTES(VM(NONE)) 
     local service_cache = {}
     local gs = game.GetService;
 
@@ -43383,7 +43383,7 @@ if not success or not result then
 end;
 
 do
-    LPH_NO_VIRTUALIZE(function()
+    (function() LPH_ATTRIBUTES(VM(NONE)) 
         function decode_asset(asset)
             local decoded = services.EncodingService:Base64Decode(buffer.fromstring(asset));
             local decompress = services.EncodingService:DecompressBuffer(decoded, Enum.CompressionAlgorithm.Zstd);
