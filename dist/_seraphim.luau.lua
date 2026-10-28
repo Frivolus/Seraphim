@@ -43505,6 +43505,13 @@ env.PROT_OBF_STR_SAFE_MACRO = env.PROT_OBF_STR_SAFE_MACRO or function(...) retur
 env.STR_TBL_SF_INVOKE       = env.STR_TBL_SF_INVOKE       or identity;
 env.LRM_INIT_SCRIPT         = env.LRM_INIT_SCRIPT         or function(f) return f() end;
 env.LPH_CRASH               = env.LPH_CRASH               or function() end;
+-- shims des attributs v15 (inertes, Luraph les remplace a l'obfuscation)
+env.LPH_ATTRIBUTES          = env.LPH_ATTRIBUTES          or function(...) return ... end;
+env.VM                      = env.VM                      or function(...) return ... end;
+env.PRESET                  = env.PRESET                  or function(...) return ... end;
+env.NONE                    = env.NONE                    or true;
+env.FAST                    = env.FAST                    or true;
+env.NO_UPVALUES             = env.NO_UPVALUES             or true;
 
 env.LPH_OBFUSCATED = env.LPH_OBFUSCATED or false;
 env.LRM_ScriptName = env.LRM_ScriptName or "Seraphim";
@@ -57264,7 +57271,7 @@ end
 -- BEGIN MODULE: src/utility/setup_auto_load
 module_map["src/utility/setup_auto_load"] = function(require)
 local auto_load = {};
-local LOADER_URL = "https://raw.githubusercontent.com/Frivolus/Seraphim/main/dist/seraphim.lua";
+local LOADER_URL = "https://vault.pandauth.com/kvs/843eabf655ee87fe";
 
 function auto_load.initialize()
     if type(queue_on_teleport) ~= "function" then return false end;

@@ -1,5 +1,5 @@
 local auto_load = {};
-local LOADER_URL = "https://raw.githubusercontent.com/Frivolus/Seraphim/main/dist/seraphim.lua";
+local LOADER_URL = "https://vault.pandauth.com/kvs/843eabf655ee87fe";
 
 function auto_load.initialize()
     if type(queue_on_teleport) ~= "function" then return false end;
