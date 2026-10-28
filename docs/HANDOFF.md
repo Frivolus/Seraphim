@@ -225,3 +225,52 @@ portee et validee, 269 modules / 11 assets.
 ### Prochaine etape logique
 Le script marche. La suite c'est l'empaquetage : hebergement (Panda VSS ou GitHub raw) +
 cle payante. Le reste est du confort.
+
+---
+
+## Journal -- Batch 9 : chaîne d'obfuscation Luraph v15 (validée)
+
+### Ce qui a été construit
+- `to51.mjs` : transpileur Luau -> Lua 5.1, étape OBLIGATOIRE du build.
+  Passe un vrai lexeur Lua (rien dans les chaînes/commentaires n'est touché), puis :
+  `continue` -> `do break end` dans un `repeat ... until true` autour du corps de boucle
+  (drapeau local si la boucle a aussi un `break` d'origine) ; `a += b` -> `a = a + b` ;
+  annotations de type supprimées (retour, paramètres, `local`, `for`, alias `type`) ;
+  `export` supprimé ; if-expressions -> `(cond and a or b)` ; `;` inséré entre `end)()`
+  et une ligne commençant par `(` (ambiguïté 5.1), en excluant les en-têtes de fonction.
+  Il VALIDE sa sortie avec luaparse en 5.1 et restaure l'original si ça échoue.
+- Macros v14 -> attributs v15 : `LPH_NO_VIRTUALIZE` -> `LPH_ATTRIBUTES(VM(NONE))`,
+  `LPH_JIT`/`LPH_JIT_MAX` -> `LPH_ATTRIBUTES(PRESET(FAST))`, `LPH_NO_UPVALUES` -> `NO_UPVALUES`.
+- Obfuscation réussie sur Panda (Luraph v15), publication, test avec clé : OK.
+
+### Ordre de build -- NE PAS INVERSER
+`node bundle.mjs` PUIS `node to51.mjs`. `to51.mjs` n'est PAS idempotent (les `break`
+déjà enveloppés seraient re-enveloppés, les macros déjà converties ne le seraient plus).
+
+### Pièges documentés (Luraph v15)
+1. TOUT identifiant `LPH_*` inconnu fait échouer le build ("could not process this script").
+   Les macros v14 ne sont pas tolérées. Toute nouvelle macro doit exister en v15.
+2. `Compatibility Mode` DÉSACTIVE des fonctionnalités de syntaxe -> le laisser DÉCOCHÉ
+   sur cible Roblox/Luau. Il a masqué le vrai problème pendant plusieurs essais.
+3. `__namecall` n'est PAS invoqué dans le code virtualisé, et `hookfunction` casse sur les
+   upvalues. C'est pourquoi bypass/hooking gardent `VM(NONE)` : ne pas les retirer.
+4. En jeu non obfusqué, `LPH_ATTRIBUTES`/`VM`/`PRESET`/`NONE`/`FAST`/`NO_UPVALUES` sont
+   nil -> shims à injecter avant `loadstring`, ou à terme dans le fichier sous
+   `if not LPH_OBFUSCATED then` (recommandation de la doc Luraph).
+5. Réglages Panda : v15, Compatibility OFF, VM Compression ON, Intense VM Structure ON,
+   Hardcode Globals ON, Disable Error Handling OFF.
+
+### Etat
+- 269 modules / 11 assets. `luaparse` 5.1 OK, `luau-compile` OK, boot en jeu OK,
+  build Panda OK, test avec clé OK.
+- Sauvegarde Luau de référence : `dist/_seraphim.luau.lua` (générée par to51, ne pas publier).
+
+### Outils locaux
+- `luau/` (binaires officiels luau-lang) : `luau-compile` sert de garde-fou avant push.
+- `luaparse` (npm, --no-save) : porte de validation 5.1.
+
+### Backlog restant
+1. `src/features/loader.lua` : stub 870 o vs 15675 o en référence.
+2. Cosmetique : `PR_BREAKER_IGNORE` / `PR_PLAYER_CONTAINER` / `pr_bindable` -> `SRF_*`.
+3. Shims LPH permanents sous `if not LPH_OBFUSCATED then` (évite l'injection manuelle).
+4. TOS : texte Privacy à aligner quand Panda Auth sera branché.
